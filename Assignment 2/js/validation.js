@@ -36,12 +36,22 @@ function phoneRequire() {
     } else if (isNaN(parseInt(phone))) {
         document.getElementById("phone_msg").innerHTML = "* Enter Only Number in Phone!";
         document.getElementById("phone").style.borderColor = "red";
-    } else if (phone < 6999999999 || phone > 9999999999) {
-        document.getElementById("phone_msg").innerHTML = "* Enter Valid Phone Number!";
-        document.getElementById("phone").style.borderColor = "red";
+    } else if (phone.startsWith("+") == true) {
+        if (phone.length != 13) {
+            document.getElementById("phone_msg").innerHTML = "* Enter Valid Phone Number!";
+            document.getElementById("phone").style.borderColor = "red";
+        } else {
+            document.getElementById("phone_msg").innerHTML = "";
+            document.getElementById("phone").style.borderColor = "green";
+        }
     } else {
-        document.getElementById("phone_msg").innerHTML = "";
-        document.getElementById("phone").style.borderColor = "green";
+        if (phone < 6999999999 || phone > 9999999999) {
+            document.getElementById("phone_msg").innerHTML = "* Enter Valid Phone Number!";
+            document.getElementById("phone").style.borderColor = "red";
+        } else {
+            document.getElementById("phone_msg").innerHTML = "";
+            document.getElementById("phone").style.borderColor = "green";
+        }
     }
 }
 
@@ -63,7 +73,8 @@ function off_phoneRequire() {
 }
 
 function emailRequire() {
-    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    // var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    var reg = /^[a-zA-Z]+([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     var address = document.getElementById("email").value;
     if (address == "") {
         document.getElementById("email_msg").innerHTML = "* Please provide your Email!";
@@ -133,6 +144,7 @@ function dobRequire() {
         }
         document.getElementById("age").value = age.toFixed(2);
         document.getElementById("age").disabled = true;
+        document.getElementById("age").style.borderColor = "green";
     }
 }
 
