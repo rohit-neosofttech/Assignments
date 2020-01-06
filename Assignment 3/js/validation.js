@@ -4,9 +4,9 @@ $(document).ready(function() {
         var lname = $('#lastname').val();
         var phone = $('#phone').val();
         var off_phone = $('#off_phone').val();
-        var address = $('#address').val();
+        var address = $("#email").val();
         var password = $('#password').val();
-        var conf_pass = $('#conf_pass').val();
+        var conf_pass = $("#confirm_password").val();
 
         var DOB_day = $('#DOB_day').val();
         var DOB_month = $('DOB_month').val();
@@ -102,18 +102,19 @@ $(document).ready(function() {
             $("#password_msg").text("");
             $("#password").css('border', '1px solid green');
             $('#confirm_password').prop("disabled", false)
+            if (conf_pass == "") {
+                $("#confirm_password_msg").text("* Please Confirm the password!");
+                $("#confirm_password").css('border', '1px solid red');
+            } else if (password != conf_pass) {
+                $("#confirm_password_msg").text("* Password doesn't match");
+                $("#confirm_password").css('border', '1px solid red');
+            } else {
+                $("#confirm_password_msg").text("");
+                $("#confirm_password").css('border', '1px solid green');
+            }
         }
 
-        if (conf_pass == "") {
-            $("#confirm_password_msg").text("* Please Confirm the password!");
-            $("#confirm_password").css('border', '1px solid red');
-        } else if (password != conf_pass) {
-            $("#confirm_password_msg").text("* Password doesn't match");
-            $("#confirm_password").css('border', '1px solid red');
-        } else {
-            $("#confirm_password_msg").text("");
-            $("#confirm_password").css('border', '1px solid green');
-        }
+
 
         var DOB_day = $("#day").val();
         var DOB_month = $("#month").val();
