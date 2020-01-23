@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway");
+* {
+  box-sizing: border-box;
+}
+.card {
+  margin: auto;
+  width: 50%;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.input {
+  display: inline-block;
+  font-size: 18px;
+}
+
+.modalbutton {
+  font-size: 18px;
+  color: bisque;
+  padding: 0px 20px;
+  margin: 0px 20px;
+  background-color: brown;
+}
+
+.center {
+  text-align: center;
+  padding:20px 0px;
+}

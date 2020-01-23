@@ -1,0 +1,18 @@
+.card {
+    width:30%;
+    display: inline-block;
+    margin:8px;
+    padding:8px;
+}
+
+.itemList {
+    padding-left: 10px;
+    text-align: left;
+    z-index: 3;
+}
+
+.button2 {
+    font-weight: bold;
+    margin: 10px;
+    width: 30%;
+}
