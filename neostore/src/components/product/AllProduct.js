@@ -13,7 +13,7 @@ class AllProduct extends Component {
     componentDidMount(){
         axios.get(`http://180.149.241.208:3022/commonProducts`)
         .then((res)=>{
-            console.log(res.data.product_details)
+            // console.log(res.data.product_details)
             this.setState({products:res.data.product_details})
         })
         .catch((err)=> {

@@ -29,7 +29,6 @@ function App() {
       <Switch>
         <Route path='/' component={Home} exact/>
         <Route path='/productspage' component={ProductsPage}/>
-        <Route path='/productdetail' component={ProductDetail}/>
         <Route path='/cart' component={Cart}/>
         <Route path='/order' component={Order}/>
         <Route path='/address' component={Address}/>
@@ -42,6 +41,7 @@ function App() {
         <Route path='/forgot-pass' component={ForgotPass}/>
         <Route path='/contact' component={Contact}/>
         <Route path='/location' component={Location}/>
+        <Route path='/productdetail/:product_id' component={ProductDetail}/>
         <Route component={Default}/>
       </Switch>
       <Footer/>

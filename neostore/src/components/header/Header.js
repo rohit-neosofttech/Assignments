@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {NavLink, Link} from 'react-router-dom'
+import Badge from '@material-ui/core/Badge';
 import './Header.css'
 
 export class Header extends Component {
@@ -30,10 +31,16 @@ export class Header extends Component {
                             <form class="form-inline my-2 my-lg-0">
                                 <input class="form-control mr-sm-2" type="search" placeholder="Search"/>
                             </form>
-                            <button className="btn-cart"><NavLink to="/maincart"><i class="fa fa-shopping-cart "></i>Cart</NavLink></button>
+                            <button className="btn-cart">
+                                <NavLink to="/maincart">
+                                    <Badge className="badge" anchorOrigin={{vertical: 'top',horizontal: 'right',}} badgeContent={0}>
+                                        <i class="fa fa-shopping-cart"></i></Badge>Cart
+                                </NavLink>
+                            </button>
                             <div class="dropdown">
                                 <button className="btn-dropdown dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-user"></i>
+                                    <img className="user-avatar" src='' alt='' />
+                                    {/* <i class="fa fa-user"></i> */}
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <Link className="dropdown-item" to='/profile'>Profile</Link>

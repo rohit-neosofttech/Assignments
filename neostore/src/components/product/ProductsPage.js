@@ -1,25 +1,24 @@
-import React, { Component } from 'react'
+import React from 'react'
 import AllProduct from './AllProduct'
+import Product from  './Product'
+import ProductsFilter from './ProductsFilter'
 
-class ProductsPage extends Component {
-    render() {
-        return (
-            <div>
-                <h1>Products Page:</h1>
-                <h4>All product, Color Filters, catergories</h4>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-3">
-                            Filters
-                        </div>
-                        <div className="col-md-9">
-                            <AllProduct/>
-                        </div>
+function ProductsPage() {
+    return (
+        <div>
+            <br/><hr/>
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-3">
+                        <ProductsFilter/>
+                    </div>
+                    <div className="col-md-9">
+                        <Product/>
                     </div>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default ProductsPage

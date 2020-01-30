@@ -208,7 +208,59 @@ i {
     padding: 15px;
 }
 
+.tab-nav-full {
+    width:100%;
+}
+.MuiBadge-anchorOriginTopRightRectangle {
+    background-color: orangered;
+    color: white;
+    font-weight: bold;
+}
+
+.user-avatar {
+    padding-right: 40px;
+    height:20px;
+    width:20px;
+}
+
+.color-pallet {
+    height:25px;
+    width:50px;
+    border-radius: 5px;
+    border: 1px solid black;
+    margin: 3px 15px;
+}
+
+.card-full {
+    width:100%;
+    margin:20px 10px;
+}
 .row .col-md-4 {
     padding: 0px 5px;
     max-width: 33%;
+}
+
+.list-item-hr {
+    border-bottom:1px solid gray;
+}
+
+.page-link {
+    padding:5px 20px;
+    border:none;
+}
+
+.page-link:active {
+    padding:5px 20px;
+    border:none;
+    background-color: rgb(0, 132, 255);
+    color: white;
+    font-weight: bold;
+}
+
+.page-link::after {
+    padding:5px 20px;
+    border:none;
+    background-color: rgb(0, 132, 255);
+    color: white;
+    font-weight: bold;
 }
