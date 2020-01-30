@@ -1,0 +1,18 @@
+.navbar {
+    background-color: #000000;
+}
+
+.logo {
+    font-size: 40px;
+    color: #ffffff;
+    padding:0px 30px;
+}
+.logo strong{
+    color: orangered;
+}
+
+li a {
+    padding: 0px 30px;
+    font-size: 20px;
+    color: #ffffff;
+}
