@@ -13,6 +13,11 @@ export class Newsletter extends Component {
             name: e.target.value
         })
     }
+
+    onSubscribe = (e) => {
+        e.preventDefault();
+        alert("Subscribe Clicked"+this.state.name)
+        }
     
     render() {
         const name=this.state.name
@@ -21,8 +26,8 @@ export class Newsletter extends Component {
                 <h5>Newsletter & Subscribe</h5>
                 <p>Signup to get exclusive offer from our favorite brands and to be well up in the news</p>
                 <form>
-                    <input type="text" placeholder="Your Email..." value={this.state.name} onChange={this.onChangeHandler}/><br/>
-                    <button type="submit" >Subscribe</button>
+                    <input type="text" placeholder="Your Email..." value={name} onChange={this.onChangeHandler}/><br/>
+                    <button type="submit" onClick={this.onSubscribe}>Subscribe</button>
                 </form>
             </>
         )

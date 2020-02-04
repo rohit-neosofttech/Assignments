@@ -7,7 +7,7 @@
 .bottomCenter {
     position: absolute;
     bottom:0;
-    text-align:center;                   
+    width:81%;            
 }
 
 .pad {
@@ -264,3 +264,12 @@ i {
     color: white;
     font-weight: bold;
 }
+
+/* -----Star Rating component CSS -----*/
+.MuiRating-label {
+    overflow: hidden;
+}
+.Mui-disabled {
+    opacity: 1 !important
+}
+/* -----Star Rating component CSS -----*/

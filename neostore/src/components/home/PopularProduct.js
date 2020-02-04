@@ -23,7 +23,7 @@ class PopularProduct extends PureComponent {
 
     render() {
         const {product_details}=this.state
-        const product_list=product_details.map(product =><ProductCard key={product_details.id} product={product}></ProductCard>)
+        const product_list=product_details.map(product =><ProductCard key={product._id} product={product}></ProductCard>)
         return (
             <div className="container">
                 <h3 className="center">Popular Product</h3>

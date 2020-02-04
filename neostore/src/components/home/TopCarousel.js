@@ -28,32 +28,33 @@ class TopCarousel extends Component {
 
     onSelect = (active, direction) => {
         console.log(`active=${active} && direction=${direction}`);
-      };
-      visiableOnSelect = active => {
+    };
+    visiableOnSelect = active => {
         console.log(`visiable onSelect active=${active}`);
-      };
-      slideNext = () => {
+    };
+    slideNext = () => {
         this.slider.slideNext();
-      };
-      slidePrev = () => {
+    };
+    slidePrev = () => {
         this.slider.slidePrev();
-      };
-      goToSlide = () => {
+    };
+    goToSlide = () => {
         this.slider.goToSlide(1);
-      };
-      autoplay = () => {
+    };
+    autoplay = () => {
         this.setState({ autoplay: !this.state.autoplay });
-      };
-      _changeIcon = () => {
+    };
+    _changeIcon = () => {
         let { leftIcon, rightIcon } = this.state;
         leftIcon = leftIcon ? undefined : icon_glass;
         rightIcon = rightIcon ? undefined : icon_music;
         this.setState({ leftIcon, rightIcon });
-      };
+    };
 
     render() {
         const {carousel_img}=this.state
-        const carousel_list=carousel_img.map(carousel =><Carousel key={carousel_img.id} carousel={carousel}></Carousel>)
+        // console.log(carousel_img.category_id)
+        const carousel_list=carousel_img.map(carousel =><Carousel key={carousel.category_id} carousel={carousel} />)
         
         return (
             <div className="container-fullwidth">

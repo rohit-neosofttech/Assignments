@@ -41,8 +41,6 @@ class Login extends Component {
         if (formValid(this.state)) {
           console.log(`
             --SUBMITTING--
-            First Name: ${this.state.firstName}
-            Last Name: ${this.state.lastName}
             Email: ${this.state.email}
             Password: ${this.state.password}
           `);
@@ -83,10 +81,10 @@ class Login extends Component {
                           <i className="fab fa-facebook-f fa-3x"></i>Login with Facebook
                         </button>
                         <button className="social-btn" style={{backgroundColor: '#db4437'}}>
-                          <i class="fab fa-google fa-3x"></i>Login with Google
+                          <i className="fab fa-google fa-3x"></i>Login with Google
                         </button>
                         <button className="social-btn" style={{backgroundColor: '#00acee'}}>
-                          <i class="fab fa-twitter fa-3x"></i>Login with Twitter
+                          <i className="fab fa-twitter fa-3x"></i>Login with Twitter
                         </button>
                     </div>
                     <div className="col-md-6 left-border">
@@ -95,7 +93,7 @@ class Login extends Component {
                             <div className="container-fullwidth">
                             <form onSubmit={this.handleSubmit}>
                                 <div className="input-container">
-                                    <input type="email" placeholder="Email Address" onChange={this.handleChange} name="email" validate/>
+                                    <input type="email" placeholder="Email Address" onChange={this.handleChange} name="email"/>
                                     <i id="icon-black" className="fas fa-envelope"></i>
                                 </div>
                                     {this.state.formErrors.email.length > 0 && (
@@ -103,8 +101,8 @@ class Login extends Component {
                                     )}
                                 <br/>
                                 <div className="input-container">
-                                    <input type="password" placeholder="Password" onChange={this.handleChange} name="password" validate/>
-                                    <i id="icon-black" class="fas fa-eye-slash"></i>
+                                    <input type="password" placeholder="Password" onChange={this.handleChange} name="password"/>
+                                    <i id="icon-black" className="fas fa-eye-slash"></i>
                                 </div>
                                 {this.state.formErrors.password.length > 0 && (
                                         <span className="errorMessage">{this.state.formErrors.password}</span>

@@ -6,9 +6,9 @@ export default function Address() {
         <div className="container">
             <h1>My Account</h1>
             <hr/>
-            <div class="row">
+            <div className="row">
                 <UserHome />
-                <div class="col-md-7">
+                <div className="col-md-7">
                     Address
                 </div>
             </div>

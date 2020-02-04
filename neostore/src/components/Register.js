@@ -102,7 +102,7 @@ const emailRegex = RegExp(
                     </div>
                     <div className="col col-md-6">
                       <button className="social-btn" style={{backgroundColor: '#db4437'}}>
-                        <i class="fab fa-google fa-3x"></i>Login with Google
+                        <i className="fab fa-google fa-3x"></i>Login with Google
                       </button>
                     </div>
                 </div>
@@ -112,7 +112,7 @@ const emailRegex = RegExp(
                     <br/><h3>Register to NeoSTORE</h3><br/><br/>
                     <div className="input-container">
                         <input placeholder="First Name" type="text" name="firstName" onBlur={this.handleChange} />
-                        <i id="icon-black" class="fas fa-font"></i>
+                        <i id="icon-black" className="fas fa-font"></i>
                     </div>
                     {this.state.formErrors.firstName.length > 0 && (
                             <span className="errorMessage">{this.state.formErrors.firstName}</span>
@@ -120,7 +120,7 @@ const emailRegex = RegExp(
                     <br/>
                     <div className="input-container">
                         <input placeholder="Last Name" type="text" name="lastName" onBlur={this.handleChange} />
-                        <i id="icon-black" class="fas fa-font"></i>                        
+                        <i id="icon-black" className="fas fa-font"></i>                        
                     </div>
                     {this.state.formErrors.lastName.length > 0 && (
                             <span className="errorMessage">{this.state.formErrors.lastName}</span>
@@ -136,7 +136,7 @@ const emailRegex = RegExp(
                     <br/>
                     <div className="input-container">
                         <input placeholder="Password" type="password" name="password" onBlur={this.handleChange} />
-                        <i id="icon-black" class="fas fa-eye-slash"></i>
+                        <i id="icon-black" className="fas fa-eye-slash"></i>
                     </div>
                     {this.state.formErrors.password.length > 0 && (
                             <span className="errorMessage">{this.state.formErrors.password}</span>
@@ -144,7 +144,7 @@ const emailRegex = RegExp(
                     <br/>
                     <div className="input-container">
                         <input placeholder="Confirm Password" type="password" name="confpass" onBlur={this.handleChange} />
-                        <i id="icon-black" class="fas fa-eye-slash"></i>
+                        <i id="icon-black" className="fas fa-eye-slash"></i>
                     </div>
                     {this.state.formErrors.confpass.length > 0 && (
                             <span className="errorMessage">{this.state.formErrors.confpass}</span>
@@ -152,7 +152,7 @@ const emailRegex = RegExp(
                     <br/>
                     <div className="input-container">
                         <input placeholder="Mobile" type="text" name="mobile" onBlur={this.handleChange} />
-                        <i id="icon-black" class="fas fa-mobile-alt"></i>
+                        <i id="icon-black" className="fas fa-mobile-alt"></i>
                     </div>
                     {this.state.formErrors.lastName.length > 0 && (
                             <span className="errorMessage">{this.state.formErrors.mobile}</span>

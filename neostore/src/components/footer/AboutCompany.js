@@ -10,16 +10,15 @@ export class AboutCompany extends Component {
     }
     
     componentDidMount(){
-        // console.log("component Mount")
         axios.get(`http://180.149.241.208:3022/getData`)
         .then((res)=>{
-            this.setState({company_details:res.data.company_details[0]})            
-            // console.log(res.data.company_details[0])
+            this.setState({company_details:res.data.company_details[0]})   
         })
         .catch((err)=> {
             console.log(err)
         })
     }
+
     render() {
         const {company_details} =this.state
         return (

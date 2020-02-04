@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import axios from 'axios'
+import {Link} from 'react-router-dom'
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -49,9 +50,9 @@ class ProductsFilter extends PureComponent {
     render() {
         const {categories}=this.state
         const categories_list=categories.map(category =>
-            <ListItem className="list-item-hr" button key={category.category_id}>
+            <Link to={'/productspage/' + category.category_id} key={category.category_id}><ListItem className="list-item-hr" button>
                 {category.category_name}
-            </ListItem>)
+            </ListItem></Link>)
         // console.log(categories_list)
 
         const {colors}=this.state
@@ -63,10 +64,10 @@ class ProductsFilter extends PureComponent {
             <>
                 <div className="row card card-full">
                     <List className="" >
-                        <ListItem button>AllProduct</ListItem>
+                        <Link to="/productspage" ><ListItem button>AllProduct</ListItem></Link>
                     </List>      
                 </div>
-                <div class="row card card-full">
+                <div className="row card card-full">
                     <List className="">
                         <ListItem button onClick={this.handleClickCatergory.bind(this)}>
                             <label>Categories</label>
@@ -79,7 +80,7 @@ class ProductsFilter extends PureComponent {
                         </Collapse>
                     </List>
                 </div>
-                <div class="row card card-full">
+                <div className="row card card-full">
                     <List className="">
                         <ListItem button onClick={this.handleClickColor.bind(this)}>
                             <label>Color</label>

@@ -7,42 +7,42 @@ export class Header extends Component {
     render() {
         return (
             <div>
-                <nav class="navbar navbar-expand-lg">
+                <nav className="navbar navbar-expand-lg">
                     <Link to='/'>
                         <span className="logo">Neo<strong>STORE</strong></span>
                     </Link>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                            <li class="nav-item active">
+                    <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+                        <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+                            <li className="nav-item active">
                                 <NavLink to="/">Home</NavLink>
                             </li>
-                            <li class="nav-item">
+                            <li className="nav-item">
                                 <NavLink to="/productspage">Product</NavLink>
                             </li>
-                            <li class="nav-item">
+                            <li className="nav-item">
                                 <NavLink to="/order">Order</NavLink>
                             </li>
                         </ul>
                         
-                        <ul class="nav navbar-nav ml-auto">
-                            <form class="form-inline my-2 my-lg-0">
-                                <input class="form-control mr-sm-2" type="search" placeholder="Search"/>
+                        <ul className="nav navbar-nav ml-auto">
+                            <form className="form-inline my-2 my-lg-0">
+                                <input className="form-control mr-sm-2" type="search" placeholder="Search"/>
                             </form>
                             <button className="btn-cart">
                                 <NavLink to="/maincart">
                                     <Badge className="badge" anchorOrigin={{vertical: 'top',horizontal: 'right',}} badgeContent={0}>
-                                        <i class="fa fa-shopping-cart"></i></Badge>Cart
+                                        <i className="fa fa-shopping-cart"></i></Badge>Cart
                                 </NavLink>
                             </button>
-                            <div class="dropdown">
+                            <div className="dropdown">
                                 <button className="btn-dropdown dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img className="user-avatar" src='' alt='' />
                                     {/* <i class="fa fa-user"></i> */}
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-right">
+                                <div className="dropdown-menu dropdown-menu-right">
                                     <Link className="dropdown-item" to='/profile'>Profile</Link>
                                     <Link className="dropdown-item" to='/login'>Login</Link>
                                     <Link className="dropdown-item" to='/register'>Register</Link>

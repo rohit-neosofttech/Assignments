@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import AboutCompany from './AboutCompany'
 import Information from './Information'
 import NewsLetter from './Newsletter'
 
 import './Footer.css'
 
-export class Footer extends Component {
+export class Footer extends PureComponent {
     render() {
         return (
             <div className="footer container-fluid center text-align-center">

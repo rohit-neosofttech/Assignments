@@ -1,5 +1,5 @@
 import React from 'react'
-import AllProduct from './AllProduct'
+// import AllProduct from './AllProduct'
 import Product from  './Product'
 import ProductsFilter from './ProductsFilter'
 

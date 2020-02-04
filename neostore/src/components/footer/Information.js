@@ -32,12 +32,11 @@ export class Information extends PureComponent {
     }
     render() {
         let baseurl="http://180.149.241.208:3022/"
-        // console.log(`${baseurl}${this.state.terms.fileName}`)
         return (
             <>
                 <h5>Information</h5>    
-                <a style={{color: "white"}} href={`${baseurl}${this.state.terms.fileName}`} target="_blank">Terms And Conditions</a><br/>
-                <a style={{color: "white"}} href={`${baseurl}${this.state.policy.fileName}`} target="_blank">Gurantee and Return Policy</a><br/>
+                <a style={{color: "white"}} rel="noopener noreferrer" href={`${baseurl}${this.state.terms.fileName}`} target="_blank">Terms And Conditions</a><br/>
+                <a style={{color: "white"}} rel="noopener noreferrer" href={`${baseurl}${this.state.policy.fileName}`} target="_blank">Gurantee and Return Policy</a><br/>
                 <Link to='/contact' style={{color: "white"}}>Contact Us</Link><br/>
                 Privacy Policy<br/>
                 <Link to='/location' style={{color: "white"}}>Locate Us</Link><br/>

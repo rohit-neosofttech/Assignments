@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Posts from './ProductsCard';
+import ProductsCard from './ProductsCard';
 import Pagination from './Pagination';
 import axios from 'axios';
 
@@ -29,12 +29,11 @@ const Product = () => {
     fetchPosts();
   }, []);
 
-
   return (
     <div className='container'>
       <h3>All Categories</h3>
       <div className="row">
-        <Posts products={currentPosts} loading={loading} />
+        <ProductsCard products={currentPosts} loading={loading} />
       </div>
       <Pagination
         postsPerPage={postsPerPage}
