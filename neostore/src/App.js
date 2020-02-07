@@ -28,21 +28,21 @@ function App() {
       <Header/>
       <Switch>
         <Route path='/' component={Home} exact/>
-        <Route path='/productspage' component={ProductsPage}/>
-        <Route path='/productspage/:category_id' component={ProductsPage}/>
+        <Route path='/productsPage' component={ProductsPage}/>
+        {/* <Route path='/productsPage/:category_id' component={ProductsPage}/> */}
         <Route path='/cart' component={Cart}/>
         <Route path='/order' component={Order}/>
         <Route path='/address' component={Address}/>
-        <Route path='/changepass' component={ChangePass}/>
+        <Route path='/changePass' component={ChangePass}/>
         <Route path='/profile' component={Profile}/>
         <Route path='/maincart' component={MainCart}/>
         <Route path='/login' component={Login}/>
         <Route path='/register' component={Register}/>
-        <Route path='/forgot-pass' component={ForgotPass}/>
+        <Route path='/forgotPass' component={ForgotPass}/>
         <Route path='/contact' component={Contact}/>
         <Route path='/location' component={Location}/>
         <Route path='/subscribe' component={Subscribe}/>
-        <Route path='/productdetail/:product_id' component={ProductDetail}/>
+        <Route path='/productDetail/:product_id' component={ProductDetail}/>
         <Route component={Default}/>
       </Switch>
       <Footer/>

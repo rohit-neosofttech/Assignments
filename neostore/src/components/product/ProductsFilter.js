@@ -50,21 +50,19 @@ class ProductsFilter extends PureComponent {
     render() {
         const {categories}=this.state
         const categories_list=categories.map(category =>
-            <Link to={'/productspage/' + category.category_id} key={category.category_id}><ListItem className="list-item-hr" button>
+            <Link to={'/productsPage/' + category.category_id} key={category.category_id}><ListItem className="list-item-hr" button>
                 {category.category_name}
             </ListItem></Link>)
-        // console.log(categories_list)
 
         const {colors}=this.state
         const colors_list=colors.map(color =>
         <button className="color-pallet" style={{backgroundColor:`${color.color_code}`}} key={color.color_id}/>)
-        // console.log(categories_list)
         
         return (
             <>
                 <div className="row card card-full">
                     <List className="" >
-                        <Link to="/productspage" ><ListItem button>AllProduct</ListItem></Link>
+                        <Link to="/productsPage" ><ListItem button>All Product</ListItem></Link>
                     </List>      
                 </div>
                 <div className="row card card-full">

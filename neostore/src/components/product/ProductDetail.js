@@ -2,32 +2,36 @@ import React, { PureComponent } from 'react'
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating'
 
+
+const baseurl = "http://180.149.241.208:3022/"
 class ProductDetail extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
             allproduct:[],
             product:[],
-            color:[]
+            fullImage:''
         }
+        this.imageChangeHandler = this.imageChangeHandler.bind(this);
     }
     
     componentDidMount() {
         const id =this.props.match.params.product_id
-        axios.get(`http://180.149.241.208:3022/getAllProducts`)
+        axios.get(`${baseurl}getAllProducts`)
             .then(res =>{
-                // console.log(res.data.product_details)
                 this.setState({allproduct:res.data.product_details})
-
-                const product = this.state.allproduct.filter(product => product.product_id=== id);
-                // console.log(productId);
+                const product = this.state.allproduct.filter(product => product.product_id === id);
                 this.setState({product:product[0]})
-                // console.log(this.state.product);
+                this.setState({fullImage:`${baseurl}`+ this.state.product.subImages_id.product_subImages[0]})
             })
             .catch((err)=> {
                 console.log(err)
             })
     }
+ 
+    imageChangeHandler(e) {
+        this.setState({fullImage:e.target.src})
+      }
 
     render() {
         const {product}=this.state
@@ -35,11 +39,16 @@ class ProductDetail extends PureComponent {
         const product_rating = Number(product.product_rating)
         const product_cost = product.product_cost
 
-        // console.log(product.color_id)
-        const product_color = product.color_id
-        // this.setState.color = product_color.map(color => <div key={color.color_id}>{color.color_name}</div>)
-        console.log(product_color)
+        let color_code = ''
+        if (this.state.product.color_id !== undefined){
+            color_code= this.state.product.color_id.color_code
+        }
         
+        let product_subImage=[]
+        if (this.state.product.subImages_id !== undefined){
+            product_subImage=this.state.product.subImages_id.product_subImages
+        }
+
         const product_desc = product.product_desc
         
         const product_dimension = product.product_dimension
@@ -51,20 +60,16 @@ class ProductDetail extends PureComponent {
                 <div className="row">
                     <div className="col-md-6">
                         <div className="row">
-                            <div className="">
-                                Image
+                            <div className="fullImage">
+                                <img className="fullImage img-responsive" src={this.state.fullImage} alt="FullImage"/>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col">
-                                Image 1
-                            </div>
-                            <div className="col">
-                                Image 2
-                            </div>
-                            <div className="col">
-                                Image 3
-                            </div>
+                            {product_subImage.map(subimage => (
+                                <div key={subimage} className='col'>
+                                    <img className="subImage" src={`${baseurl}`+subimage} alt="SubImages" onClick={(subimage) =>this.imageChangeHandler(subimage)} />
+                                </div>
+                            ))}
                         </div>
                     </div>
                     <div className="col-md-6">
@@ -72,7 +77,7 @@ class ProductDetail extends PureComponent {
                         <Rating name="rating" precision={0.1} value={product_rating} disabled />
                         <hr/>
                         Price : &#8377; <span style={{color:"green"}}>{product_cost}</span><br/>
-                        Color : <span>{}</span><br/>
+                        Color : <div className="color-pallet-inline" style={{backgroundColor:`${color_code}`}} /><br/>
                         Share<i id='icon-black' className="fas fa-share-alt "></i><br/>
                         <div className='row'>
                             <button className="share-btn" style={{backgroundColor: "#4267B2"}}><i className="fab fa-facebook-f"></i></button>

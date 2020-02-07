@@ -10,12 +10,16 @@
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
+    "mdbreact": "^4.25.1",
     "react": "^16.12.0",
     "react-bootstrap-carousel": "^4.0.2",
     "react-dom": "^16.12.0",
+    "react-fullscreen-loading": "0.0.4",
+    "react-loading-overlay": "^1.0.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
-    "react-star-rating": "^1.4.2"
+    "react-star-rating": "^1.4.2",
+    "suggestion-react-input-search": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",

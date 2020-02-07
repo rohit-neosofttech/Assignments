@@ -3,11 +3,13 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import Rating from '@material-ui/lab/Rating'
 
+import Loading from 'react-fullscreen-loading';
+
 const baseurl = "http://180.149.241.208:3022/"
 
 const ProductsCard = ({ products, loading }) => {
   if (loading) {
-    return <h2>Loading...</h2>;
+    return <Loading loading loaderColor="#3498db" />;
   }
 
   return (

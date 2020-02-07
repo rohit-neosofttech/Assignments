@@ -1,10 +1,40 @@
 import React, { Component } from 'react'
 import {NavLink, Link} from 'react-router-dom'
 import Badge from '@material-ui/core/Badge';
+import axios from 'axios'
+import Search from './Search'
 import './Header.css'
 
-export class Header extends Component {
+class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            products:[],
+            text:''
+        }
+    }
+
+    onChangeHandler = (e) => {
+        this.setState({
+            text:e.target.value
+        })
+
+        // console.log(`http://180.149.241.208:3022/getProductBySearchText/${this.state.text}`)
+        // axios.get(`http://180.149.241.208:3022/getProductBySearchText/${this.state.text}`)
+        // .then((res)=>{
+        //     console.log(res.data.product_details)
+        //     this.setState({products:res.data.product_details})
+        //     // console.log(products)
+        // })
+        // .catch((err)=> {
+        //     console.log(err)
+        // })
+    }
+    
     render() {
+        // const {products}=this.state
+        // const products_name=products.map(product =><React.Fragment product={product.product_name} id={product.product_id}></React.Fragment>)
+        // console.log(products_name)
         return (
             <div>
                 <nav className="navbar navbar-expand-lg">
@@ -28,8 +58,9 @@ export class Header extends Component {
                         </ul>
                         
                         <ul className="nav navbar-nav ml-auto">
+                            {/* <Search></Search> */}
                             <form className="form-inline my-2 my-lg-0">
-                                <input className="form-control mr-sm-2" type="search" placeholder="Search"/>
+                                <input className="form-control mr-sm-2" type="search" onChange={this.onChangeHandler} value={this.state.text} placeholder="Search"/>
                             </form>
                             <button className="btn-cart">
                                 <NavLink to="/maincart">

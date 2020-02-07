@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom';
 
-export class Newsletter extends Component {
+class Newsletter extends Component {
     constructor(props) {
         super(props);
         this.state={
@@ -16,7 +17,9 @@ export class Newsletter extends Component {
 
     onSubscribe = (e) => {
         e.preventDefault();
+        const { history } = this.props;
         alert("Subscribe Clicked"+this.state.name)
+        history.push(`/subscribe`);
         }
     
     render() {
@@ -34,4 +37,4 @@ export class Newsletter extends Component {
     }
 }
 
-export default Newsletter
+export default withRouter(Newsletter)

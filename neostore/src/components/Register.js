@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './Form.css'
+import axios from 'axios';
 
 const emailRegex = RegExp(
     /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-])+.([A-Za-z]{2,4})$/  
@@ -31,13 +32,15 @@ const emailRegex = RegExp(
             password: null,
             confpass:null,
             mobile:null,
+            gender:'male',
             formErrors: {
               firstName: "",
               lastName: "",
               email: "",
               password: "",
               confpass:"",
-              mobile:""
+              mobile:"",
+              gender:""
             }
           };
       }
@@ -47,6 +50,7 @@ const emailRegex = RegExp(
     e.preventDefault();
     if (formValid(this.state)) {
       alert("Form submitted succesfully");
+      
     } else {
       alert("FORM INVALID");
     }
@@ -108,63 +112,64 @@ const emailRegex = RegExp(
                 </div>
                 <hr/>
                 <br/>
-                <form className="container card pad" onSubmit={this.handleSubmit} noValidate>
+               
+                <form className="container card" onSubmit={this.handleSubmit} noValidate>
                     <br/><h3>Register to NeoSTORE</h3><br/><br/>
-                    <div className="input-container">
-                        <input placeholder="First Name" type="text" name="firstName" onBlur={this.handleChange} />
-                        <i id="icon-black" className="fas fa-font"></i>
-                    </div>
-                    {this.state.formErrors.firstName.length > 0 && (
-                            <span className="errorMessage">{this.state.formErrors.firstName}</span>
-                        )}
-                    <br/>
-                    <div className="input-container">
-                        <input placeholder="Last Name" type="text" name="lastName" onBlur={this.handleChange} />
-                        <i id="icon-black" className="fas fa-font"></i>                        
-                    </div>
-                    {this.state.formErrors.lastName.length > 0 && (
-                            <span className="errorMessage">{this.state.formErrors.lastName}</span>
-                        )}
-                    <br/>
-                    <div className="input-container">
-                        <input placeholder="Email" type="email" name="email" onBlur={this.handleChange} />
-                        <i id="icon-black" className="fas fa-envelope"></i>
-                    </div>
-                    {this.state.formErrors.email.length > 0 && (
-                            <span className="errorMessage">{this.state.formErrors.email}</span>
-                        )}
-                    <br/>
-                    <div className="input-container">
-                        <input placeholder="Password" type="password" name="password" onBlur={this.handleChange} />
-                        <i id="icon-black" className="fas fa-eye-slash"></i>
-                    </div>
-                    {this.state.formErrors.password.length > 0 && (
-                            <span className="errorMessage">{this.state.formErrors.password}</span>
-                        )}
-                    <br/>
-                    <div className="input-container">
-                        <input placeholder="Confirm Password" type="password" name="confpass" onBlur={this.handleChange} />
-                        <i id="icon-black" className="fas fa-eye-slash"></i>
-                    </div>
-                    {this.state.formErrors.confpass.length > 0 && (
-                            <span className="errorMessage">{this.state.formErrors.confpass}</span>
-                        )}
-                    <br/>
-                    <div className="input-container">
-                        <input placeholder="Mobile" type="text" name="mobile" onBlur={this.handleChange} />
-                        <i id="icon-black" className="fas fa-mobile-alt"></i>
-                    </div>
-                    {this.state.formErrors.lastName.length > 0 && (
-                            <span className="errorMessage">{this.state.formErrors.mobile}</span>
-                        )}
-                    <br/>
-                    <div>
-                    <input type="radio" name="gender" value="male"/> Male <span>&emsp;</span>
+                    <div style={{padding:'0px 100px'}}>
+                      <div className="input-container">
+                          <input placeholder="First Name" type="text" name="firstName" onBlur={this.handleChange} />
+                          <i id="icon-black" className="fas fa-font"></i>
+                      </div>
+                      {this.state.formErrors.firstName.length > 0 && (
+                              <span className="errorMessage">{this.state.formErrors.firstName}</span>
+                          )}
+                      <br/>
+                      <div className="input-container">
+                          <input placeholder="Last Name" type="text" name="lastName" onBlur={this.handleChange} />
+                          <i id="icon-black" className="fas fa-font"></i>                        
+                      </div>
+                      {this.state.formErrors.lastName.length > 0 && (
+                              <span className="errorMessage">{this.state.formErrors.lastName}</span>
+                          )}
+                      <br/>
+                      <div className="input-container">
+                          <input placeholder="Email" type="email" name="email" onBlur={this.handleChange} />
+                          <i id="icon-black" className="fas fa-envelope"></i>
+                      </div>
+                      {this.state.formErrors.email.length > 0 && (
+                              <span className="errorMessage">{this.state.formErrors.email}</span>
+                          )}
+                      <br/>
+                      <div className="input-container">
+                          <input placeholder="Password" type="password" name="password" onBlur={this.handleChange} />
+                          <i id="icon-black" className="fas fa-eye-slash"></i>
+                      </div>
+                      {this.state.formErrors.password.length > 0 && (
+                              <span className="errorMessage">{this.state.formErrors.password}</span>
+                          )}
+                      <br/>
+                      <div className="input-container">
+                          <input placeholder="Confirm Password" type="password" name="confpass" onBlur={this.handleChange} />
+                          <i id="icon-black" className="fas fa-eye-slash"></i>
+                      </div>
+                      {this.state.formErrors.confpass.length > 0 && (
+                              <span className="errorMessage">{this.state.formErrors.confpass}</span>
+                          )}
+                      <br/>
+                      <div className="input-container">
+                          <input placeholder="Mobile" type="text" name="mobile" onBlur={this.handleChange} />
+                          <i id="icon-black" className="fas fa-mobile-alt"></i>
+                      </div>
+                      {this.state.formErrors.lastName.length > 0 && (
+                              <span className="errorMessage">{this.state.formErrors.mobile}</span>
+                          )}
+                      <br/>
+                        <input type="radio" name="gender" value="male"/> Male <span>&emsp;</span>
                         <input type="radio" name="gender" value="female"/> Female<br/>
+                      <div className="createAccount">
+                        <button className="btn-login" type="submit">Register</button>
+                      </div><br/>
                     </div>
-                    <div className="createAccount">
-                    <button className="btn-login" type="submit">Register</button>
-                    </div><br/>
                 </form>
             </div>
         )

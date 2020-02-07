@@ -88,7 +88,7 @@ class Login extends Component {
                         </button>
                     </div>
                     <div className="col-md-6 left-border">
-                        <div className="pad">
+                        <div>
                             <label><h3>Login to NeoSTORE</h3></label>
                             <div className="container-fullwidth">
                             <form onSubmit={this.handleSubmit}>
