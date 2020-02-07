@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import ProductsCard from './ProductsCard';
 import Pagination from './Pagination';
+import * as api from '../../api'
 
 
 class AllProduct extends Component {
@@ -9,61 +10,101 @@ class AllProduct extends Component {
         super(props);
         this.state={
             products:[],
-            posts:[],
             loading:true,
             currentPage:1,
-            postsPerPage:8,
-            categoryName:''
+            // postsPerPage:8,
+            categoryName:'',
+            // categoryId:'',
+            // colorId:'',
+            // sortBy:'',
+            // sortIn:'',
+            pageNo:1,
+            perPage:8,
+            error:false,
+            prodLen:''
         }
     }
 
-    componentDidMount(){
-        axios.get(`http://180.149.241.208:3022/commonProducts`)
+    componentDidMount() {
+        axios.get(`${api.baseurl}/commonProducts`)
         .then((res)=>{
             this.setState({
                 products:res.data.product_details,
                 categoryName:"All Categories",
-                loading:false
+                loading:false,
+                prodLen:res.data.product_details.length
             })
         })
         .catch((err)=> {
-            console.log(err)
+            alert("Invalid componentDidMount API call")
+            this.setState({error:!this.state.error})
+
         })
     }
 
-    
+    componentDidUpdate(prevProps,prevState){
+        // console.log(`${api.baseurl}/commonProducts?category_id=${this.props.categoryId}&color_id=${this.props.colorId}&sortBy=${this.props.sortBy}&sortIn=${this.props.sortIn}&pageNo=${this.state.pageNo}&perPage=${this.state.perPage}`)
+        if (this.props !== prevProps || this.state.pageNo!== prevState.pageNo) {
+             axios.get(`${api.baseurl}/commonProducts?category_id=${this.props.categoryId}&color_id=${this.props.colorId}&sortBy=${this.props.sortBy}&sortIn=${this.props.sortIn}&pageNo=${this.state.pageNo}&perPage=${this.state.perPage}`)
+            .then((res)=>{
+                this.setState({
+                    products:res.data.product_details,
+                    categoryName:res.data.product_details[0].category_id.category_name,
+                    loading:false
+                })
+            })
+            .catch((err)=> {
+                // console.log(err)
+                // alert("Invalid componentDidUpdate API call")
+                this.setState(prevState => ({
+                    error: !prevState.error
+                  }));
+            })
+          }
+          if (this.state.pageNo!== prevState.pageNo) {
+            axios.get(`${api.baseurl}/commonProducts?category_id=${this.props.categoryId}&color_id=${this.props.colorId}&sortBy=${this.props.sortBy}&sortIn=${this.props.sortIn}&pageNo=${this.state.pageNo}&perPage=${this.state.perPage}`)
+           .then((res)=>{
+               this.setState({
+                   products:res.data.product_details,
+                   categoryName:res.data.product_details[0].category_id.category_name,
+                   loading:false
+               })
+           })
+           .catch((err)=> {
+               // console.log(err)
+               // alert("Invalid componentDidUpdate API call")
+               this.setState(prevState => ({
+                   error: !prevState.error
+                 }));
+           })
+         }
+    }
+
     render() {
 
-        const indexOfLastPost = this.state.currentPage * this.state.postsPerPage;
-        const indexOfFirstPost = indexOfLastPost - this.state.postsPerPage;
-        const currentPosts = this.state.products.slice(indexOfFirstPost, indexOfLastPost);
+        // const indexOfLastPost = this.state.currentPage * this.state.postsPerPage;
+        // const indexOfFirstPost = indexOfLastPost - this.state.postsPerPage;
+        // const currentPosts = this.state.products.slice(indexOfFirstPost, indexOfLastPost);
 
-        const paginate = pageNumber => this.setState({currentPage:pageNumber})
+        const paginate = pageNumber => this.setState({pageNo:pageNumber})
 
         return (
             <div className='container'>
-                {/* {console.log(props)} */}
-                <div className="row">
-                    <div className="col-md-8 text-align-left">
-                    {(this.props.categoryId!==null || this.props.categoryId!==undefined)? <h3>{this.state.categoryName}</h3>:<h3>All Categories</h3>}
-                    {/* <h3>All Categories</h3> */}
+                {/* {alert(this.state.error)} */}
+                {(this.state.products==="No details are available") ? <h1 className="center">No Product Found</h1> :
+                <>
+                    {/* {console.log(this.state.products)} */}
+                    <div className="row">
+                        <ProductsCard products={this.state.products} loading={this.state.loading} error={this.state.error}/>
                     </div>
-                    <div className="col-md-4" style={{marginLeft:"auto"}}>
-                    Sort By:
-                    <i id="icon-blue" class="fas fa-star" ></i>
-                    <i id="icon-blue" class="fas fa-arrow-up" >&#8377;</i>
-                    <i id="icon-blue" class="fas fa-arrow-down" >&#8377;</i>
-                    </div>
-                </div>
-                
-                <div className="row">
-                    <ProductsCard products={currentPosts} loading={this.state.loading} />
-                </div>
-                <Pagination
-                    postsPerPage={this.state.postsPerPage}
-                    totalPosts={this.state.products.length}
-                    paginate={paginate}
-                />
+
+                    <Pagination
+                        postsPerPage={this.state.perPage}
+                        totalPosts={this.state.prodLen}
+                        paginate={paginate}
+                    />
+                </>
+                }
             </div>
         )
     }

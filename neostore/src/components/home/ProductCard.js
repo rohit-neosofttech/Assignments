@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Rating from '@material-ui/lab/Rating'
+import * as api from '../../api'
 
-const baseurl = "http://180.149.241.208:3022/"
 function ProductCard({product}) {
     const product_id = product.DashboardProducts[0].product_id
-    const product_image = `${baseurl}`+ product.DashboardProducts[0].product_image
+    const product_image = `${api.baseurl}/`+ product.DashboardProducts[0].product_image
     const product_name = product.DashboardProducts[0].product_name
     const product_cost = product.DashboardProducts[0].product_cost
     const product_rating = Number(product.DashboardProducts[0].product_rating)

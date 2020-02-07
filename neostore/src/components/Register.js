@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import './Form.css'
 import axios from 'axios';
+import InputFloat from 'react-floating-input'
+
 
 const emailRegex = RegExp(
     /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-])+.([A-Za-z]{2,4})$/  
@@ -56,7 +58,7 @@ const emailRegex = RegExp(
     }
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     let formErrors = { ...this.state.formErrors };
@@ -116,54 +118,115 @@ const emailRegex = RegExp(
                 <form className="container card" onSubmit={this.handleSubmit} noValidate>
                     <br/><h3>Register to NeoSTORE</h3><br/><br/>
                     <div style={{padding:'0px 100px'}}>
-                      <div className="input-container">
-                          <input placeholder="First Name" type="text" name="firstName" onBlur={this.handleChange} />
-                          <i id="icon-black" className="fas fa-font"></i>
+
+                      <div className="row">
+                        <div className="col-sm-10">
+                          <InputFloat
+                          type="text"
+                          value={this.state.firstName}
+                          onChange={this.handleChange}
+                          placeholder="First Name" 
+                          name="firstName" />
+                        </div>
+                        <div className="col-sm-2">
+                          <i id="icon-black" className="fas fa-font input-icon"></i>
+                        </div>
                       </div>
                       {this.state.formErrors.firstName.length > 0 && (
                               <span className="errorMessage">{this.state.formErrors.firstName}</span>
                           )}
                       <br/>
-                      <div className="input-container">
-                          <input placeholder="Last Name" type="text" name="lastName" onBlur={this.handleChange} />
-                          <i id="icon-black" className="fas fa-font"></i>                        
+
+                      <div className="row">
+                        <div className="col-sm-10">
+                          <InputFloat
+                          type="text"
+                          value={this.state.lastName}
+                          onChange={this.handleChange}
+                          placeholder="Last Name" 
+                          name="lastName" />
+                        </div>
+                        <div className="col-sm-2">
+                          <i id="icon-black" className="fas fa-font input-icon"></i>
+                        </div>
                       </div>
                       {this.state.formErrors.lastName.length > 0 && (
                               <span className="errorMessage">{this.state.formErrors.lastName}</span>
                           )}
                       <br/>
-                      <div className="input-container">
-                          <input placeholder="Email" type="email" name="email" onBlur={this.handleChange} />
-                          <i id="icon-black" className="fas fa-envelope"></i>
+
+                      <div className="row">
+                        <div className="col-sm-10">
+                          <InputFloat
+                          type="text"
+                          value={this.state.email}
+                          onChange={this.handleChange}
+                          placeholder="Email" 
+                          name="email" />
+                        </div>
+                        <div className="col-sm-2">
+                          <i id="icon-black" className="fas fa-envelope input-icon"></i>
+                        </div>
                       </div>
                       {this.state.formErrors.email.length > 0 && (
                               <span className="errorMessage">{this.state.formErrors.email}</span>
                           )}
                       <br/>
-                      <div className="input-container">
-                          <input placeholder="Password" type="password" name="password" onBlur={this.handleChange} />
-                          <i id="icon-black" className="fas fa-eye-slash"></i>
+
+                      <div className="row">
+                        <div className="col-sm-10">
+                          <InputFloat
+                          type="password"
+                          value={this.state.password}
+                          onChange={this.handleChange}
+                          placeholder="Password" 
+                          name="password" />
+                        </div>
+                        <div className="col-sm-2">
+                          <i id="icon-black" className="fas fa-eye-slash input-icon"></i>
+                        </div>
                       </div>
                       {this.state.formErrors.password.length > 0 && (
                               <span className="errorMessage">{this.state.formErrors.password}</span>
                           )}
                       <br/>
-                      <div className="input-container">
-                          <input placeholder="Confirm Password" type="password" name="confpass" onBlur={this.handleChange} />
-                          <i id="icon-black" className="fas fa-eye-slash"></i>
+
+                      <div className="row">
+                        <div className="col-sm-10">
+                          <InputFloat
+                          type="password"
+                          value={this.state.confpass}
+                          onChange={this.handleChange}
+                          placeholder="Confirm Password" 
+                          name="confpass" />
+                        </div>
+                        <div className="col-sm-2">
+                          <i id="icon-black" className="fas fa-eye-slash input-icon"></i>
+                        </div>
                       </div>
                       {this.state.formErrors.confpass.length > 0 && (
                               <span className="errorMessage">{this.state.formErrors.confpass}</span>
                           )}
                       <br/>
-                      <div className="input-container">
-                          <input placeholder="Mobile" type="text" name="mobile" onBlur={this.handleChange} />
-                          <i id="icon-black" className="fas fa-mobile-alt"></i>
+
+                      <div className="row">
+                        <div className="col-sm-10">
+                          <InputFloat
+                          type="text"
+                          value={this.state.mobile}
+                          onChange={this.handleChange}
+                          placeholder="Mobile" 
+                          name="mobile" />
+                        </div>
+                        <div className="col-sm-2">
+                          <i id="icon-black" className="fas fa-mobile-alt input-icon"></i>
+                        </div>
                       </div>
                       {this.state.formErrors.lastName.length > 0 && (
                               <span className="errorMessage">{this.state.formErrors.mobile}</span>
                           )}
                       <br/>
+                      
                         <input type="radio" name="gender" value="male"/> Male <span>&emsp;</span>
                         <input type="radio" name="gender" value="female"/> Female<br/>
                       <div className="createAccount">

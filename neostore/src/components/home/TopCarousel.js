@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import Carousel from './Carousel'
 import RBCarousel from "react-bootstrap-carousel";
+import * as api from '../../api'
 import axios from 'axios'
 import "react-bootstrap-carousel/dist/react-bootstrap-carousel.css";
 
-const icon_glass = <span className="fa fa-glass" />;
-const icon_music = <span className="fa fa-music" />;
+// const icon_glass = <span className="fa fa-glass" />;
+// const icon_music = <span className="fa fa-music" />;
 
 class TopCarousel extends Component {
     constructor() {
@@ -13,49 +14,44 @@ class TopCarousel extends Component {
         this.state ={
             carousel_img:[]
         }
-        
     }
     
     componentDidMount(){
-        axios.get(`http://180.149.241.208:3022/getAllCategories`)
+        axios.get(`${api.baseurl}/getAllCategories`)
         .then((res)=>{
             this.setState({carousel_img:res.data.category_details})
         })
         .catch((err)=> {
-            console.log(err)
+            alert("Wrong API call")
         })
     }
 
-    onSelect = (active, direction) => {
-        console.log(`active=${active} && direction=${direction}`);
-    };
-    visiableOnSelect = active => {
-        console.log(`visiable onSelect active=${active}`);
-    };
-    slideNext = () => {
-        this.slider.slideNext();
-    };
-    slidePrev = () => {
-        this.slider.slidePrev();
-    };
-    goToSlide = () => {
-        this.slider.goToSlide(1);
-    };
-    autoplay = () => {
-        this.setState({ autoplay: !this.state.autoplay });
-    };
-    _changeIcon = () => {
-        let { leftIcon, rightIcon } = this.state;
-        leftIcon = leftIcon ? undefined : icon_glass;
-        rightIcon = rightIcon ? undefined : icon_music;
-        this.setState({ leftIcon, rightIcon });
-    };
+    // onSelect = (active, direction) => {
+    //     console.log(`active=${active} && direction=${direction}`);
+    // };
+    // visiableOnSelect = active => {
+    //     console.log(`visiable onSelect active=${active}`);
+    // };
+    // slideNext = () => {
+    //     this.slider.slideNext();
+    // };
+    // slidePrev = () => {
+    //     this.slider.slidePrev();
+    // };
+    // goToSlide = () => {
+    //     this.slider.goToSlide(1);
+    // };
+    // autoplay = () => {
+    //     this.setState({ autoplay: !this.state.autoplay });
+    // };
+    // _changeIcon = () => {
+    //     let { leftIcon, rightIcon } = this.state;
+    //     leftIcon = leftIcon ? undefined : icon_glass;
+    //     rightIcon = rightIcon ? undefined : icon_music;
+    //     this.setState({ leftIcon, rightIcon });
+    // };
 
     render() {
-        const {carousel_img}=this.state
-        // console.log(carousel_img.category_id)
-        const carousel_list=carousel_img.map(carousel =><Carousel key={carousel.category_id} carousel={carousel} />)
-        
         return (
             <div className="container-fullwidth">
                 <RBCarousel
@@ -69,7 +65,10 @@ class TopCarousel extends Component {
                 ref={r => (this.slider = r)}
                 version={4}
                 >
-                {carousel_list}
+                { (this.state.carousel_img.length !==0 ) ?
+                    this.state.carousel_img.map( carousel => <Carousel key={carousel.category_id} carousel={carousel} />)
+                    : <></>
+                }
                 </RBCarousel>
             </div>
         )

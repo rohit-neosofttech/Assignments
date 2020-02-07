@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react'
 import axios from 'axios'
+import * as api from '../../api'
+
 import { Link } from 'react-router-dom';
 
 export class Information extends PureComponent {
@@ -18,7 +20,7 @@ export class Information extends PureComponent {
             this.setState({terms:res.data.termsAndConditions_details[0]})     
         })
         .catch((err)=> {
-            console.log(err)
+            alert("Wrong API call")
         })
 
         //Axios for Gurantee and Return Policy on the footer
@@ -27,16 +29,21 @@ export class Information extends PureComponent {
             this.setState({policy:res.data.guarantee_details[0]})     
         })
         .catch((err)=> {
-            console.log(err)
+            alert("Wrong API call")
         })
     }
     render() {
-        let baseurl="http://180.149.241.208:3022/"
         return (
             <>
-                <h5>Information</h5>    
-                <a style={{color: "white"}} rel="noopener noreferrer" href={`${baseurl}${this.state.terms.fileName}`} target="_blank">Terms And Conditions</a><br/>
-                <a style={{color: "white"}} rel="noopener noreferrer" href={`${baseurl}${this.state.policy.fileName}`} target="_blank">Gurantee and Return Policy</a><br/>
+                <h5>Information</h5>  
+                {(this.state.terms.length!==0 && this.state.policy.length!==0) 
+                ? 
+                <>  
+                    <a style={{color: "white"}} rel="noopener noreferrer" href={`${api.baseurl}${this.state.terms.fileName}`} target="_blank">Terms And Conditions</a><br/>
+                    <a style={{color: "white"}} rel="noopener noreferrer" href={`${api.baseurl}${this.state.policy.fileName}`} target="_blank">Gurantee and Return Policy</a><br/>
+                </> 
+                : <p>No detail Found</p>
+                }
                 <Link to='/contact' style={{color: "white"}}>Contact Us</Link><br/>
                 Privacy Policy<br/>
                 <Link to='/location' style={{color: "white"}}>Locate Us</Link><br/>

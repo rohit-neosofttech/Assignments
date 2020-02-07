@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import './Form.css'
+import InputFloat from 'react-floating-input'
+
 
 const emailRegex = RegExp(
     /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-])+.([A-Za-z]{2,4})$/
@@ -53,7 +55,7 @@ class Login extends Component {
         e.preventDefault();
         const { name, value } = e.target;
         let formErrors = { ...this.state.formErrors };
-    
+
         switch (name) {
           case "email":
             formErrors.email = emailRegex.test(value)
@@ -92,17 +94,34 @@ class Login extends Component {
                             <label><h3>Login to NeoSTORE</h3></label>
                             <div className="container-fullwidth">
                             <form onSubmit={this.handleSubmit}>
-                                <div className="input-container">
-                                    <input type="email" placeholder="Email Address" onChange={this.handleChange} name="email"/>
-                                    <i id="icon-black" className="fas fa-envelope"></i>
+                                <div className="row">
+                                  <div className="col-sm-10">
+                                    <InputFloat style={{fontSize:'24px'}}
+                                    value={this.state.email}
+                                    onChange={this.handleChange}
+                                    placeholder="Email Address" 
+                                    name="email" />
+                                  </div>
+                                  <div className="col-sm-2">
+                                    <i id="icon-black" className="fas fa-envelope input-icon"></i>
+                                  </div>
                                 </div>
                                     {this.state.formErrors.email.length > 0 && (
                                         <span className="errorMessage">{this.state.formErrors.email}</span>
                                     )}
                                 <br/>
-                                <div className="input-container">
-                                    <input type="password" placeholder="Password" onChange={this.handleChange} name="password"/>
-                                    <i id="icon-black" className="fas fa-eye-slash"></i>
+                                <div className="row">
+                                  <div className="col-sm-10">
+                                    <InputFloat style={{fontSize:'24px'}}
+                                    type="password"
+                                    value={this.state.password}
+                                    onChange={this.handleChange}
+                                    placeholder="Password" 
+                                    name="password" />
+                                  </div>
+                                  <div className="col-sm-2">
+                                    <i id="icon-black" className="fas fa-eye-slash input-icon"></i>
+                                  </div>
                                 </div>
                                 {this.state.formErrors.password.length > 0 && (
                                         <span className="errorMessage">{this.state.formErrors.password}</span>

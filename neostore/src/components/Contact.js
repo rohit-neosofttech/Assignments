@@ -1,7 +1,19 @@
 import React, { Component } from 'react'
+import InputFloat from 'react-floating-input'
 import './Form.css'
 
 class Contact extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            name:'',
+            email:'',
+            phone:'',
+            subject:'',
+            message:''
+        }
+    }
+    
     render() {
         return (
             <div className="container">
@@ -9,26 +21,26 @@ class Contact extends Component {
                     <div class="card-body">
                         <h1 className="center">Contact Form</h1>
                         <form>
-                            <div class="form-group form-input">
-                                <input type="text" name="name" id="name" value="" required/>
-                                <label for="name" class="form-label">Name</label>
-                            </div>
-                            <div class="form-group form-input">
-                                <input type="email" name="email" id="email" value="" required/>
-                                <label for="email" class="form-label">Email</label>
-                            </div>
-                            <div class="form-group form-input">
-                                <input type="number" name="phone" id="phone" value="" required />
-                                <label for="phone" class="form-label">Mobile number</label>
-                            </div>
-                            <div class="form-group form-input">
-                                <input type="text" name="subject" id="subject" value="" required/>
-                                <label for="subject" class="form-label">Subject</label>
-                            </div>
-                            <div class="form-group form-input">
-                                <input type="text" name="message" id="message" value="" required/>
-                                <label for="message" class="form-label">Message</label>
-                            </div>
+                            <InputFloat 
+                                value={this.state.name}
+                                onChange={({ target }) => this.setState({ name: target.value })}
+                                placeholder="Name" /><br/>
+                            <InputFloat 
+                                value={this.state.email}
+                                onChange={({ target }) => this.setState({ email: target.value })} 
+                                placeholder="Email" /><br/>
+                            <InputFloat 
+                                value={this.state.phone}
+                                onChange={({ target }) => this.setState({ phone: target.value })}
+                                placeholder="Phone Number" /><br/>
+                            <InputFloat 
+                                value={this.state.subject}
+                                onChange={({ target }) => this.setState({ subject: target.value })}
+                                placeholder="Subject" /><br/>
+                            <InputFloat 
+                                value={this.state.message}
+                                onChange={({ target }) => this.setState({ message: target.value })}
+                                placeholder="Message" /><br/>
                         </form>
                     </div>
                 </div>

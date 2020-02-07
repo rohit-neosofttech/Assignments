@@ -2,10 +2,9 @@ import React, { Component } from 'react'
 import axios from 'axios'
 
 import {Link} from 'react-router-dom'
-// import AllProduct from  './AllProduct'
-import Product from  './Product'
-import ProductsFilter from './ProductsFilter'
-
+import AllProduct from  './AllProduct'
+// import Product from  './Product'
+// import ProductsFilter from './ProductsFilter'
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -23,26 +22,26 @@ class ProductsPage extends Component {
             Colopen : false,
             categoryId:'',
             colorId:'',
-            nocolor:false
+            sortIn:'',
+            sortBy:'',
+            categoryName:''
         }
     }
     componentDidMount() {
         axios.get(`http://180.149.241.208:3022/getAllCategories`)
         .then((res)=>{
-            // console.log(res.data.category_details)
             this.setState({categories:res.data.category_details})
         })
         .catch((err)=> {
-            console.log(err)
+            alert("Invalid API call")
         })
 
         axios.get(`http://180.149.241.208:3022/getAllColors`)
         .then((res)=>{
-            // console.log(res.data.color_details)
             this.setState({colors:res.data.color_details})
         })
         .catch((err)=> {
-            this.setState({nocolor:true})
+            alert("Invalid API call")
         })
     }
 
@@ -54,24 +53,17 @@ class ProductsPage extends Component {
         this.setState({Colopen:!this.state.Colopen});
     };
 
+    handleAllProduct = () => {
+        this.setState({
+            categoryId:'',
+            colorId:'',
+            sortIn:'',
+            sortBy:'',
+            categoryName:''
+        });
+    }
         render() {
-        const {categories}=this.state
-        const categories_list=categories.map(category =>
-            <Link to={'/productsPage/' + category.category_id} key={category.category_id}>
-                <ListItem className="list-item-hr" button onClick={()=>this.setState({categoryId:category.category_id})}>
-                    {category.category_name}
-                </ListItem>
-            </Link>)
-
-        // const {colors}=this.state
-
-        // const colors_list=colors.map(color =>
-        //     <button className="color-pallet" style={{backgroundColor:`${color.color_code}`}} key={color.color_id} onClick={()=>this.setState({colorId:color.color_id})}/>)
-    //     // const colors_list
-    //    {this.state.colors.length === 0 ? <h4>No color</h4> : {colors_list=this.state.colors.map(color =>
-    //         <button className="color-pallet" style={{backgroundColor:`${color.color_code}`}} key={color.color_id} onClick={()=>this.setState({colorId:color.color_id})}/>)}}
-        
-        
+            console.log(this.state)
         return (
             <div>
                 <br/><hr/>
@@ -81,7 +73,7 @@ class ProductsPage extends Component {
                             {/* <ProductsFilter/> */}
                             <div className="row card card-full">
                                 <List className="" >
-                                    <Link to="/productsPage" ><ListItem button>All Product</ListItem></Link>
+                                    <Link to="/productsPage" ><ListItem button onClick={this.handleAllProduct.bind(this)}>All Product</ListItem></Link>
                                 </List>      
                             </div>
                             <div className="row card card-full">
@@ -92,7 +84,15 @@ class ProductsPage extends Component {
                                     </ListItem>
                                     <Collapse in={this.state.Catopen} timeout="auto" unmountOnExit>
                                         <List component="div" disablePadding>
-                                            {categories_list}
+                                            { 
+                                            (this.state.categories.length === 0) ? <h5>No Categories found</h5> : 
+                                            this.state.categories.map(category =>
+                                                <Link to={'/productsPage/' + category.category_id} key={category.category_id}>
+                                                    <ListItem className="list-item-hr" button onClick={()=>this.setState({categoryId:category.category_id, categoryName:category.category_name})}>
+                                                        {category.category_name}
+                                                    </ListItem>
+                                                </Link>)
+                                            }
                                         </List>
                                     </Collapse>
                                 </List>
@@ -105,17 +105,36 @@ class ProductsPage extends Component {
                                     </ListItem>
                                     <Collapse in={this.state.Colopen} timeout="auto" unmountOnExit>
                                         <List component="div" disablePadding>
-                                            {this.state.colors.length === 0 ? <h4>No color</h4> :
-                                        this.state.colors.map(color =><button className="color-pallet" style={{backgroundColor:`${color.color_code}`}}
-                                         key={color.color_id} onClick={()=>this.setState({colorId:color.color_id})}/>)}
-                                            {/* {colors_list} */}
+                                            {
+                                            (this.state.colors.length === 0) ? <h4>No color</h4> :
+                                            this.state.colors.map(color => 
+                                                <button className="color-pallet" style={{backgroundColor:`${color.color_code}`}}
+                                                key={color.color_id} onClick={()=>this.setState({colorId:color.color_id})}/>)
+                                            }
                                         </List>
                                     </Collapse>
                                 </List>
                             </div>
                         </div>
                         <div className="col-md-9">
-                            <Product categoryId={this.state.categoryId} colorId={this.state.colorId}/>
+                            <div className="row">
+                                <div className="col-md-8 text-align-left">
+                                {
+                                    (this.state.categoryId!=='') ? <h3>{this.state.categoryName}</h3>:<h3>All Categories</h3>
+                                }
+                                {/* <h3>All Categories</h3> */}
+                                </div>
+                                <div className="col-md-4" style={{marginLeft:"auto"}}>
+                                    Sort By:
+                                    <i id="icon-blue" class="fas fa-star" onClick={()=>this.setState({sortBy:"Rating"})}></i>
+                                    <i id="icon-blue" class="fas fa-arrow-up" onClick={()=>this.setState({sortBy:"Cost",sortIn:'true'})}>&#8377;</i>
+                                    <i id="icon-blue" class="fas fa-arrow-down" onClick={()=>this.setState({sortBy:"cost",sortIn:'false'})}>&#8377;</i>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <AllProduct categoryId={this.state.categoryId} colorId={this.state.colorId}
+                                sortBy={this.state.sortBy} sortIn={this.state.sortIn}/>
+                            </div>
                         </div>
                     </div>
                 </div>

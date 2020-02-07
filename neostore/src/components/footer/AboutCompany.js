@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import * as api from '../../api'
 import axios from 'axios'
 
 export class AboutCompany extends Component {
@@ -10,12 +11,13 @@ export class AboutCompany extends Component {
     }
     
     componentDidMount(){
-        axios.get(`http://180.149.241.208:3022/getData`)
+        // console.log(api.baseurl)
+        axios.get(`${api.baseurl}/getData`)
         .then((res)=>{
             this.setState({company_details:res.data.company_details[0]})   
         })
         .catch((err)=> {
-            console.log(err)
+            alert("Wrong API call")
         })
     }
 
@@ -24,13 +26,18 @@ export class AboutCompany extends Component {
         return (
             <>
                 <h5>About Company</h5>  
-                <p>{company_details.about_company}</p>
-                <p>
-                    <strong>Contact Information<br/></strong>
-                    {company_details.email}<br/>
-                    {company_details.phone_no}<br/>
-                    {company_details.address}
-                </p>
+                {
+                    (company_details.length === 0) ? <p>No detail Found</p> : 
+                    <>
+                        <p>{company_details.about_company}</p>
+                        <p>
+                            <strong>Contact Information<br/></strong>
+                            {company_details.email}<br/>
+                            {company_details.phone_no}<br/>
+                            {company_details.address}
+                        </p>
+                    </>
+                }
             </>
         )
     }
