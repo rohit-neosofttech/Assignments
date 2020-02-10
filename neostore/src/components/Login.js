@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import * as api from '../api'
 import './Form.css'
 import InputFloat from 'react-floating-input'
 
@@ -41,6 +43,20 @@ class Login extends Component {
         e.preventDefault();
     
         if (formValid(this.state)) {
+          axios.post(`${api.baseurl}/login`, {
+            email : this.state.email,
+            pass : this.state.password
+          })
+          .then((res) => {
+            console.log(res.data.customer_details)
+            // const { history } = this.props;
+            // history.push(`/`);
+            localStorage.setItem('userToken',`${res.data.token}`)
+            localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_details) )
+          })
+          .catch((error) => {
+            console.log(error);
+          });
           console.log(`
             --SUBMITTING--
             Email: ${this.state.email}

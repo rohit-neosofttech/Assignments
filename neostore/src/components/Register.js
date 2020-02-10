@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import './Form.css'
 import axios from 'axios';
+import * as api from '../api'
+import { withRouter } from 'react-router-dom'
 import InputFloat from 'react-floating-input'
 
 
@@ -51,8 +53,23 @@ const emailRegex = RegExp(
   handleSubmit = e => {
     e.preventDefault();
     if (formValid(this.state)) {
+      axios.post(`${api.baseurl}/register`, {
+        first_name : this.state.firstName,
+        last_name : this.state.lastName,
+        email : this.state.email,
+        pass : this.state.password,
+        confirmPass : this.state.confpass,
+        phone_no : this.state.mobile,
+        gender : this.state.gender
+      })
+      .then((response) => {
+        const { history } = this.props;
+        history.push(`/`);
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
       alert("Form submitted succesfully");
-      
     } else {
       alert("FORM INVALID");
     }
@@ -66,7 +83,8 @@ const emailRegex = RegExp(
     switch (name) {
       case "firstName":
         formErrors.firstName =
-          value.length < 3 ? "minimum 3 characaters required" : "";
+          (isNaN(value)? "" : "Only character allowed") ||
+          (value.length < 3 ? "minimum 3 characaters required" : "")
         break;
       case "lastName":
         formErrors.lastName =
@@ -227,7 +245,7 @@ const emailRegex = RegExp(
                           )}
                       <br/>
                       
-                        <input type="radio" name="gender" value="male"/> Male <span>&emsp;</span>
+                        <input type="radio" name="gender" value="male" checked/> Male <span>&emsp;</span>
                         <input type="radio" name="gender" value="female"/> Female<br/>
                       <div className="createAccount">
                         <button className="btn-login" type="submit">Register</button>

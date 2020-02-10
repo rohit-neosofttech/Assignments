@@ -156,7 +156,7 @@ i {
 
 #icon-black {
     color: black;
-    padding:0px 20px;
+    padding:0px 10px;
     text-shadow: 1px 1px 1px #ccc;
 }
 
@@ -308,6 +308,47 @@ i {
 .input-icon {
     position: absolute;
     bottom: 10px;
+}
+
+.profile-cards {
+    height:fit-content;
+    border-radius: 5px;
+    text-align: left;
+    margin-top: 10px;
+    padding:10px;
+    border: 1px solid rgb(189, 189, 189);
+    box-shadow: 0 2px 3px #ccc;
+}
+
+tr td{
+    padding:15px;
+}
+
+.btn-edit {
+    width:100px;
+    padding:5px;
+    font-weight: lighter;
+    background-color: transparent;
+    border-radius: 5px;
+}
+
+.btn-close {
+    width:fit-content;
+    height: fit-content;
+    position: absolute;
+    right:20px;
+    top:20px;
+    background-color: #f44336;
+    border: none;
+    border-radius: 3px;
+}
+
+.MuiListItem-root {
+    border-bottom: 1px solid rgb(221, 221, 221, 0.7);
+}
+
+.MuiList-root {
+    width:100%
 }
 /* 
 input[type=text],input[type=email],input[type=password]{

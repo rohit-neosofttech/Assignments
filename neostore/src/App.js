@@ -10,11 +10,15 @@ import ProductDetail from './components/product/ProductDetail'
 import Cart from './components/cart/MainCart'
 import Order from './components/user/Order'
 import Address from './components/user/Address'
+import AddAddress from './components/user/AddAddress'
+import EditAddress from './components/user/EditAddress'
 import ChangePass from './components/user/ChangePass'
 import Profile from './components/user/Profile'
+import EditProfile from './components/user/EditProfile'
 import MainCart from './components/cart/MainCart';
 import Subscribe from './components/Subscribe';
 import Login from './components/Login'
+import Logout from './components/Logout'
 import Register from './components/Register'
 import ForgotPass from './components/ForgotPass'
 import Contact from './components/Contact'
@@ -33,10 +37,14 @@ function App() {
         <Route path='/cart' component={Cart}/>
         <Route path='/order' component={Order}/>
         <Route path='/address' component={Address}/>
+        <Route path='/addAddress' component={AddAddress}/>
+        <Route path='/editAddress' component={EditAddress}/>
         <Route path='/changePass' component={ChangePass}/>
         <Route path='/profile' component={Profile}/>
+        <Route path='/editProfile' component={EditProfile}/>
         <Route path='/maincart' component={MainCart}/>
         <Route path='/login' component={Login}/>
+        <Route path='/logout' component={Logout}/>
         <Route path='/register' component={Register}/>
         <Route path='/forgotPass' component={ForgotPass}/>
         <Route path='/contact' component={Contact}/>

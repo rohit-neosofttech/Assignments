@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import {NavLink, Link} from 'react-router-dom'
 import Badge from '@material-ui/core/Badge';
 import axios from 'axios'
+import * as api from '../../api'
+
 import Search from './Search'
 import './Header.css'
 
@@ -31,10 +33,21 @@ class Header extends Component {
         // })
     }
     
+    componentDidMount() {
+        axios.get(`${api.baseurl}/getCustCartData`) 
+        .then((res)=>{     
+            console.log(res)
+        })
+        .catch((err)=> {
+            // alert("Wrong API call")
+        })
+    }
+
     render() {
         // const {products}=this.state
         // const products_name=products.map(product =><React.Fragment product={product.product_name} id={product.product_id}></React.Fragment>)
         // console.log(products_name)
+
         return (
             <div>
                 <nav className="navbar navbar-expand-lg">
@@ -74,9 +87,20 @@ class Header extends Component {
                                     {/* <i class="fa fa-user"></i> */}
                                 </button>
                                 <div className="dropdown-menu dropdown-menu-right">
-                                    <Link className="dropdown-item" to='/profile'>Profile</Link>
+                                    {localStorage.getItem('userToken')
+                                        ? <>
+                                            <Link className="dropdown-item" to='/profile'>Profile</Link>
+                                            <Link className="dropdown-item" to='/logout'>Log out</Link>
+                                          </>
+                                        : <>
+                                            <Link className="dropdown-item" to='/login'>Login</Link>
+                                            <Link className="dropdown-item" to='/register'>Register</Link>
+                                          </>
+                                    }
+                                    {/* <Link className="dropdown-item" to='/profile'>Profile</Link>
                                     <Link className="dropdown-item" to='/login'>Login</Link>
                                     <Link className="dropdown-item" to='/register'>Register</Link>
+                                    <Link className="dropdown-item" to='/logout'>Log out</Link> */}
                                 </div>
                             </div>
                             </ul>
