@@ -5,18 +5,19 @@ import axios from 'axios'
 import * as api from '../../api'
 
 const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
+const userToken = localStorage.getItem('userToken')
 
 class EditProfile extends Component {
     constructor(props) {
         super(props);
         this.state ={
-            firstName: custDetail.first_name,
-            lastName: custDetail.last_name,
-            email: custDetail.email,
-            mobile:custDetail.phone_no,
-            gender:custDetail.gender,
-            dob:custDetail.dob,
-            profile_img:custDetail.profile_img
+            firstName: (custDetail.first_name===null)?'null':custDetail.first_name,
+            lastName: (custDetail.last_name===null)?'null':custDetail.last_name,
+            email: (custDetail.email===null)?'null':custDetail.email,
+            mobile: (custDetail.mobile===null)?'null':custDetail.phone_no,
+            gender: (custDetail.gender===null)?'null':custDetail.gender,
+            dob: (custDetail.last_name===null)?'null':custDetail.dob,
+            profile_img: (custDetail.profile_img===null)?'null':custDetail.profile_img,
         }
     }
     
@@ -27,7 +28,7 @@ class EditProfile extends Component {
       };
 
     handleProfileUpdate = e => {
-        axios.put(`${api.baseurl}/updateAllCustomer`, {
+        axios.put(`${api.baseurl}/profile`, {
             profile_img : this.state.profile_img,
             first_name : this.state.firstName,
             last_name : this.state.lastName,
@@ -35,16 +36,22 @@ class EditProfile extends Component {
             dob : this.state.dob,
             phone_no : this.state.mobile,
             gender : this.state.gender
-        })
+        },{
+            headers: {
+              Authorization: 'Bearer ' + userToken
+            }}
+        )
         .then(res => {
+            alert("Form submitted");
             const { history } = this.props;
             history.push(`/`);
         })
         .catch(e => alert('Edit Profile Error'));
-        // alert("Form submitted succesfully");
+        // alert("Form submitted unsuccesfully");
       };
 
     render() {
+        console.log(this.state)
         return (
             <div className="container">
             <h1>My Account</h1>

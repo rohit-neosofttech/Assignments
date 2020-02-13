@@ -25,7 +25,7 @@ export class AboutCompany extends Component {
         const {company_details} =this.state
         return (
             <>
-                <h5>About Company</h5>  
+                <h5 style={{padding: '15px'}}>About Company</h5>  
                 {
                     (company_details.length === 0) ? <p>No detail Found</p> : 
                     <>

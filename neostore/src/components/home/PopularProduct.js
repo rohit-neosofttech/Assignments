@@ -25,7 +25,7 @@ class PopularProduct extends PureComponent {
         return (
             <div className="container">
                 <h3 className="center">Popular Product</h3>
-                <p className="center"><Link to="/productspage">View All</Link></p>
+                <p className="center"><Link to="/productspage">View All</Link></p><br/>
                 <div className="row">
                     { (this.state.product_details.length !==0) ? 
                     <>

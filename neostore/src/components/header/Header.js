@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {NavLink, Link} from 'react-router-dom'
 import Badge from '@material-ui/core/Badge';
+import User from '../../defaultUser.png'
 import axios from 'axios'
 import * as api from '../../api'
 
@@ -12,7 +13,8 @@ class Header extends Component {
         super(props);
         this.state = {
             products:[],
-            text:''
+            text:'',
+            profile_image:null
         }
     }
 
@@ -20,17 +22,6 @@ class Header extends Component {
         this.setState({
             text:e.target.value
         })
-
-        // console.log(`http://180.149.241.208:3022/getProductBySearchText/${this.state.text}`)
-        // axios.get(`http://180.149.241.208:3022/getProductBySearchText/${this.state.text}`)
-        // .then((res)=>{
-        //     console.log(res.data.product_details)
-        //     this.setState({products:res.data.product_details})
-        //     // console.log(products)
-        // })
-        // .catch((err)=> {
-        //     console.log(err)
-        // })
     }
     
     componentDidMount() {
@@ -41,13 +32,16 @@ class Header extends Component {
         .catch((err)=> {
             // alert("Wrong API call")
         })
+        if (localStorage.getItem('CustDetail')){
+            const custDetail=JSON.parse(localStorage.getItem('CustDetail'))
+            this.setState({
+                profile_image:custDetail.profile_img
+            })
+            // alert(custDetail.profile_img)
+        }
     }
 
     render() {
-        // const {products}=this.state
-        // const products_name=products.map(product =><React.Fragment product={product.product_name} id={product.product_id}></React.Fragment>)
-        // console.log(products_name)
-
         return (
             <div>
                 <nav className="navbar navbar-expand-lg">
@@ -83,8 +77,7 @@ class Header extends Component {
                             </button>
                             <div className="dropdown">
                                 <button className="btn-dropdown dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img className="user-avatar" src='' alt='' />
-                                    {/* <i class="fa fa-user"></i> */}
+                                    <img className="user-avatar" src={(this.state.profile_image===null)?User:`${api.baseurl}/${this.state.profile_image}`} alt='' />
                                 </button>
                                 <div className="dropdown-menu dropdown-menu-right">
                                     {localStorage.getItem('userToken')
@@ -97,10 +90,6 @@ class Header extends Component {
                                             <Link className="dropdown-item" to='/register'>Register</Link>
                                           </>
                                     }
-                                    {/* <Link className="dropdown-item" to='/profile'>Profile</Link>
-                                    <Link className="dropdown-item" to='/login'>Login</Link>
-                                    <Link className="dropdown-item" to='/register'>Register</Link>
-                                    <Link className="dropdown-item" to='/logout'>Log out</Link> */}
                                 </div>
                             </div>
                             </ul>

@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import UserHome from './UserHome'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import * as api from '../../api'
+
+const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
+const userToken = localStorage.getItem("userToken")
+
 
 class Address extends Component {
     constructor(props) {
@@ -12,29 +16,59 @@ class Address extends Component {
         }
     }
     
+    deleteAddress = (id) => {
+        // alert(`${id} message deleted`)
+        axios.delete(`${api.baseurl}/deladdress/${id}`, {
+            headers: {
+                Authorization: 'Bearer ' + userToken
+              }
+        })
+        .then((res)=> {
+            console.log(res)
+            alert("Address Deteted")
+        })
+        .catch((err)=> {
+            console.log(err)
+            alert("wrong delete Address API")
+        })
+    }
+
     componentDidMount() {
         axios.get(`${api.baseurl}/getCustAllAddress`)
         .then((res)=>{
-            const addr = res.data.customer_address.filter(address => address.customer_id===43)
+            const addr = res.data.customer_address.filter(address => address.customer_id===custDetail.customer_id)
             this.setState({
                 address:addr
             })
-            console.log(this.state.address)
-
         })
         .catch((err) => {
             alert('Invalid Address API call')
         })
     }
 
+    componentDidUpdate(prevState) {
+        if(this.state.address!==prevState.address) {
+            axios.get(`${api.baseurl}/getCustAllAddress`)
+            .then((res)=>{
+                const addr = res.data.customer_address.filter(address => address.customer_id===custDetail.customer_id)
+                this.setState({
+                    address:addr
+                })
+            })
+            .catch((err) => {
+                // alert('Invalid Address API call')
+            })
+        }
+    }
+
     render() {
         return (
-            <div className="container">
-                <h1>My Account</h1>
+            <div className="container p-3">
+                <h3>My Account</h3>
                 <hr/>
                 <div className="row">
                     <UserHome />
-                    <div className="col-md-7 card profile-cards" >
+                    <div className="col-md-8 card profile-cards" >
                         <h2>Address</h2>
                         <hr/><br/>
                         { this.state.address.length===0 
@@ -44,12 +78,13 @@ class Address extends Component {
                         :  this.state.address.map(addr =>
                         <>
                             <div className="card p-3" key={addr.address_id}>
-                                {console.log(addr.address)}
                                 <span>{addr.address}</span>
                                 <span>{`${addr.city} - ${addr.pincode}`}</span>
                                 <span>{`${addr.state}, ${addr.country}`}</span><br/>
-                                <button className="btn btn-primary" style={{width:'100px'}}>Edit</button>
-                                <button className="btn-close" style={{width:'fit-content'}}>
+                                <Link to={{pathname:`/editAddress/${addr.address_id}`,state:{addr}}}>
+                                    <button className="btn btn-primary" style={{width:'100px'}} >Edit</button>
+                                </Link>
+                                <button className="btn-close" style={{width:'fit-content'}} onClick={()=>this.deleteAddress(addr.address_id)}>
                                     <i class="fas fa-times" style={{padding:'0px'}}></i>
                                 </button>
                             </div>
@@ -58,7 +93,7 @@ class Address extends Component {
                         )}
                         <Link to='/addAddress'><button className="btn-edit" style={{width:'150px'}}>Add Address</button></Link>
                     </div>
-                </div>
+                </div><br/><br/>
             </div>
         )
     }

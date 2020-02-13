@@ -3,19 +3,17 @@ import AboutCompany from './AboutCompany'
 import Information from './Information'
 import NewsLetter from './Newsletter'
 
-import './Footer.css'
-
 function Footer() {
     return (
         <div className="footer container-fluid center text-align-center">
             <div className="row">
-                <div className="col-md-4">
+                <div className="col-sm-4" style={{padding:"0px 50px"}}>
                     <AboutCompany/>
                 </div>
-                <div className="col-md-4">
+                <div className="col-sm-4" style={{padding:"0px 50px"}}>
                     <Information/>
                 </div>
-                <div className="col-md-4">
+                <div className="col-sm-4" style={{padding:"0px 50px"}}>
                     <NewsLetter/>
                 </div>
             </div>

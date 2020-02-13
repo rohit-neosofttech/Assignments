@@ -10,6 +10,19 @@
     width:81%;            
 }
 
+.footer {
+    color:white;
+    background-color: #000000;
+    font-size: 12px;
+}
+
+.div-default {
+    height:500px;
+    width:auto;
+    background-color: whitesmoke;
+    color:#fb4646;
+}
+
 .pad {
     margin: 40px auto;
 }
@@ -18,7 +31,7 @@
     height: 200px;
     width: 200px;
     border-radius:50%;
-    padding:20px;
+    /* padding:20px; */
     border: 1px solid gray;
 }
 
@@ -218,9 +231,24 @@ i {
 }
 
 .user-avatar {
-    padding-right: 40px;
-    height:20px;
-    width:20px;
+    /* padding-right: 40px; */
+    height:30px;
+    width:30px;
+    object-fit: contain;
+    border: 1px solid gray ;
+    border-radius: 50%;
+    margin:0px 10px;
+}
+
+.user-avatar:hover {
+    position: relative;
+    height:50px;
+    width:50px;
+    object-fit: contain;
+    border: 1px solid gray ;
+    border-radius: 50%;
+    /* margin:0px 10px; */
+    top:-5px;
 }
 
 .color-pallet {
@@ -341,6 +369,29 @@ tr td{
     background-color: #f44336;
     border: none;
     border-radius: 3px;
+}
+
+.div-order{
+    display:inline-block;
+}
+
+.order-img {
+    width:100px;
+    height: 80px;
+    margin-left:10px;
+    margin-right:20px;
+
+}
+
+.btn-invoice {
+    width: fit-content;
+    height:auto;
+    color: White;
+    background-color: #3f51b5;
+    padding: 5px 20px;
+    font-weight: lighter;
+    border:none;
+    border-radius: 5px;
 }
 
 .MuiListItem-root {

@@ -5,13 +5,15 @@ import TopCarousel from './TopCarousel'
 function Home() {
     return (
         <div>
-            <div className="pad">
+            <br/><br/>
+            <div>
                 <TopCarousel/>  
             </div>
-            <hr/>
-            <div className="pad">
+            <br/><hr/><br/>
+            <div className="container">
                 <PopularProduct/>
             </div>
+            <br/>
         </div>
     )
 }

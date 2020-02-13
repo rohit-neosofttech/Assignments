@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import * as api from '../api'
 import './Form.css'
@@ -49,22 +49,19 @@ class Login extends Component {
           })
           .then((res) => {
             console.log(res.data.customer_details)
-            // const { history } = this.props;
-            // history.push(`/`);
             localStorage.setItem('userToken',`${res.data.token}`)
             localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_details) )
+            const { history } = this.props;
+            history.push(`/`);
           })
           .catch((error) => {
             console.log(error);
+            alert('Invalid Username or Password')
           });
-          console.log(`
-            --SUBMITTING--
-            Email: ${this.state.email}
-            Password: ${this.state.password}
-          `);
         } else {
           console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
         }
+        
       };
 
       handleChange = e => {
@@ -77,10 +74,6 @@ class Login extends Component {
             formErrors.email = emailRegex.test(value)
               ? ""
               : "invalid email address";
-            break;
-          case "password":
-            formErrors.password =
-              value.length < 6 ? "minimum 6 characaters required" : "";
             break;
           default:
             break;
@@ -139,9 +132,6 @@ class Login extends Component {
                                     <i id="icon-black" className="fas fa-eye-slash input-icon"></i>
                                   </div>
                                 </div>
-                                {this.state.formErrors.password.length > 0 && (
-                                        <span className="errorMessage">{this.state.formErrors.password}</span>
-                                    )}
                                 <br/><br/>
                                 <button className="btn-login">Login</button>
                             </form>
@@ -152,7 +142,7 @@ class Login extends Component {
                 </div>
                 <div className="center pad">
                     <pre>
-                        <Link to="/register">Resgister Now</Link>   |  <Link to="/forgot-pass">Forgotten?</Link> 
+                        <Link to="/register">Register Now</Link>   |  <Link to="/forgot-pass">Forgotten?</Link> 
                     </pre>
                     
                 </div>

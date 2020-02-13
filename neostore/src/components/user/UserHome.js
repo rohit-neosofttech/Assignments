@@ -1,14 +1,15 @@
 import React from 'react'
 import User from '../../defaultUser.png'
+import * as api from '../../api'
 import { NavLink } from 'react-router-dom';
 
 const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
 
 function UserHome() {
     return (
-        <div className="col-md-5">
+        <div className="col-md-4">
             <div className="center">
-                <img className="userImg" src={(custDetail.profile_img===null) ? User : custDetail.profile_img} alt="Default User"></img><br/>
+                <img className="userImg" src={(custDetail.profile_img===null) ? User : `${api.baseurl}/${custDetail.profile_img}`} alt="Default User"></img><br/>
                 <span style={{color:'red',fontWeight:'bold'}}>{`${custDetail.first_name} ${custDetail.last_name}`}</span>
                 <hr/>
                 <div className="btn-group-vertical">

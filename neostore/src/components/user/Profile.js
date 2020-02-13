@@ -6,12 +6,12 @@ const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
 
 function Profile(props) {
     return (
-        <div className="container">
-            <h1>My Account</h1>
+        <div className="container p-3">
+            <h3>My Account</h3>
             <hr/>
             <div className="row">
                 <UserHome />
-                <div className="col-md-7 card profile-cards" >
+                <div className="col-md-8 card p-3" >
                     <h2>Profile</h2>
                     <hr/><br/>
                     <table>

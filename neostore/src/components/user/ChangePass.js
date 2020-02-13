@@ -3,13 +3,18 @@ import UserHome from './UserHome'
 
 function ChangePass() {
     return (
-        <div className="container">
-            <h1>My Account</h1>
+        <div className="container p-3">
+            <h3>My Account</h3>
             <hr/>
             <div className="row">
                 <UserHome />
-                <div className="col-md-7">
-                    Change Password
+                <div className="container col-md-8">
+                    <br/><br/>
+                    <div className="card" style={{backgroundColor:"#f9f9f9"}}>
+                        <h2>Change Password</h2>
+                        <hr/>
+                            
+                    </div>
                 </div>
             </div>
         </div>

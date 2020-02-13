@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import {Switch,Route} from 'react-router-dom'
 
+import { ProtectedRoute } from './components/protected.route'
+
 import Header from './components/header/Header'
 import Footer from './components/footer/Footer'
 import Home from './components/home/Home'
@@ -35,13 +37,13 @@ function App() {
         <Route path='/productsPage' component={ProductsPage}/>
         {/* <Route path='/productsPage/:category_id' component={ProductsPage}/> */}
         <Route path='/cart' component={Cart}/>
-        <Route path='/order' component={Order}/>
-        <Route path='/address' component={Address}/>
-        <Route path='/addAddress' component={AddAddress}/>
-        <Route path='/editAddress' component={EditAddress}/>
-        <Route path='/changePass' component={ChangePass}/>
-        <Route path='/profile' component={Profile}/>
-        <Route path='/editProfile' component={EditProfile}/>
+        <ProtectedRoute path='/order' component={Order}/>
+        <ProtectedRoute path='/address' component={Address}/>
+        <ProtectedRoute path='/addAddress' component={AddAddress}/>
+        <ProtectedRoute path='/editAddress/:address_id' component={EditAddress}/>
+        <ProtectedRoute path='/changePass' component={ChangePass}/>
+        <ProtectedRoute path='/profile' component={Profile}/>
+        <ProtectedRoute path='/editProfile' component={EditProfile}/>
         <Route path='/maincart' component={MainCart}/>
         <Route path='/login' component={Login}/>
         <Route path='/logout' component={Logout}/>

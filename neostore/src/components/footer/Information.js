@@ -35,7 +35,7 @@ export class Information extends PureComponent {
     render() {
         return (
             <>
-                <h5>Information</h5>  
+                <h5 style={{padding: '15px'}}>Information</h5>  
                 {(this.state.terms.length!==0 && this.state.policy.length!==0) 
                 ? 
                 <>  
