@@ -8,6 +8,8 @@ import * as api from '../../api'
 import Search from './Search'
 import './Header.css'
 
+const userToken = localStorage.getItem("userToken")
+
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -25,22 +27,41 @@ class Header extends Component {
     }
     
     componentDidMount() {
-        axios.get(`${api.baseurl}/getCustCartData`) 
-        .then((res)=>{     
-            console.log(res)
-        })
+        axios.get(`${api.baseurl}/getCartData`,{
+            headers:{
+                Authorization: 'bearer ' + userToken
+            }}) 
+        .then((res)=>{                 
+            let oldCart = JSON.parse(localStorage.getItem('cart')) 
+            let newItem
+            let tempCart=[]
+            if (oldCart===null) {
+                oldCart=[]
+            }
+        
+            if (res.data.product_details.length!==0){
+                res.data.product_details.map( product =>
+                <>{newItem = {
+                    productId:product.product_id.product_id,
+                    productCost:product.product_id.product_cost,
+                    quantity:product.quantity
+                }}
+                {tempCart.push(newItem)}
+                </>
+            )}
+            var cart = [...new Set([...oldCart, ...tempCart])];
+            localStorage.setItem('tempCart',JSON.stringify(tempCart))
+            localStorage.setItem('cart',JSON.stringify(cart))
+
+            this.setState({cartProduct:cart})
+            })
+
         .catch((err)=> {
             // alert("Wrong API call")
+            this.setState({NoProduct:!this.state.NoProduct})
         })
-        if (localStorage.getItem('CustDetail')){
-            const custDetail=JSON.parse(localStorage.getItem('CustDetail'))
-            this.setState({
-                profile_image:custDetail.profile_img
-            })
-            // alert(custDetail.profile_img)
-        }
     }
-
+    
     render() {
         return (
             <div>

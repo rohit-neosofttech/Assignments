@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import UserHome from './UserHome'
 import axios from 'axios'
 import * as api from '../../api'
-import { Redirect } from 'react-router-dom'
 
 const userToken = localStorage.getItem("userToken")
 

@@ -11,22 +11,24 @@ function ProductCard({product}) {
     const product_rating = Number(product.DashboardProducts[0].product_rating)
 
     
-    const addToCart = (product_id) => {
+    const addToCart = (product) => {
         let oldCart = JSON.parse(localStorage.getItem('cart')) 
-        alert(oldCart)
         if (oldCart===null) {
             oldCart=[]
         }
-        alert(oldCart)
-
         let newItem = {
-            product_id:product_id,
-            quantity:'1'
+            productId:product_id,
+            productCost:product_cost,
+            quantity:1
         }
-        alert(newItem)
-        oldCart.push(newItem);
-        alert(oldCart)
-        localStorage.setItem('cart',JSON.stringify(oldCart))
+        let item=oldCart.filter(item => item.productId===newItem.productId)
+        if(item.length===0) {
+            oldCart.push(newItem);
+            localStorage.setItem('cart',JSON.stringify(oldCart))
+        }
+        else{
+            alert("Product already in present in cart")
+        }
     }
     
     return (

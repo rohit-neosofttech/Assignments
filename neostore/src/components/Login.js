@@ -48,7 +48,6 @@ class Login extends Component {
             pass : this.state.password
           })
           .then((res) => {
-            console.log(res.data.customer_details)
             localStorage.setItem('userToken',`${res.data.token}`)
             localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_details) )
             const { history } = this.props;
@@ -79,7 +78,7 @@ class Login extends Component {
             break;
         }
     
-        this.setState({ formErrors, [name]: value }, () => console.log(this.state));
+        this.setState({ formErrors, [name]: value });
       };
 
 
