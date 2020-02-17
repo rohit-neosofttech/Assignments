@@ -4,6 +4,13 @@
     justify-content: center;
 }
 
+.right {
+    position: absolute;
+    right: 0px;
+    top:8px;
+    font-weight: lighter;
+}
+
 .bottomCenter {
     position: absolute;
     bottom:0;
@@ -179,6 +186,18 @@ i {
     text-shadow: 1px 1px 1px #ccc;
 }
 
+#icon-black {
+    color: black;
+    padding:0px 10px;
+    text-shadow: 1px 1px 1px #ccc;
+}
+
+#icon-red {
+    color: red;
+    padding:0px 0px;
+    text-shadow: 1px 1px 1px #ccc;
+}
+
 .errorMessage {
     font-size: 14px;
     color:red;
@@ -272,7 +291,7 @@ i {
     width:100%;
     margin:20px 10px;
 }
-.row .col-md-4 {
+.row.col-md-4 {
     padding: 0px 5px;
     max-width: 33%;
 }
@@ -402,6 +421,43 @@ tr td{
     border-radius: 5px;
 }
 
+.cart-quantity-btn {
+    border-radius: 50%;
+    color:white;
+    font-weight: bold;
+    background-color: orangered;
+    border:0px;
+    width:30px;
+    height:30px;
+    outline: none;
+}
+
+.cart-trash-btn{
+    border:none;
+    width: fit-content;
+    background-color: transparent;
+    padding:0px;
+    margin:0px;
+}
+
+.icon-red-trash{ 
+    color:red;
+    padding:none;
+    margin:none;
+}
+
+.nav-item {
+    font-size: x-large;
+    color: black;
+}
+
+.nav-link{
+    color:black;
+}
+
+.tabs .nav-link.active {
+    border-color:none;
+}
 .MuiListItem-root {
     border-bottom: 1px solid rgb(221, 221, 221, 0.7);
 }

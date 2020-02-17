@@ -11,13 +11,18 @@ const ProductsCard = ({ products, loading, error }) => {
   }
 
   const addToCart = (product) => {
+    console.log(products)
     let oldCart = JSON.parse(localStorage.getItem('cart')) 
     if (oldCart===null) {
         oldCart=[]
     }
     let newItem = {
         productId:product.product_id,
+        productName:product.product_name,
+        ProductImage:product.product_image,
         productCost:product.product_cost,
+        productProducer:product.product_producer,
+        productStock:product.product_stock,
         quantity:1
     }
     let item=oldCart.filter(item => item.productId===newItem.productId)
@@ -30,7 +35,8 @@ const ProductsCard = ({ products, loading, error }) => {
     }
 }
   return (
-    <>{
+    <>
+    {
         (error) ? <h3>No Product Found</h3> :
         <>
           {products.map(product => (

@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-function Search(products_name) {
+class Search extends Component {
+    componentDidMount() {
 
-    return (
-        <form className="form-inline my-2 my-lg-0">
-            <input className="form-control mr-sm-2" type="search" placeholder="Search..."/>
-        </form>
-    )
+    }
+    
+    render() {
+        return (
+            <form className="form-inline my-2 my-lg-0">
+                <input className="form-control mr-sm-2" type="search" placeholder="Search..."/>
+            </form>
+        )
+    }
 }
 
 export default Search

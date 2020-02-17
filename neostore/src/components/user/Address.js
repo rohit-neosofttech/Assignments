@@ -56,7 +56,7 @@ class Address extends Component {
                 })
             })
             .catch((err) => {
-                // alert('Invalid Address API call')
+                alert('Invalid Address API call')
             })
         }
     }

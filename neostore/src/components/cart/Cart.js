@@ -3,18 +3,22 @@ import axios from 'axios'
 
 import * as api from '../../api'
 import { Link } from 'react-router-dom';
+import { List , ListItem } from '@material-ui/core';
 
 const userToken = localStorage.getItem("userToken")
 const cart = JSON.parse(localStorage.getItem("cart"))
 
 
-export class Cart extends Component {
+class Cart extends Component {
     constructor() {
         super();
         this.state={
-            cartProduct:'',
-            allProduct:'',
-            NoProduct:false
+            cartProduct:JSON.parse(localStorage.getItem("cart")),
+            allProduct:[],
+            NoProduct:false,
+            subTotal:0,
+            gst:5,
+            orderTotal:0
         }
     }
     
@@ -53,23 +57,96 @@ export class Cart extends Component {
         //     this.setState({NoProduct:!this.state.NoProduct})
         // })
 
-        this.setState({cartProduct:cart})
-        axios.get(`${api.baseurl}/getAllProducts`) 
-        .then((res)=>{       
-                this.setState({allProduct:res.data.product_details})  
-                // console.log(res.data.product_details)
-            })
+        // axios.get(`${api.baseurl}/getAllProducts`) 
+        // .then((res)=>{       
+        //         this.setState({allProduct:res.data.product_details})  
+        //         console.log(res)
+        //     })
 
-        .catch((err)=> {
-            alert("Wrong API call")
-        })
+        // .catch((err)=> {
+        //     alert("Wrong is API call")
+        // })
+        // this.setState({cartProduct:JSON.parse(localStorage.getItem("cart"))})
+        this.addTotal()
+    }
+
+    addQuantity = (product) => {
+        let item = this.state.cartProduct.filter(item => item.productId===product.productId)
+        if(item[0].quantity===8) {
+            alert(`Quantity reached MAX value`)
+        } else {
+            item[0].quantity++
+            this.setState(
+                ()=>{return {cartProduct:this.state.cartProduct}}
+            )
+        // this.setState({cartProduct:quan})
+        localStorage.setItem("cart",JSON.stringify(this.state.cartProduct))
+        }
+        this.addTotal()
+    }
+
+    removeQuantity = (product) => {
+        let item = this.state.cartProduct.filter(item => item.productId===product.productId)
+        if(item[0].quantity===1) {
+            alert(`Quantity reached MIN value`)
+        } else {
+            item[0].quantity--
+            this.setState(
+                ()=>{return {cartProduct:this.state.cartProduct}}
+            )
+        // this.setState({cartProduct:quan})
+        localStorage.setItem("cart",JSON.stringify(this.state.cartProduct))
+        }
+        this.addTotal()
+    }
+
+    removeItem = (product) => {
+        if (window.confirm("Are you sure you want to delete this item from cart")) {
+            let item = this.state.cartProduct.filter(item => item.productId!==product.productId)
+            if(item.length!==0) {
+                this.setState(
+                    {cartProduct:item}
+                )
+                localStorage.setItem("cart",JSON.stringify(this.state.cartProduct))
+            } else {
+                this.setState(
+                    {cartProduct:item}
+                )
+                localStorage.removeItem('cart')
+            }
+            this.addTotal()
+        }
+    }
+
+    addTotal = () => {
+        if(this.state.cartProduct!==null) {
+            let total=0
+            this.state.cartProduct.map(product => total += product.quantity * product.productCost)
+            let gst = total*5/100
+            let orderTotal = 0
+            orderTotal = total+gst
+            this.setState({
+                subTotal:total,
+                gst:gst,
+                orderTotal:orderTotal
+            })
+        }
+        else {
+
+        }
+    }
+
+    componentDidUpdate(prevState) {
+        if(prevState.subTotal!==this.state.subTotal) {
+
+        }
     }
 
     render() {
         return (
             <div>
-                {console.log(this.state.cartProduct)}
-                {(this.state.cartProduct.length===0)
+                {/* {console.log(this.state.cartProduct)} */}
+                {(!localStorage.getItem("cart"))
                 ?<div className="center">
                     <img src="https://cdn.dribbble.com/users/204955/screenshots/4930541/emptycart.png" alt="" />
                     <h1>YOUR CART IS CURRENTLY EMPTY</h1>
@@ -93,30 +170,33 @@ export class Cart extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.state.cartProduct.map(products =>
+                                {this.state.cartProduct.map(product =>
                                     <>
                                     <tr>
                                     <td style={{padding: '5px'}}>
-                                        {console.log(this.state.allProduct.filter(item => item.product_id===products.product_id))}
+                                        {/* {cartItem=this.state.allProduct.filter(item => item.product_id===products.product_id)} */}
+                                        {/* {console.log(cartItem)} */}
                                         <div className="row">
-                                            {/* <img className="cart-img" src={`${api.baseurl}/${products.product_id.product_image}`} alt="" /> */}
+                                            <img className="cart-img" src={`${api.baseurl}/${product.ProductImage}`} alt="" />
                                             <small>
-                                                {products.product_id}<br/>
+                                                {product.productName}<br/>
                                                 <small>
-                                                    by: producer<br/>
+                                                    by: {product.productProducer}<br/>
                                                 </small>
-                                                Status : stock
-                                                {/* Status: {products.product_id.product_stock!==0 
+                                                Status: {product.productStock!==0 
                                                     ? <span style={{color:"green"}}>In Stock</span> 
-                                                    : <span style={{color:"red"}}>Out of Stock</span>}<br/> */}
+                                                    : <span style={{color:"red"}}>Out of Stock</span>}<br/>
                                             </small>
                                         </div>
                                     </td>
                                     <td>
-                                        <button>+</button>
-                                        <button>-</button>
+                                        <button className="cart-quantity-btn" onClick={()=>this.addQuantity(product)} >+</button>
+                                        <span>&emsp;{product.quantity}&emsp;</span>
+                                        <button className="cart-quantity-btn" onClick={()=>this.removeQuantity(product)} >-</button>
                                     </td>
-                                    <td>@mdo</td>
+                                    <td>{product.productCost}</td>
+                                    <td>{product.productCost*product.quantity}</td>
+                                    <td><button className="cart-trash-btn" onClick={()=>this.removeItem(product)}><i id="icon-red" className="fa fa-trash"></i></button></td>
                                     </tr>
                                     </>
                                 )}
@@ -125,8 +205,19 @@ export class Cart extends Component {
                         </div>
                     </div>
                     <div className="col-md-4 p-4">
-                        <div className="card">
-                            awdawd
+                        <div className="card p-3">
+                            <h3 className="center">Review Order</h3>
+                            <List>
+                                <ListItem>
+                                    <h5>Sub-Total</h5><h5 className="right">{this.state.subTotal}</h5>
+                                </ListItem>
+                                <ListItem>
+                                    <h5>GST (5%)</h5><h5 className="right">{this.state.gst}</h5>
+                                </ListItem>
+                                <ListItem>
+                                    <h5>Order Total</h5><h5 className="right">{this.state.orderTotal}</h5>
+                                </ListItem>
+                            </List>
                         </div>
                     </div>
                 </div>

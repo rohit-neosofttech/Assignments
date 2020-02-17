@@ -15,8 +15,10 @@ class Header extends Component {
         super(props);
         this.state = {
             products:[],
+            cartproducts:[],
             text:'',
-            profile_image:null
+            profile_image:null,
+            count:0
         }
     }
 
@@ -27,39 +29,56 @@ class Header extends Component {
     }
     
     componentDidMount() {
-        axios.get(`${api.baseurl}/getCartData`,{
-            headers:{
-                Authorization: 'bearer ' + userToken
-            }}) 
-        .then((res)=>{                 
-            let oldCart = JSON.parse(localStorage.getItem('cart')) 
-            let newItem
-            let tempCart=[]
-            if (oldCart===null) {
-                oldCart=[]
-            }
+    //     axios.get(`${api.baseurl}/getCartData`,{
+    //         headers:{
+    //             Authorization: 'bearer ' + userToken
+    //         }}) 
+    //     .then((res)=>{                 
+    //         let oldCart = JSON.parse(localStorage.getItem('cart')) 
+    //         let newItem
+    //         let tempCart=[]
+    //         if (oldCart===null) {
+    //             oldCart=[]
+    //         }
         
-            if (res.data.product_details.length!==0){
-                res.data.product_details.map( product =>
-                <>{newItem = {
-                    productId:product.product_id.product_id,
-                    productCost:product.product_id.product_cost,
-                    quantity:product.quantity
-                }}
-                {tempCart.push(newItem)}
-                </>
-            )}
-            var cart = [...new Set([...oldCart, ...tempCart])];
-            localStorage.setItem('tempCart',JSON.stringify(tempCart))
-            localStorage.setItem('cart',JSON.stringify(cart))
+    //         if (res.data.product_details.length!==0){
+    //             res.data.product_details.map( product =>
+    //             <>{newItem = {
+    //                 productId:product.product_id.product_id,
+    //                 productName:product.product_id.product_name,
+    //                 ProductImage:product.product_id.product_image,
+    //                 productCost:product.product_id.product_cost,
+    //                 productProducer:product.product_id.product_producer,
+    //                 productStock:product.product_id.product_stock,
+    //                 quantity:product.quantity
+    //             }}
+    //             {tempCart.push(newItem)}
+    //             </>
+    //         )}
+    //         var cart = [...new Set([...oldCart, ...tempCart])];
+    //         localStorage.setItem('tempCart',JSON.stringify(tempCart))
+    //         localStorage.setItem('cart',JSON.stringify(cart))
 
-            this.setState({cartProduct:cart})
-            })
+    //         this.setState({cartProduct:cart})
+    //         })
 
-        .catch((err)=> {
-            // alert("Wrong API call")
-            this.setState({NoProduct:!this.state.NoProduct})
-        })
+    //     .catch((err)=> {
+    //         // alert("Wrong API call")
+    //         this.setState({NoProduct:!this.state.NoProduct})
+    //     })
+            let count=0
+            if(localStorage.getItem('cart')) {
+                let cartProduct=JSON.parse(localStorage.getItem('cart')) 
+                cartProduct.map(item => count++)
+                this.setState({count:count})
+            }
+            console.log(count)
+    }
+
+    componentDidUpdate(prevState) {
+        if(this.state.count!==prevState.count) {
+            this.render()
+        }
     }
     
     render() {
@@ -86,16 +105,18 @@ class Header extends Component {
                         </ul>
                         
                         <ul className="nav navbar-nav ml-auto">
-                            {/* <Search></Search> */}
-                            <form className="form-inline my-2 my-lg-0">
+                            <Search></Search>
+                            {/* <form className="form-inline my-2 my-lg-0">
                                 <input className="form-control mr-sm-2" type="search" onChange={this.onChangeHandler} value={this.state.text} placeholder="Search"/>
-                            </form>
-                            <button className="btn-cart">
-                                <NavLink to="/maincart">
-                                    <Badge className="badge" anchorOrigin={{vertical: 'top',horizontal: 'right',}} badgeContent={0}>
-                                        <i className="fa fa-shopping-cart"></i></Badge>Cart
-                                </NavLink>
-                            </button>
+                            </form> */}
+                            <Link to="/maincart">
+                                <button className="btn-cart">
+                                    <Badge className="badge" anchorOrigin={{vertical: 'top',horizontal: 'right',}} 
+                                    badgeContent={this.state.count}>
+                                        <i className="fa fa-shopping-cart"></i>
+                                    </Badge>Cart
+                                </button>
+                            </Link>
                             <div className="dropdown">
                                 <button className="btn-dropdown dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img className="user-avatar" src={(this.state.profile_image===null)?User:`${api.baseurl}/${this.state.profile_image}`} alt='' />
