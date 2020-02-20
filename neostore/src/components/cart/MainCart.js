@@ -3,7 +3,15 @@ import Cart from './Cart'
 import DeliveryAddress from './DeliveryAddress'
 import { Link } from 'react-router-dom'
 
-function MainCart() {
+function MainCart(props) {
+    const handleLogin = () => {
+        if(!localStorage.getItem("userToken")) {
+            alert("Please Login First")
+            const { history } = props;
+            history.push(`/login`);
+        }
+    }
+
     return (
         <div>
             <h1>Cart Section</h1>
@@ -13,7 +21,7 @@ function MainCart() {
                     <Link href="" data-target="#cart" data-toggle="tab" className="nav-link active"><i style={{color:"black"}} className="fas fa-cart-plus"></i>Cart</Link>
                 </li>
                 <li className="nav-item" >
-                    <Link href="" data-target="#address" data-toggle="tab" className="nav-link">Delivery Address</Link>
+                    <Link href="" data-target="#address" data-toggle="tab" className="nav-link" onClick={()=>handleLogin()}>Delivery Address</Link>
                 </li>
             </ul>
             <br/>

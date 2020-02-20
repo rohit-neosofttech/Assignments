@@ -20,11 +20,11 @@ class ProductsPage extends Component {
             colors: [],
             Catopen : false,
             Colopen : false,
-            categoryId:'',
+            categoryId:(props.location.state) ? props.location.state.category_id : '',
             colorId:'',
             sortIn:'',
             sortBy:'',
-            categoryName:''
+            categoryName:(props.location.state) ? props.location.state.category_name : ''
         }
     }
     componentDidMount() {
@@ -63,7 +63,6 @@ class ProductsPage extends Component {
         });
     }
         render() {
-            console.log(this.state)
         return (
             <div>
                 <br/><hr/>

@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { withRouter } from 'react-router-dom';
 
-class Newsletter extends Component {
+class Newsletter extends PureComponent {
     constructor(props) {
         super(props);
         this.state={

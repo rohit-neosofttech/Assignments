@@ -54,8 +54,6 @@ class AllProduct extends Component {
                 })
             })
             .catch((err)=> {
-                // console.log(err)
-                // alert("Invalid componentDidUpdate API call")
                 this.setState(prevState => ({
                     error: !prevState.error
                   }));
@@ -71,8 +69,6 @@ class AllProduct extends Component {
                })
            })
            .catch((err)=> {
-               // console.log(err)
-               // alert("Invalid componentDidUpdate API call")
                this.setState(prevState => ({
                    error: !prevState.error
                  }));
@@ -90,10 +86,8 @@ class AllProduct extends Component {
 
         return (
             <div className='container'>
-                {/* {alert(this.state.error)} */}
                 {(this.state.products==="No details are available") ? <h1 className="center">No Product Found</h1> :
                 <>
-                    {/* {console.log(this.state.products)} */}
                     <div className="row">
                         <ProductsCard products={this.state.products} loading={this.state.loading} error={this.state.error}/>
                     </div>

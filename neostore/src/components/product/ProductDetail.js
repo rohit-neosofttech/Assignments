@@ -1,28 +1,30 @@
 import React, { PureComponent } from 'react'
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating'
+import { Button, Modal } from 'react-bootstrap';
+import * as api from '../../api'
 
+const userToken = localStorage.getItem("userToken")
 
-const baseurl = "http://180.149.241.208:3022/"
 class ProductDetail extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            allproduct:[],
             product:[],
-            fullImage:''
+            fullImage:'',
+            show:false,
+            newRating:0
         }
         this.imageChangeHandler = this.imageChangeHandler.bind(this);
     }
     
     componentDidMount() {
         const id =this.props.match.params.product_id
-        axios.get(`${baseurl}getAllProducts`)
+        axios.get(`${api.baseurl}/commonProducts?_id=${id}`)
             .then(res =>{
-                this.setState({allproduct:res.data.product_details})
-                const product = this.state.allproduct.filter(product => product.product_id === id);
-                this.setState({product:product[0]})
-                this.setState({fullImage:`${baseurl}`+ this.state.product.subImages_id.product_subImages[0]})
+                console.log(res)
+                this.setState({product:res.data.product_details[0]})
+                this.setState({fullImage:`${api.baseurl}/`+ this.state.product.subImages_id.product_subImages[0]})
             })
             .catch((err)=> {
                 console.log(err)
@@ -32,6 +34,66 @@ class ProductDetail extends PureComponent {
     imageChangeHandler(e) {
         this.setState({fullImage:e.target.src})
       }
+
+    addToCart = (product) => {
+        let oldCart = JSON.parse(localStorage.getItem('cart')) 
+        if (oldCart===null) {
+            oldCart=[]
+        }
+        
+        let newItem = product
+        newItem['quantity'] = 1;
+        newItem['total'] = product.quantity * product.product_cost
+
+        let item=oldCart.filter(item => item.product_id===newItem.product_id)
+        if(item.length===0) {
+            oldCart.push(newItem);
+            localStorage.setItem('cart',JSON.stringify(oldCart))
+            alert("Product Added to Cart")
+
+        }
+        else{
+            alert("Product already in present in cart")
+        }
+    }
+
+    handleClose = () => {
+        this.setState({show:false})
+    }
+
+    handleShow = () => {
+        if(!localStorage.getItem('userToken')) {
+            alert("Login is Required")
+            this.props.history.push('/login')
+        } 
+        else {
+            this.setState({show:true})
+        }
+    }
+
+    handleRating = (value) => {
+        // console.log(value)
+        this.setState({newRating:value})
+    }
+
+    handleSubmitRating = (product_id) => {
+        console.log(product_id)
+        console.log(this.state.newRating)
+        axios.put(`${api.baseurl}/updateProductRatingByCustomer`,{
+            product_id: product_id,
+            product_rating: this.state.newRating
+        }, {
+            headers: {
+                Authorization: 'Bearer ' + userToken
+              }
+        })
+        .then((res)=> {
+            console.log(res)
+        })
+        .catch((err)=> {
+            console.log(err)
+        })
+    }
 
     render() {
         const {product}=this.state
@@ -67,7 +129,7 @@ class ProductDetail extends PureComponent {
                         <div className="row">
                             {product_subImage.map(subimage => (
                                 <div key={subimage} className='col'>
-                                    <img className="subImage" src={`${baseurl}`+subimage} alt="SubImages" onClick={(subimage) =>this.imageChangeHandler(subimage)} />
+                                    <img className="subImage" src={`${api.baseurl}/`+subimage} alt="SubImages" onClick={(subimage) =>this.imageChangeHandler(subimage)} />
                                 </div>
                             ))}
                         </div>
@@ -87,8 +149,8 @@ class ProductDetail extends PureComponent {
                             <button className="share-btn" style={{backgroundColor: "#00acee"}}><i className="fab fa-twitter"></i></button>
                         </div>
                         <div className="row">
-                            <button className="btn-add" style={{backgroundColor: "#00acee"}}>Add to Cart</button>
-                            <button className="btn-add" style={{backgroundColor: "#754b10"}}>Rate Product</button>
+                            <button className="btn-add" style={{backgroundColor: "#00acee"}} onClick={()=>this.addToCart(product)}>Add to Cart</button>
+                            <button className="btn-add" style={{backgroundColor: "#754b10"}} onClick={()=>this.handleShow(product)}>Rate Product</button>
                         </div>
                     </div>
                 </div>
@@ -124,6 +186,19 @@ class ProductDetail extends PureComponent {
                         </div>
                     </div>
                 </div>
+                <Modal show={this.state.show} onHide={()=>this.handleClose()}>
+                    <Modal.Header>
+                    <Modal.Title className="center">Rate Product</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="center">
+                        <Rating name="simple-controlled " size="large" precision={0.5} value={this.state.newRating} onChange={(e,value) => this.handleRating(value)} />
+                    </Modal.Body>
+                    <Modal.Footer className="center">
+                    <Button variant="primary" onClick={()=>this.handleSubmitRating(product.product_id)}>
+                        Done
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         )
     }

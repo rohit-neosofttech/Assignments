@@ -50,6 +50,7 @@ class AddAddress extends Component {
         .catch((err) => {
             // alert('Invalid Address API call')
         })
+        this.props.history.push("/address")
     }   
 
     render() {

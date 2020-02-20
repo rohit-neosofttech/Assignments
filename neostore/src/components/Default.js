@@ -5,10 +5,10 @@ export class Default extends Component {
         return (
             <div className="div-default">
                 <div className="container center">
-                <br/><br/><br/>
-                <img src='logo192.png' alt=""/><br/>
-                <h1>Error 404 : Page Not Found</h1>
-            </div>
+                    <br/><br/><br/>
+                    <img src='logo192.png' alt=""/><br/>
+                    <h1>Error 404 : Page Not Found</h1>
+                </div>
             </div>
         )
     }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import NoProduct from './NoProduct'
+
 import axios from 'axios'
 
 import * as api from '../../api'
@@ -10,8 +12,8 @@ const cart = JSON.parse(localStorage.getItem("cart"))
 
 
 class Cart extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state={
             cartProduct:JSON.parse(localStorage.getItem("cart")),
             allProduct:[],
@@ -71,26 +73,28 @@ class Cart extends Component {
     }
 
     addQuantity = (product) => {
-        let item = this.state.cartProduct.filter(item => item.productId===product.productId)
+        let item = this.state.cartProduct.filter(item => item.product_id===product.product_id)
+        console.log(item)
         if(item[0].quantity===8) {
             alert(`Quantity reached MAX value`)
         } else {
             item[0].quantity++
+            item[0].total = item[0].quantity * item[0].product_cost
             this.setState(
                 ()=>{return {cartProduct:this.state.cartProduct}}
             )
-        // this.setState({cartProduct:quan})
         localStorage.setItem("cart",JSON.stringify(this.state.cartProduct))
         }
         this.addTotal()
     }
 
     removeQuantity = (product) => {
-        let item = this.state.cartProduct.filter(item => item.productId===product.productId)
+        let item = this.state.cartProduct.filter(item => item.product_id===product.product_id)
         if(item[0].quantity===1) {
             alert(`Quantity reached MIN value`)
         } else {
             item[0].quantity--
+            item[0].total = item[0].quantity * item[0].product_cost
             this.setState(
                 ()=>{return {cartProduct:this.state.cartProduct}}
             )
@@ -102,7 +106,7 @@ class Cart extends Component {
 
     removeItem = (product) => {
         if (window.confirm("Are you sure you want to delete this item from cart")) {
-            let item = this.state.cartProduct.filter(item => item.productId!==product.productId)
+            let item = this.state.cartProduct.filter(item => item.product_id!==product.product_id)
             if(item.length!==0) {
                 this.setState(
                     {cartProduct:item}
@@ -119,9 +123,10 @@ class Cart extends Component {
     }
 
     addTotal = () => {
+        // console.log(this.state.cartProduct)
         if(this.state.cartProduct!==null) {
-            let total=0
-            this.state.cartProduct.map(product => total += product.quantity * product.productCost)
+            let total = 0
+            this.state.cartProduct.map(product => total += product.total)
             let gst = total*5/100
             let orderTotal = 0
             orderTotal = total+gst
@@ -131,15 +136,19 @@ class Cart extends Component {
                 orderTotal:orderTotal
             })
         }
-        else {
-
-        }
     }
 
     componentDidUpdate(prevState) {
         if(prevState.subTotal!==this.state.subTotal) {
-
+            console.log()
         }
+    }
+
+    handleClick = () => {
+        // this.props.history.push(`/maincart`)
+        // this.props.history.push("/maincart#address")
+
+        // window.location.href = '/maincart#maincart'
     }
 
     render() {
@@ -147,13 +156,7 @@ class Cart extends Component {
             <div>
                 {/* {console.log(this.state.cartProduct)} */}
                 {(!localStorage.getItem("cart"))
-                ?<div className="center">
-                    <img src="https://cdn.dribbble.com/users/204955/screenshots/4930541/emptycart.png" alt="" />
-                    <h1>YOUR CART IS CURRENTLY EMPTY</h1>
-                    <p>Before proceed to checkout you must add some products to you shopping cart.</p>
-                    <p>You will find lots of intresting products on our products page</p>
-                    <Link to="/productsPage"><button className="btn btn-primary">Return To Product Page</button></Link>
-                </div>
+                ?<NoProduct/>
                 :<div className="row" style={{margin:"0px"}}>
                     <div className="col-md-8 p-4">
                         <div className="card"  style={{boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
@@ -177,13 +180,13 @@ class Cart extends Component {
                                         {/* {cartItem=this.state.allProduct.filter(item => item.product_id===products.product_id)} */}
                                         {/* {console.log(cartItem)} */}
                                         <div className="row">
-                                            <img className="cart-img" src={`${api.baseurl}/${product.ProductImage}`} alt="" />
+                                            <img className="cart-img" src={`${api.baseurl}/${product.product_image}`} alt="" />
                                             <small>
-                                                {product.productName}<br/>
+                                                {product.product_name}<br/>
                                                 <small>
-                                                    by: {product.productProducer}<br/>
+                                                    by: {product.product_producer}<br/>
                                                 </small>
-                                                Status: {product.productStock!==0 
+                                                Status: {product.product_stock!==0 
                                                     ? <span style={{color:"green"}}>In Stock</span> 
                                                     : <span style={{color:"red"}}>Out of Stock</span>}<br/>
                                             </small>
@@ -194,8 +197,8 @@ class Cart extends Component {
                                         <span>&emsp;{product.quantity}&emsp;</span>
                                         <button className="cart-quantity-btn" onClick={()=>this.removeQuantity(product)} >-</button>
                                     </td>
-                                    <td>{product.productCost}</td>
-                                    <td>{product.productCost*product.quantity}</td>
+                                    <td>{product.product_cost}</td>
+                                    <td>{product.total}</td>
                                     <td><button className="cart-trash-btn" onClick={()=>this.removeItem(product)}><i id="icon-red" className="fa fa-trash"></i></button></td>
                                     </tr>
                                     </>
@@ -206,7 +209,7 @@ class Cart extends Component {
                     </div>
                     <div className="col-md-4 p-4">
                         <div className="card p-3">
-                            <h3 className="center">Review Order</h3>
+                            <h3 className="center">Review Order</h3><br/>
                             <List>
                                 <ListItem>
                                     <h5>Sub-Total</h5><h5 className="right">{this.state.subTotal}</h5>
@@ -217,7 +220,8 @@ class Cart extends Component {
                                 <ListItem>
                                     <h5>Order Total</h5><h5 className="right">{this.state.orderTotal}</h5>
                                 </ListItem>
-                            </List>
+                            </List><br/>
+                            <button className="btn-order" onClick={this.handleClick}>Proceed To Buy</button>
                         </div>
                     </div>
                 </div>

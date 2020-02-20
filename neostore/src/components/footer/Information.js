@@ -4,7 +4,7 @@ import * as api from '../../api'
 
 import { Link } from 'react-router-dom';
 
-export class Information extends PureComponent {
+class Information extends PureComponent {
     constructor() {
         super();
         this.state = {

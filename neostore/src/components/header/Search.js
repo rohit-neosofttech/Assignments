@@ -1,17 +1,54 @@
 import React, { Component } from 'react'
+import Select from "react-select";
 
+const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "orangeAndBanana", label: "orange and banana" }
+  ];
 class Search extends Component {
-    componentDidMount() {
+    state = {
+        selectedOption:''
+      };
+      handleChange = selectedOption => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
+      };
 
-    }
+      componentDidMount() {
+
+      }
+
+      render() {
+        const { selectedOption } = this.state;
     
-    render() {
         return (
-            <form className="form-inline my-2 my-lg-0">
-                <input className="form-control mr-sm-2" type="search" placeholder="Search..."/>
-            </form>
-        )
-    }
+            <Select style={{width:"200px"}}
+              value={selectedOption}
+              onChange={this.handleChange}
+              options={options}
+              isSearchable={true}
+            />
+        );
+      }
 }
 
 export default Search

@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import * as api from '../../api'
 import axios from 'axios'
 
-export class AboutCompany extends Component {
+class AboutCompany extends PureComponent {
     constructor() {
         super();
         this.state = {

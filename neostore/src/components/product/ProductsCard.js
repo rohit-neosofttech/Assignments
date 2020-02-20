@@ -16,19 +16,16 @@ const ProductsCard = ({ products, loading, error }) => {
     if (oldCart===null) {
         oldCart=[]
     }
-    let newItem = {
-        productId:product.product_id,
-        productName:product.product_name,
-        ProductImage:product.product_image,
-        productCost:product.product_cost,
-        productProducer:product.product_producer,
-        productStock:product.product_stock,
-        quantity:1
-    }
-    let item=oldCart.filter(item => item.productId===newItem.productId)
+
+    let newItem = product
+        newItem['quantity'] = 1;
+        newItem['total'] = product.quantity * product.product_cost
+
+    let item=oldCart.filter(item => item.product_id===newItem.product_id)
     if(item.length===0) {
         oldCart.push(newItem);
         localStorage.setItem('cart',JSON.stringify(oldCart))
+        alert("Product Added to Cart")
     }
     else{
         alert("Product already in present in cart")

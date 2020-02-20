@@ -18,6 +18,7 @@ import ChangePass from './components/user/ChangePass'
 import Profile from './components/user/Profile'
 import EditProfile from './components/user/EditProfile'
 import MainCart from './components/cart/MainCart';
+import OrderPlaced from './components/cart/OrderPlaced';
 import Subscribe from './components/Subscribe';
 import Login from './components/Login'
 import Logout from './components/Logout'
@@ -45,6 +46,7 @@ function App() {
         <ProtectedRoute path='/profile' component={Profile}/>
         <ProtectedRoute path='/editProfile' component={EditProfile}/>
         <Route path='/maincart' component={MainCart}/>
+        <Route path='/orderPlaced' component={OrderPlaced}/>
         <Route path='/login' component={Login}/>
         <Route path='/logout' component={Logout}/>
         <Route path='/register' component={Register}/>
