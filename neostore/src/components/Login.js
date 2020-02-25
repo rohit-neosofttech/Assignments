@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Header from './header/Header'
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import * as api from '../api'
@@ -43,11 +44,13 @@ class Login extends Component {
         e.preventDefault();
     
         if (formValid(this.state)) {
+          //Fetch Login credentials
           axios.post(`${api.baseurl}/login`, {
             email : this.state.email,
             pass : this.state.password
           })
           .then((res) => {
+            this.getPreviousCart(res.data.token)
             localStorage.setItem('userToken',`${res.data.token}`)
             localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_details) )
             const { history } = this.props;
@@ -57,11 +60,46 @@ class Login extends Component {
             console.log(error);
             alert('Invalid Username or Password')
           });
-        } else {
+
+        } 
+        else {
           console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
         }
-        
       };
+
+      getPreviousCart = (token) => {
+        axios.get(`${api.baseurl}/getCartData`,{
+          headers:{
+              Authorization: 'bearer ' + token
+          }}) 
+        .then((res) => {
+            console.log('getCart',res)
+            let oldCart = JSON.parse(localStorage.getItem('cart')) 
+            let newItem
+            let tempCart=[]
+            if (oldCart===null) {
+                oldCart=[]
+            }
+            let product_details = res.data.product_details
+            if (product_details.length!==0){
+                product_details.map( product =>
+                <>
+                    {newItem = product.product_id}
+                    {newItem['quantity'] = product.quantity}
+                    {newItem['total'] = product.quantity * product.product_cost}
+                    {tempCart.push(newItem)}
+                </>
+            )}
+            var cart = [...new Set([...oldCart, ...tempCart])];
+            localStorage.setItem('tempCart',JSON.stringify(tempCart))
+            localStorage.setItem('cart',JSON.stringify(cart))
+        })
+        .catch((err) => {
+            console.log(err)
+            alert("There is a problem fetching your previous cart")
+        })
+
+      }
 
       handleChange = e => {
         e.preventDefault();
@@ -84,6 +122,8 @@ class Login extends Component {
 
     render() {
         return (
+          <>
+          <Header/>
             <div className="container pad">
                 <div className="row">
                     <div className="col-md-6">
@@ -146,6 +186,7 @@ class Login extends Component {
                     
                 </div>
             </div>
+          </>
         )
     }
 }

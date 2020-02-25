@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Header from '../header/Header'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -67,6 +68,8 @@ class EditAddress extends Component {
 
     render() {
         return (
+            <>
+            <Header/>
             <div className="container p-5">
                 <h3>My Account</h3><hr/><br/>
                 <div className="row">
@@ -127,6 +130,7 @@ class EditAddress extends Component {
                     </div>
                 </div>
             </div>
+            </>
         )
     }
 }

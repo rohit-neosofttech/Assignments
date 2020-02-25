@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
+import Header from './header/Header'
 import {TextField} from '@material-ui/core/';
-import InputFloat from 'react-floating-input'
 import './Form.css'
 
 class Contact extends Component {
@@ -17,6 +17,8 @@ class Contact extends Component {
     
     render() {
         return (
+            <>
+            <Header/>
             <div className="container p-5">
                 <div className="card" style={{width:"60%",margin:"auto"}}>
                     <div class="card-body">
@@ -37,6 +39,7 @@ class Contact extends Component {
                     </div>
                 </div>
             </div>
+            </>
         )
     }
 }

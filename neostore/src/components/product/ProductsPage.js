@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Header from '../header/Header'
 import axios from 'axios'
 
 import {Link} from 'react-router-dom'
@@ -64,6 +65,8 @@ class ProductsPage extends Component {
     }
         render() {
         return (
+            <>
+            <Header/>
             <div>
                 <br/><hr/>
                 <div className="container">
@@ -138,6 +141,7 @@ class ProductsPage extends Component {
                     </div>
                 </div>
             </div>
+            </>
         )
     }
 }

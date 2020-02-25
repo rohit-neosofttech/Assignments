@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Header from './header/Header'
 import InputFloat from 'react-floating-input'
 
 class ForgotPass extends Component {
@@ -7,6 +8,8 @@ class ForgotPass extends Component {
     }
     render() {
         return (
+            <>
+            <Header/>
             <div className="container card pad">
                 <h1>Recovery Password</h1>
                 <hr/>
@@ -18,6 +21,7 @@ class ForgotPass extends Component {
                 {/* <input type="email" placeholder=""/> */}
                 <button className="btn btn-primary">Submit</button>
             </div>
+            </>
         )
     }
 }

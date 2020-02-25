@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
+import Header from './header/Header'
 
 export class Default extends Component {
     render() {
         return (
+            <>
+            <Header/>
             <div className="div-default">
                 <div className="container center">
                     <br/><br/><br/>
@@ -10,6 +13,7 @@ export class Default extends Component {
                     <h1>Error 404 : Page Not Found</h1>
                 </div>
             </div>
+            </>
         )
     }
 }

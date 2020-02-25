@@ -1,7 +1,7 @@
 
 import React, { PureComponent } from 'react'
+import Header from '../header/Header'
 import UserHome from './UserHome'
-import User from '../../defaultUser.png'
 import * as api from '../../api'
 import axios from 'axios'
 
@@ -52,6 +52,8 @@ export class Profile extends PureComponent {
 
     render() {
         return (
+            <>
+            <Header/>
             <div className="container p-3">
                 <h3>My Account</h3>
                 <hr/>
@@ -88,6 +90,7 @@ export class Profile extends PureComponent {
                 </div>
                 <br/><br/>
             </div>
+            </>
         )
     }
 }

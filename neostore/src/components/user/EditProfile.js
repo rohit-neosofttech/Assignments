@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Header from '../header/Header'
 import UserHome from './UserHome'
 import InputFloat from 'react-floating-input'
 import User from '../../defaultUser.png'
@@ -116,54 +117,57 @@ class EditProfile extends Component {
 
     render() {
         return (
+            <>
+            <Header/>
             <div className="container">
             <h1>My Account</h1>
             <hr/>
-            <div className="row">
-                <UserHome />
-                <div className="col-md-7 card p-3">
-                    <h2>Edit Profile</h2>
-                    <hr/><br/>
-                    <form onSubmit={this.handleProfileUpdate}>
-                        <InputFloat style={{fontSize:'24px'}}
-                                    value={this.state.firstName}
-                                    onChange={this.handleChange}
-                                    placeholder="First Name" 
-                                    name="firstName" 
-                                    /><br/>
+                <div className="row">
+                    <UserHome />
+                    <div className="col-md-7 card p-3">
+                        <h2>Edit Profile</h2>
+                        <hr/><br/>
+                        <form onSubmit={this.handleProfileUpdate}>
+                            <InputFloat style={{fontSize:'24px'}}
+                                        value={this.state.firstName}
+                                        onChange={this.handleChange}
+                                        placeholder="First Name" 
+                                        name="firstName" 
+                                        /><br/>
 
-                        <InputFloat style={{fontSize:'24px'}}
-                                    value={this.state.lastName}
-                                    onChange={this.handleChange}
-                                    placeholder="Last Name" 
-                                    name="lastName" /><br/>
-                        
-                        <input type="radio" name="gender" value="male" checked/> Male <span>&emsp;</span>
-                        <input type="radio" name="gender" value="female"/> Female<br/><br/>
+                            <InputFloat style={{fontSize:'24px'}}
+                                        value={this.state.lastName}
+                                        onChange={this.handleChange}
+                                        placeholder="Last Name" 
+                                        name="lastName" /><br/>
+                            
+                            <input type="radio" name="gender" value="male" checked/> Male <span>&emsp;</span>
+                            <input type="radio" name="gender" value="female"/> Female<br/><br/>
 
-                        <input class="form-control" type="date" value={this.state.dob} onChange={this.onDateChange} 
-                        id="example-date-input"/><br/>
+                            <input class="form-control" type="date" value={this.state.dob} onChange={this.onDateChange} 
+                            id="example-date-input"/><br/>
 
-                        <InputFloat style={{fontSize:'24px'}}
-                                    value={this.state.mobile}
-                                    onChange={this.handleChange}
-                                    placeholder="Mobile" 
-                                    name="mobile" /><br/>
+                            <InputFloat style={{fontSize:'24px'}}
+                                        value={this.state.mobile}
+                                        onChange={this.handleChange}
+                                        placeholder="Mobile" 
+                                        name="mobile" /><br/>
 
-                        <InputFloat style={{fontSize:'24px'}}
-                                    value={this.state.email}
-                                    onChange={this.handleChange}
-                                    placeholder="Email Address" 
-                                    name="email" /><br/>
+                            <InputFloat style={{fontSize:'24px'}}
+                                        value={this.state.email}
+                                        onChange={this.handleChange}
+                                        placeholder="Email Address" 
+                                        name="email" /><br/>
 
-                        <input type="file" onChange={this.onImageChange}/><br/>
-                        <hr/>
-                        <button className="btn-edit" type="submit"><i id='icon-black' className="fa fa-save"></i>Save</button>&emsp;&emsp;
-                        <button className="btn-edit" onClick={()=>this.props.history.push("/profile")}><i id='icon-black' className="fa fa-times"></i>Cancel</button>
-                    </form>
-                </div>
-            </div><br/><br/><br/>
-        </div>
+                            <input type="file" onChange={this.onImageChange}/><br/>
+                            <hr/>
+                            <button className="btn-edit" type="submit"><i id='icon-black' className="fa fa-save"></i>Save</button>&emsp;&emsp;
+                            <button className="btn-edit" onClick={()=>this.props.history.push("/profile")}><i id='icon-black' className="fa fa-times"></i>Cancel</button>
+                        </form>
+                    </div>
+                </div><br/><br/><br/>
+            </div>
+        </>
         )
     }
 }

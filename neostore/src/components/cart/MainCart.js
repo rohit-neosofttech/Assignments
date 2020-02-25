@@ -1,6 +1,8 @@
 import React from 'react'
 import Cart from './Cart'
 import DeliveryAddress from './DeliveryAddress'
+import Header from '../header/Header'
+
 import { Link } from 'react-router-dom'
 
 function MainCart(props) {
@@ -13,6 +15,8 @@ function MainCart(props) {
     }
 
     return (
+        <>
+        <Header/>
         <div>
             <h1>Cart Section</h1>
             <hr/>
@@ -34,6 +38,7 @@ function MainCart(props) {
                     </div>
                 </div>
         </div>
+        </>
     )
 }
 

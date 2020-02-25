@@ -1,54 +1,45 @@
 import React, { Component } from 'react'
-import Select from "react-select";
+import {Link} from 'react-router-dom'
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 
-const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "orangeAndBanana", label: "orange and banana" }
-  ];
 class Search extends Component {
-    state = {
-        selectedOption:''
-      };
-      handleChange = selectedOption => {
-        this.setState({ selectedOption });
-        console.log(`Option selected:`, selectedOption);
-      };
+  constructor(props) {
+    super(props);
+    this.state={
+      text:'',
+      productName:[],
+      visible:false
+    }
+  }
 
-      componentDidMount() {
+  componentDidMount() {
+  }
 
-      }
+  onChangeHandler = (e) => {
+    e.preventDefault()
+    this.setState({ text:e.target.value })
+  }
 
-      render() {
-        const { selectedOption } = this.state;
-    
-        return (
-            <Select style={{width:"200px"}}
-              value={selectedOption}
-              onChange={this.handleChange}
-              options={options}
-              isSearchable={true}
-            />
-        );
-      }
+  render() {
+  let prodList = this.props.products.map(product=> <Link to={`productDetail/${product.product_id}`} key={product.product_id}><ListItem button>{product.product_name}</ListItem></Link>)
+
+    console.log(this.props.products)
+    return (
+      <form>
+        <div className="input-group" style={{border: '1px solid #ced4da',borderRadius:"5px"}}>
+          <div className="input-group-prepend">
+            <span className="input-group-text"><i id="icon-black" className="fas fa-search"></i></span>
+          </div>
+          <input type="text" className="form-control" value={this.state.text} onChange={this.onChangeHandler} placeholder="Search..."/><br/>
+          {/* <List style={{backgroundColor:'white',width:'230px'}}>
+            {prodList}
+          </List> */}
+        </div>
+      </form>
+      
+    )
+  }
 }
 
 export default Search

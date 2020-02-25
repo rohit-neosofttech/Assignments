@@ -6,16 +6,11 @@ const userToken = localStorage.getItem("userToken")
 
 class Logout extends Component {
     componentDidMount() {
-        let cart=''
         if(localStorage.getItem('cart')) {
+            let cart=''
             cart = JSON.parse(localStorage.getItem("cart"))
             cart=[...cart,{'flag': "logout"}]
-        }
-
-        // let cart = JSON.parse(localStorage.getItem("cart"))
-        //     cart=[...cart,{'flag': "logout"}]
-        //     console.log(cart)
-                
+     
             axios.post(`${api.baseurl}/addProductToCartCheckout`,
                 cart
             , {
@@ -24,14 +19,17 @@ class Logout extends Component {
                 }
             })
             .then((res)=>{
-                localStorage.removeItem('cart')
-                localStorage.removeItem('tempCart')
+                console.log(res)
                 this.props.history.push('/')
 
             })
             .catch((err) => {
                 alert('Invalid Address API call')
             })
+        }
+
+        localStorage.removeItem('cart')
+        localStorage.removeItem('tempCart')
         localStorage.removeItem('CustDetail')
         localStorage.removeItem('userToken')
         

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Header from './header/Header'
 import './Form.css'
 import axios from 'axios';
 import * as api from '../api'
@@ -117,6 +118,8 @@ const emailRegex = RegExp(
 
     render() {
         return (
+          <>
+          <Header/>
             <div className="container">
                 <div className="row pad">
                     <div className="col col-md-6">
@@ -253,6 +256,7 @@ const emailRegex = RegExp(
                     </div>
                 </form>
             </div>
+          </>
         )
     }
 }

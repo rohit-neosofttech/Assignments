@@ -71,6 +71,33 @@ i {
     color:rgb(0, 0, 0);
     padding:0px 5px;
 }
+/* 
+.search-input-container__inner {
+    position:absolute;
+    right:230px;
+}
+
+.suggestion-input  {
+    border-radius: 5px;
+    color: black;
+    border: none;
+    background-color: white;
+    height: 38px;
+    width: 230px;
+    padding: 0px 8px;
+    margin: 0px 10px;
+} */
+
+.input-group-text {
+    background-color: white;
+    color:black;
+    padding:0px !important;
+    border:none !important;
+}
+
+.form-control {
+    border:none !important;
+}
 
 .btn-dropdown {
     padding: 0px 8px;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Header from '../header/Header'
 import UserHome from './UserHome'
 import {TextField} from '@material-ui/core/';
 
@@ -14,6 +15,8 @@ class ChangePass extends Component {
     
     render() {
         return (
+            <>
+            <Header/>
             <div className="container p-3">
                 <h3>My Account</h3>
                 <hr/>
@@ -40,6 +43,7 @@ class ChangePass extends Component {
                     </div>
                 </div>
             </div>
+            </>
         )
     }
 }

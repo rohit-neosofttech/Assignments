@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import Header from '../header/Header'
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating'
 import { Button, Modal } from 'react-bootstrap';
@@ -89,6 +90,7 @@ class ProductDetail extends PureComponent {
         })
         .then((res)=> {
             console.log(res)
+            alert("Product Rating Submitted")
         })
         .catch((err)=> {
             console.log(err)
@@ -118,6 +120,8 @@ class ProductDetail extends PureComponent {
         const product_producer = product.product_producer
 
         return (
+            <>
+            <Header/>
             <div className="container pad">
                 <div className="row">
                     <div className="col-md-6">
@@ -200,6 +204,7 @@ class ProductDetail extends PureComponent {
                     </Modal.Footer>
                 </Modal>
             </div>
+            </>
         )
     }
 }

@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
 import UserHome from './UserHome'
+import Header from '../header/Header'
 import axios from 'axios'
-import {Link, Redirect} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import * as api from '../../api'
 
 const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
@@ -48,22 +49,14 @@ class Address extends PureComponent {
 
     componentDidUpdate(prevState) {
         if(this.state.address!==prevState.address) {
-            // axios.get(`${api.baseurl}/getCustAllAddress`)
-            // .then((res)=>{
-            //     const addr = res.data.customer_address.filter(address => address.customer_id===custDetail.customer_id)
-            //     this.setState({
-            //         address:addr
-            //     })
-            // })
-            // .catch((err) => {
-            //     alert('Invalid Address API call')
-            // })
             this.componentDidMount()
         }
     }
 
     render() {
         return (
+            <>
+            <Header/>
             <div className="container p-3">
                 <h3>My Account</h3>
                 <hr/>
@@ -96,6 +89,7 @@ class Address extends PureComponent {
                     </div>
                 </div><br/><br/>
             </div>
+            </>
         )
     }
 }

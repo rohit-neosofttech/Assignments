@@ -81,12 +81,16 @@ class DeliveryAddress extends Component {
                 }
             })
             .then((res)=>{
+                console.log(res)
                 this.props.history.push('/orderPlaced')
                 localStorage.removeItem('cart')
                 localStorage.removeItem('tempCart')
             })
             .catch((err) => {
-                alert('Invalid Address API call')
+                this.props.history.push('/orderPlaced')
+                localStorage.removeItem('cart')
+                localStorage.removeItem('tempCart')
+                console.log('Invalid Address API call')
             })
         }    
     }

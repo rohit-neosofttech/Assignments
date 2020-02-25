@@ -111,7 +111,8 @@ class Cart extends Component {
                 this.setState(
                     {cartProduct:item}
                 )
-                localStorage.setItem("cart",JSON.stringify(this.state.cartProduct))
+                localStorage.setItem("cart",JSON.stringify(item))
+                this.addTotal()
             } else {
                 this.setState(
                     {cartProduct:item}
@@ -124,9 +125,10 @@ class Cart extends Component {
 
     addTotal = () => {
         // console.log(this.state.cartProduct)
-        if(this.state.cartProduct!==null) {
+        if(this.state.cartProduct!==null && localStorage.getItem("cart")) {
+            let cartProduct = JSON.parse(localStorage.getItem("cart"))
             let total = 0
-            this.state.cartProduct.map(product => total += product.total)
+            cartProduct.map(product => total += product.total)
             let gst = total*5/100
             let orderTotal = 0
             orderTotal = total+gst

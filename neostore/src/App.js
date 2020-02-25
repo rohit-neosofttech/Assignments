@@ -4,7 +4,7 @@ import {Switch,Route} from 'react-router-dom'
 
 import { ProtectedRoute } from './components/protected.route'
 
-import Header from './components/header/Header'
+// import Header from './components/header/Header'
 import Footer from './components/footer/Footer'
 import Home from './components/home/Home'
 import ProductsPage from './components/product/ProductsPage'
@@ -32,7 +32,7 @@ import Default from './components/Default'
 function App() {
   return (
     <div className="App">
-      <Header/>
+      {/* <Header/> */}
       <Switch>
         <Route path='/' component={Home} exact/>
         <Route path='/productsPage' component={ProductsPage}/>

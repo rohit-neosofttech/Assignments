@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Header from '../header/Header'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -10,7 +11,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios'
 import * as api from '../../api'
 
-const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
 const userToken = localStorage.getItem("userToken")
 
 
@@ -55,6 +55,8 @@ class AddAddress extends Component {
 
     render() {
         return (
+            <>
+            <Header/>
             <div className="container p-5">
                 <h3>My Account</h3><hr/><br/>
                 <div className="row">
@@ -115,6 +117,7 @@ class AddAddress extends Component {
                     </div>
                 </div>
             </div>
+            </>
         )
     }
 }
