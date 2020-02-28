@@ -18,7 +18,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 const userToken = localStorage.getItem('userToken')
 
 const emailRegex = RegExp(/^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/);
- const textOnly = RegExp(/^[a-zA-Z ]*$/);
+const textOnly = RegExp(/^[a-zA-Z ]*$/);
 
   
   const formValid = ({ formErrors, ...rest }) => {
@@ -64,43 +64,18 @@ class EditProfile extends Component {
     
     componentDidMount() {
         this.setState({loader:true})
-
-        axios.get(`${api.baseurl}/getCustProfile`, {
-            headers: {
-              Authorization: 'Bearer ' + userToken
-            }}
-        )
-        .then(res => {
-            this.setState({loader:false,open:true})
-            const profile = res.data.customer_proile
-            // console.log(profile)
-            this.setState({
-                firstName:profile.first_name,
-                lastName:profile.last_name,
-                email:profile.email,
-                mobile:profile.phone_no,
-                gender:profile.gender,
-                dob:profile.dob
-                // profile_img:profile.profile_img
-            })
+        const profile = this.props.location.state
+        this.setState({
+            firstName:profile.firstName,
+            lastName:profile.lastName,
+            email:profile.email,
+            mobile:profile.mobile,
+            gender:profile.gender,
+            dob:profile.dob,
+            // profile_img:''
+            // img:''
         })
-        .catch(err => {
-            console.log(err)
-            alert("invalid api call")
-            this.setState({loader:false,open:true})
-            if (err.response) {
-            this.setState({
-                message: (err.response.data.message)?err.response.data.message:`Server Error: ${err.response.status}..${err.response.statusText}`,
-                type: 'error',
-                title: 'Error while Edidding the Profile'
-            })
-            // alert(error.response.data.message)
-            } else if (err.request) {
-                alert(err.request);
-            } else {
-                alert('Error', err.message);
-            }
-        });
+        this.setState({loader:false})
     }
 
     handleChange = (e) => {
@@ -155,6 +130,7 @@ class EditProfile extends Component {
     onImageChange = e => {
         console.log(e.target.files)
         this.setState({ profile_img: e.target.files });
+        // this.setState({ img: e.target.files });
     }
 
     onRadioChange = (e) => {
@@ -162,14 +138,83 @@ class EditProfile extends Component {
         this.setState({gender:e.target.value})
     }
 
+    handleSnackClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        this.setState({open:false})
+    };
+
     handleProfileUpdate = (e) => {
         e.preventDefault();
-        console.log(this.state.profile_img)
+        // console.log(this.state.profile_img)
+
+        if (this.state.profile_img==='') {
+            if(window.confirm("Are you sure you want to Update Profile without a Profile Image?")) {
+                this.profileUpdate()
+            }
+        }
+        else {
+            this.profileUpdate()
+        }
+        // if (formValid(this.state)) {
+        //     this.setState({loader:true})
+        //     let formData = new FormData()
+        //     if(this.state.profile_img==='') {
+        //         // formData.append('profile_img',this.state.profile_img)
+        //     } else {
+        //         formData.append('profile_img',this.state.profile_img[0],this.state.profile_img[0].name)
+        //     }
+        //     formData.append('first_name',this.state.firstName)
+        //     formData.append('last_name',this.state.lastName)
+        //     formData.append('email',this.state.email)
+        //     formData.append('dob',this.state.dob)
+        //     formData.append('phone_no',this.state.mobile)
+        //     formData.append('gender',this.state.gender)
+        //     console.log("formdata: ",formData)
+
+        //     axios.put(`${api.baseurl}/profile`, formData , {
+        //         headers: {
+        //         Authorization: 'Bearer ' + userToken
+        //         }}
+        //     )
+        //     .then(res => {
+        //         this.setState({
+        //             loader:false,
+        //             open:true,
+        //             message: res.data.message,
+        //             type: 'success',
+        //             title: 'Form Submitted'
+        //         })
+        //         localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_details))
+        //         alert("Form submitted");
+        //         // this.props.history.push("/profile")
+        //     })
+        //     .catch(error => {
+        //         this.setState({loader:false,open:true})
+        //         if (error.response) {
+        //         this.setState({
+        //             message: (error.response.data.message)?error.response.data.message:`Server Error: ${error.response.status}..${error.response.statusText}`,
+        //             type: 'error',
+        //             title: 'Log in Error'
+        //         })
+        //         // alert(error.response.data.message)
+        //         } else if (error.request) {
+        //             alert(error.request);
+        //         } else {
+        //             alert('Error', error.message);
+        //         }
+        //         alert('Edit Profile Error')
+        //     });
+        // }
+    };
+
+    profileUpdate = () => {
         if (formValid(this.state)) {
             this.setState({loader:true})
             let formData = new FormData()
             if(this.state.profile_img==='') {
-                formData.append('profile_img',null,null)
+                // formData.append('profile_img',this.state.profile_img)
             } else {
                 formData.append('profile_img',this.state.profile_img[0],this.state.profile_img[0].name)
             }
@@ -194,7 +239,8 @@ class EditProfile extends Component {
                     type: 'success',
                     title: 'Form Submitted'
                 })
-                // alert("Form submitted");
+                localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_details))
+                alert("Form submitted");
                 this.props.history.push("/profile")
             })
             .catch(error => {
@@ -211,10 +257,16 @@ class EditProfile extends Component {
                 } else {
                     alert('Error', error.message);
                 }
-                // alert('Edit Profile Error')
+                alert('Edit Profile Error ',this.state.message )
             });
         }
-    };
+    }
+
+    profileUpdateCancel = () => {
+        if(window.confirm("All changes will be lost")) {
+            this.props.history.push("/profile")
+        }
+    }
 
     render() {
         return (
@@ -228,7 +280,7 @@ class EditProfile extends Component {
                     <div className="col-md-7 card p-3">
                         <h2>Edit Profile</h2>
                         <hr/><br/>
-                        <form onSubmit={this.handleProfileUpdate}>
+                        <form onSubmit={this.handleProfileUpdate} autoComplete="off">
                             <TextField fullWidth
                                 label="First Name"
                                 type="text"
@@ -250,43 +302,38 @@ class EditProfile extends Component {
                                 onBlur={this.handleChange}
                                 error={this.state.formErrors.lastName.length > 0}
                             /><br/><br/>
-                            {/* <InputFloat style={{fontSize:'24px'}}
-                                        value={this.state.firstName}
-                                        onChange={this.handleChange}
-                                        placeholder="First Name" 
-                                        name="firstName" 
-                                        /><br/>
-
-                            <InputFloat style={{fontSize:'24px'}}
-                                        value={this.state.lastName}
-                                        onChange={this.handleChange}
-                                        placeholder="Last Name" 
-                                        name="lastName" /><br/>
-                             */}
+                            
                             <RadioGroup aria-label="gender" name="gender" value={this.state.gender} onChange={this.onRadioChange} style={{display:"inline-block"}}>
                                 <FormControlLabel value="Male" control={<Radio />} label="Male" />&emsp;&emsp;
                                 <FormControlLabel value="Female" control={<Radio />} label="Female" />
                             </RadioGroup>
 
-                            {/* <input type="radio" name="gender" value="male" onChange={()=>this.onRadioChange()} checked/> Male <span>&emsp;</span>
-                            <input type="radio" name="gender" value="female" onChange={this.onRadioChange} /> Female<br/><br/> */}
-
                             <input className="form-control" type="date" value={this.state.dob} onChange={this.onDateChange} name="date"/>
                             <br/>
                             {this.state.formErrors.dob.length>0 ? <span className="error">{this.state.formErrors.dob}</span> : <></>}
 
-                            <InputFloat style={{fontSize:'24px'}}
-                                        value={this.state.mobile}
-                                        onChange={this.handleChange}
-                                        placeholder="Mobile" 
-                                        name="mobile" /><br/>
+                            <TextField fullWidth
+                                label="Mobile Number"
+                                type="number"
+                                name="mobile"
+                                helperText={this.state.formErrors.mobile.length > 0 && this.state.formErrors.mobile}
+                                value={this.state.mobile}
+                                onChange={this.handleChange}
+                                onBlur={this.handleChange}
+                                error={this.state.formErrors.mobile.length > 0}
+                            /><br/><br/>
 
-                            <InputFloat style={{fontSize:'24px'}}
-                                        value={this.state.email}
-                                        onChange={this.handleChange}
-                                        placeholder="Email Address" 
-                                        name="email" /><br/>
-
+                            <TextField fullWidth
+                                label="Email"
+                                type="text"
+                                name="email"
+                                helperText={this.state.formErrors.email.length > 0 && this.state.formErrors.email}
+                                value={this.state.email}
+                                onChange={this.handleChange}
+                                onBlur={this.handleChange}
+                                error={this.state.formErrors.email.length > 0}
+                            /><br/><br/>
+                           
                             <input type="file" onChange={this.onImageChange}/><br/>
                             <hr/>
                             {this.state.loader
@@ -297,14 +344,35 @@ class EditProfile extends Component {
                                 :
                                 <>
                                 {formValid(this.state) 
-                                ? <button className="btn-edit" type="submit"><i id='icon-black' className="fa fa-save"></i>Save</button>
-                                : <button className="btn-edit" type="submit" style={{backgroundColor:'gray',cursor:'default'}} disabled><i id='icon-black' className="fa fa-save"></i>Save</button>}
+                                    ? 
+                                    <>
+                                        <button className="btn-edit" type="submit"><i id='icon-black' className="fa fa-save"></i>Save</button>&emsp;&emsp;
+                                        <button className="btn-edit" onClick={this.profileUpdateCancel}><i id='icon-black' className="fa fa-times"></i>Cancel</button>
+                                    </>
+                                    :
+                                    <>
+                                        <button className="btn-edit" type="submit" style={{color:'black',backgroundColor:'#cecbcb',cursor:'default'}} disabled><i id='icon-black' className="fa fa-save"></i>Save</button>&emsp;&emsp;
+                                        <button className="btn-edit" onClick={this.profileUpdateCancel}><i id='icon-black' className="fa fa-times"></i>Cancel</button>
+                                    </>
+                                }
                                 </>
                             }
-                            &emsp;&emsp;<button className="btn-edit" onClick={()=>this.props.history.push("/profile")}><i id='icon-black' className="fa fa-times"></i>Cancel</button>
+                            
                         </form>
                     </div>
                 </div><br/><br/><br/>
+                {this.state.open && 
+                  <Snackbar anchorOrigin={{ vertical:'top', horizontal:'center' }} open={this.state.open} 
+                  autoHideDuration={3000} onClose={this.handleSnackClose} >
+                      <Slide direction="down" in={true}>
+                          <Alert variant="filled" severity={this.state.type}>
+                              <AlertTitle>{this.state.title}</AlertTitle>
+                              {this.state.message}
+                              <button onClose={this.handleSnackClose}>Close</button>
+                          </Alert>
+                      </Slide>
+                  </Snackbar>
+                }
             </div>
         </>
         )

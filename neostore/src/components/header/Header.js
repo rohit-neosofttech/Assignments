@@ -19,7 +19,7 @@ class Header extends Component {
             cartproducts:[],
             text:'',
             // profile_image:(localStorage.getItem("CustDetail")) ? custDetail.profile_img : null,
-            profile_image: null,
+            profile_image: '',
             count:0,
             selectedOption:'',
             options:[],
@@ -35,6 +35,9 @@ class Header extends Component {
     }
     
     componentDidMount() {
+        this.setState({
+            profile_image:(localStorage.getItem("CustDetail")) ? custDetail.profile_img : null,
+        })
         if(localStorage.getItem('userToken'))
         {
             this.setState({

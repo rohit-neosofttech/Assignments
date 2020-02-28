@@ -8,6 +8,10 @@ import * as api from '../../api'
 import Loading from 'react-fullscreen-loading';
 import SnackAlert from '../SnackAlert'
 
+import Snackbar from '@material-ui/core/Snackbar';
+import Slide from '@material-ui/core/Slide';
+import { Alert, AlertTitle } from '@material-ui/lab';
+
 const userToken = localStorage.getItem("userToken")
 
 class ProductDetail extends PureComponent {
@@ -114,28 +118,54 @@ class ProductDetail extends PureComponent {
     }
 
     handleRating = (value) => {
-        // console.log(value)
         this.setState({newRating:value})
     }
 
     handleSubmitRating = (product_id) => {
-        console.log(product_id)
-        console.log(this.state.newRating)
-        axios.put(`${api.baseurl}/updateProductRatingByCustomer`,{
-            product_id: product_id,
-            product_rating: this.state.newRating
-        }, {
-            headers: {
-                Authorization: 'Bearer ' + userToken
-              }
-        })
-        .then((res)=> {
-            console.log(res)
-            alert("Product Rating Submitted")
-        })
-        .catch((err)=> {
-            console.log(err)
-        })
+        if(this.state.newRating!==0) {
+            axios.put(`${api.baseurl}/updateProductRatingByCustomer`,{
+                product_id: product_id,
+                product_rating: this.state.newRating
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + userToken
+                }
+            })
+            .then((res)=> {
+                this.setState({
+                    loader:false,
+                    open:true,
+                    message: res.data.message,
+                    type: 'success',
+                })
+                // alert("Product Rating Submitted")
+            })
+            .catch((err)=> {
+                this.setState({loader:false,open:true})
+                if (err.response) {
+                this.setState({
+                    message: (err.response.data.message)?err.response.data.message:`Encountered an Error: ${err.response.status}..${err.response.statusText}`,
+                    type: 'error',
+                })
+                // alert(error.response.data.message)
+                } else if (err.request) {
+                    alert(err.request);
+                } else {
+                    alert('Error', err.message);
+                }
+                alert('Encounted Problem while Updating address  ',this.state.message )     
+            })
+            this.setState({show:false})
+        }
+        else {
+            this.setState({
+                loader:false,
+                open:true,
+                message: 'Please provide a rating',
+                type: 'info',
+                title: 'Rating'
+            })
+        }
     }
 
     render() {
@@ -253,6 +283,8 @@ class ProductDetail extends PureComponent {
                     </Button>
                     </Modal.Footer>
                 </Modal>
+
+                
             </div>
             }
             </>

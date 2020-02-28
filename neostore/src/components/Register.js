@@ -76,7 +76,7 @@ const textOnly = RegExp(/^[a-zA-Z ]*$/);
         gender : this.state.gender
       })
       .then((res) => {
-        this.setState({loader:false})
+        this.setState({loader:false,open:true})
         const { history } = this.props;
         history.push(`/`);
         alert(res.data.message);

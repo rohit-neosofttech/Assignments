@@ -4,6 +4,7 @@ import Header from '../header/Header'
 import UserHome from './UserHome'
 import * as api from '../../api'
 import axios from 'axios'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const userToken = localStorage.getItem('userToken')
 
@@ -17,11 +18,13 @@ export class Profile extends PureComponent {
             mobile:'',
             gender:'',
             dob:'',
-            profile_img:''
+            profile_img:'',
+            loader:false
         }
     }
     
     componentDidMount() {
+        this.setState({loader:true})
         axios.get(`${api.baseurl}/getCustProfile`, {
             headers: {
               Authorization: 'Bearer ' + userToken
@@ -36,13 +39,26 @@ export class Profile extends PureComponent {
                 email : profile.email,
                 dob : profile.dob,
                 mobile : profile.phone_no,
-                gender : profile.gender
+                gender : profile.gender,
+                loader:false
             })
             localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_proile) )
         })
         .catch(err => {
-            console.log(err)
-            alert("invalid api call")
+            this.setState({loader:false,open:true})
+                if (err.response) {
+                this.setState({
+                    message: (err.response.data.message)?err.response.data.message:`Address Edit Error: ${err.response.status}..${err.response.statusText}`,
+                    type: 'error',
+                    title: 'Address Edit Error'
+                })
+                // alert(error.response.data.message)
+                } else if (err.request) {
+                    alert(err.request);
+                } else {
+                    alert('Error', err.message);
+                }
+                alert('Encounted Problem while Updating address  ',this.state.message )
         });
     }
 
@@ -62,6 +78,12 @@ export class Profile extends PureComponent {
                     <div className="col-md-8 card p-3" >
                         <h2>Profile</h2>
                         <hr/><br/>
+                        {this.state.loader
+                        ? 
+                            <div className="center" >
+                                <CircularProgress/>
+                            </div>
+                        :
                         <table>
                             <tbody>
                                 <tr>
@@ -84,6 +106,7 @@ export class Profile extends PureComponent {
                                 </tr>
                             </tbody>
                         </table>
+                        }
                         <hr/>
                         <button className="btn-edit" onClick={this.handleClick}>
                             <i id="icon-black" className="fa fa-edit"></i>Edit

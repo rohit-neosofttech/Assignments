@@ -56,7 +56,7 @@ class Contact extends Component {
                 mobile:"",
                 subject:"",
                 message:""
-              },
+              }
         }
     }
 
@@ -74,7 +74,6 @@ class Contact extends Component {
             message : this.state.message
           })
           .then((res) => {
-            this.props.history.push(`/`)
             // console.log(res);
             this.setState({loader:false,open:true})
             this.setState({
@@ -82,6 +81,7 @@ class Contact extends Component {
                 type: 'success',
                 title: 'Contact Form'
             })
+            this.props.history.push(`/`)
           })
           .catch((error) => {
             this.setState({loader:false,open:true})

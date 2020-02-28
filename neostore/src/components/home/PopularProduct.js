@@ -10,7 +10,8 @@ class PopularProduct extends PureComponent {
         super();
         this.state={
             product_details:[],
-            loader:false
+            loader:false,
+            open:false
         }
     }
 
@@ -22,7 +23,20 @@ class PopularProduct extends PureComponent {
         })
         .catch((err)=> {
             console.log('Popular Product Invalid API call')
-            // alert('Popular Product Invalid API call')
+            this.setState({loader:false,open:true})
+                if (err.response) {
+                this.setState({
+                    message: (err.response.data.message)?err.response.data.message:`Address Edit Error: ${err.response.status}..${err.response.statusText}`,
+                    type: 'error',
+                    title: 'Address Edit Error'
+                })
+                // alert(error.response.data.message)
+                } else if (err.request) {
+                    alert(err.request);
+                } else {
+                    alert('Error', err.message);
+                }
+                alert('Encounted Problem while Updating address  ',this.state.message )
         })
     }
 

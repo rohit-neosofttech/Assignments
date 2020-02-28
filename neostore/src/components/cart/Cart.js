@@ -20,7 +20,9 @@ class Cart extends Component {
             NoProduct:false,
             subTotal:0,
             gst:5,
-            orderTotal:0
+            orderTotal:0,
+            max:false,
+            min:false
         }
     }
     
@@ -30,7 +32,7 @@ class Cart extends Component {
 
     addQuantity = (product) => {
         let item = this.state.cartProduct.filter(item => item.product_id===product.product_id)
-        if(item[0].quantity===8) {
+        if(item[0].quantity===9) {
             alert(`Quantity reached MAX value`)
         } else {
             item[0].quantity++
@@ -143,9 +145,9 @@ class Cart extends Component {
                                         </div>
                                     </td>
                                     <td>
-                                        <button className="cart-quantity-btn" onClick={()=>this.addQuantity(product)} >+</button>
-                                        <span>&emsp;{product.quantity}&emsp;</span>
                                         <button className="cart-quantity-btn" onClick={()=>this.removeQuantity(product)} >-</button>
+                                        <span>&emsp;{product.quantity}&emsp;</span>
+                                        <button className="cart-quantity-btn" onClick={()=>this.addQuantity(product)} >+</button>
                                     </td>
                                     <td>{product.product_cost}</td>
                                     <td>{product.total}</td>
