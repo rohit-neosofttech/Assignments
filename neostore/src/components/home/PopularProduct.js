@@ -1,23 +1,28 @@
 import React, { PureComponent } from 'react'
 import ProductCard from './ProductCard'
 import axios from 'axios'
+import * as api from '../../api'
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Link } from 'react-router-dom';
 
 class PopularProduct extends PureComponent {
     constructor() {
         super();
         this.state={
-            product_details:[]
+            product_details:[],
+            loader:false
         }
     }
 
     componentDidMount(){
-        axios.get(`http://180.149.241.208:3022/defaultTopRatingProduct`)
+        this.setState({loader:true})
+        axios.get(`${api.baseurl}/defaultTopRatingProduct`)
         .then((res)=>{
-            this.setState({product_details:res.data.product_details})
+            this.setState({product_details:res.data.product_details , loader:false})
         })
         .catch((err)=> {
-            alert('Invalid API call')
+            console.log('Popular Product Invalid API call')
+            // alert('Popular Product Invalid API call')
         })
     }
 
@@ -26,17 +31,26 @@ class PopularProduct extends PureComponent {
             <div className="container">
                 <h3 className="center">Popular Product</h3>
                 <p className="center"><Link to="/productspage">View All</Link></p><br/>
-                <div className="row">
-                    { (this.state.product_details.length !==0) ? 
+                    <div className="row">
+                    {this.state.loader
+                    ? 
+                        <div className="center" >
+                            <CircularProgress/>
+                        </div>
+                    :
                     <>
-                        {   
-                            this.state.product_details.map(product =>
-                            <ProductCard key={product._id} product={product}></ProductCard>
-                        )}
+                        { (this.state.product_details.length !==0) ? 
+                        <>
+                                { this.state.product_details.map(product =>
+                                    <ProductCard key={product._id} product={product}></ProductCard>
+                                )}
+                        </>
+                        : 
+                            <h1 className="center" style={{color:"#fb4646"}}><br/><em>No Popular Product found</em></h1>
+                        }
                     </>
-                    : <h1 className="center" style={{color:"#fb4646"}}><br/><em>No Popular Product found</em></h1>
                     }
-                </div>
+                    </div>
             </div>
         )
     }

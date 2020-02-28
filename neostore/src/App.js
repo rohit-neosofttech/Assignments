@@ -1,5 +1,7 @@
 import React from 'react';
 import './App.css';
+import { Provider } from 'react-redux'
+import store from './components/redux/store'
 import {Switch,Route} from 'react-router-dom'
 
 import { ProtectedRoute } from './components/protected.route'
@@ -31,6 +33,7 @@ import Default from './components/Default'
 
 function App() {
   return (
+    <Provider store={store}>
     <div className="App">
       {/* <Header/> */}
       <Switch>
@@ -59,6 +62,7 @@ function App() {
       </Switch>
       <Footer/>
     </div>
+    </Provider>
   );
 }
 

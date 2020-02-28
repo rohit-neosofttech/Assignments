@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import NoProduct from './NoProduct'
 
-import axios from 'axios'
+// import axios from 'axios'
 
 import * as api from '../../api'
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { List , ListItem } from '@material-ui/core';
 
-const userToken = localStorage.getItem("userToken")
-const cart = JSON.parse(localStorage.getItem("cart"))
+// const userToken = localStorage.getItem("userToken")
+// const cart = JSON.parse(localStorage.getItem("cart"))
 
 
 class Cart extends Component {
@@ -25,56 +25,11 @@ class Cart extends Component {
     }
     
     componentDidMount() {
-        // axios.get(`${api.baseurl}/getCartData`,{
-        //     headers:{
-        //         Authorization: 'bearer ' + userToken
-        //     }}) 
-        // .then((res)=>{                 
-        //     let oldCart = JSON.parse(localStorage.getItem('cart')) 
-        //     let newItem
-        //     let tempCart=[]
-        //     if (oldCart===null) {
-        //         oldCart=[]
-        //     }
-        
-        //     if (res.data.product_details.length!==0){
-        //         res.data.product_details.map( product =>
-        //         <>{newItem = {
-        //             productId:product.product_id.product_id,
-        //             productCost:product.product_id.product_cost,
-        //             quantity:product.quantity
-        //         }}
-        //         {tempCart.push(newItem)}
-        //         </>
-        //     )}
-        //     var cart = [...new Set([...oldCart, ...tempCart])];
-        //     localStorage.setItem('tempCart',JSON.stringify(tempCart))
-        //     localStorage.setItem('cart',JSON.stringify(cart))
-
-        //     this.setState({cartProduct:cart})
-        //     })
-
-        // .catch((err)=> {
-        //     // alert("Wrong API call")
-        //     this.setState({NoProduct:!this.state.NoProduct})
-        // })
-
-        // axios.get(`${api.baseurl}/getAllProducts`) 
-        // .then((res)=>{       
-        //         this.setState({allProduct:res.data.product_details})  
-        //         console.log(res)
-        //     })
-
-        // .catch((err)=> {
-        //     alert("Wrong is API call")
-        // })
-        // this.setState({cartProduct:JSON.parse(localStorage.getItem("cart"))})
         this.addTotal()
     }
 
     addQuantity = (product) => {
         let item = this.state.cartProduct.filter(item => item.product_id===product.product_id)
-        console.log(item)
         if(item[0].quantity===8) {
             alert(`Quantity reached MAX value`)
         } else {
@@ -98,7 +53,6 @@ class Cart extends Component {
             this.setState(
                 ()=>{return {cartProduct:this.state.cartProduct}}
             )
-        // this.setState({cartProduct:quan})
         localStorage.setItem("cart",JSON.stringify(this.state.cartProduct))
         }
         this.addTotal()
@@ -124,7 +78,6 @@ class Cart extends Component {
     }
 
     addTotal = () => {
-        // console.log(this.state.cartProduct)
         if(this.state.cartProduct!==null && localStorage.getItem("cart")) {
             let cartProduct = JSON.parse(localStorage.getItem("cart"))
             let total = 0
@@ -142,28 +95,23 @@ class Cart extends Component {
 
     componentDidUpdate(prevState) {
         if(prevState.subTotal!==this.state.subTotal) {
-            console.log()
         }
     }
 
     handleClick = () => {
-        // this.props.history.push(`/maincart`)
-        // this.props.history.push("/maincart#address")
-
-        // window.location.href = '/maincart#maincart'
+        console.log(this.props)
     }
 
     render() {
         return (
             <div>
-                {/* {console.log(this.state.cartProduct)} */}
                 {(!localStorage.getItem("cart"))
                 ?<NoProduct/>
                 :<div className="row" style={{margin:"0px"}}>
                     <div className="col-md-8 p-4">
                         <div className="card"  style={{boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
                         {}
-                        <table class="table">
+                        <table className="table">
                             <thead>
                                 <tr>
                                 <th scope="col" style={{width:"50%"}}>Product</th>
@@ -223,7 +171,7 @@ class Cart extends Component {
                                     <h5>Order Total</h5><h5 className="right">{this.state.orderTotal}</h5>
                                 </ListItem>
                             </List><br/>
-                            <button className="btn-order" onClick={this.handleClick}>Proceed To Buy</button>
+                            <button className="btn-order" onClick={()=>this.props.handleSelect('address')}>Proceed To Buy</button>
                         </div>
                     </div>
                 </div>

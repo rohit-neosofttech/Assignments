@@ -70,7 +70,7 @@ class Address extends PureComponent {
                             <h1>No Address Found</h1>
                           </div> 
                         :  this.state.address.map(addr =>
-                        <>
+                        <React.Fragment key={addr.address_id}>
                             <div className="card p-3" key={addr.address_id}>
                                 <span>{addr.address}</span>
                                 <span>{`${addr.city} - ${addr.pincode}`}</span>
@@ -79,11 +79,11 @@ class Address extends PureComponent {
                                     <button className="btn btn-primary" style={{width:'100px'}} >Edit</button>
                                 </Link>
                                 <button className="btn-close" style={{width:'fit-content'}} onClick={()=>this.deleteAddress(addr.address_id)}>
-                                    <i class="fas fa-times" style={{padding:'0px'}}></i>
+                                    <i className="fas fa-times" style={{padding:'0px'}}></i>
                                 </button>
                             </div>
                             <hr/>   
-                        </>
+                        </React.Fragment>
                         )}
                         <Link to='/addAddress'><button className="btn-edit" style={{width:'150px'}}>Add Address</button></Link>
                     </div>

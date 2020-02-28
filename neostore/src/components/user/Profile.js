@@ -63,24 +63,26 @@ export class Profile extends PureComponent {
                         <h2>Profile</h2>
                         <hr/><br/>
                         <table>
-                            <tr>
-                                <td>First Name :</td> <td>{this.state.firstName}</td>
-                            </tr>
-                            <tr>
-                                <td>Last Name :</td> <td>{this.state.lastName}</td>
-                            </tr>
-                            <tr>
-                                <td>Gender :</td> <td>{this.state.gender}</td>
-                            </tr>
-                            <tr>
-                                <td>Date of Birth :</td> <td>{this.state.dob}</td>
-                            </tr>
-                            <tr>
-                                <td>Mobile Number :</td> <td>{this.state.mobile}</td>
-                            </tr>
-                            <tr>
-                                <td>Email :</td> <td>{this.state.email}</td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td style={{width:"30%"}}>First Name :</td><td>{this.state.firstName}</td>
+                                </tr>
+                                <tr>
+                                    <td style={{width:"30%"}}>Last Name :</td><td>{this.state.lastName}</td>
+                                </tr>
+                                <tr>
+                                    <td style={{width:"30%"}}>Gender :</td><td>{this.state.gender}</td>
+                                </tr>
+                                <tr>
+                                    <td style={{width:"30%"}}>Date of Birth :</td><td>{this.state.dob}</td>
+                                </tr>
+                                <tr>
+                                    <td style={{width:"30%"}}>Mobile Number :</td><td>{this.state.mobile}</td>
+                                </tr>
+                                <tr>
+                                    <td style={{width:"30%"}}>Email :</td><td>{this.state.email}</td>
+                                </tr>
+                            </tbody>
                         </table>
                         <hr/>
                         <button className="btn-edit" onClick={this.handleClick}>

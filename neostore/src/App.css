@@ -17,6 +17,10 @@
     width:81%;            
 }
 
+button {
+    cursor: pointer;
+}
+
 .footer {
     color:white;
     background-color: #000000;
@@ -25,7 +29,7 @@
 
 .div-default {
     height:500px;
-    width:auto;
+    width:100%;
     background-color: whitesmoke;
 }
 
@@ -71,31 +75,30 @@ i {
     color:rgb(0, 0, 0);
     padding:0px 5px;
 }
-/* 
-.search-input-container__inner {
-    position:absolute;
-    right:230px;
-}
 
-.suggestion-input  {
-    border-radius: 5px;
-    color: black;
-    border: none;
-    background-color: white;
-    height: 38px;
-    width: 230px;
-    padding: 0px 8px;
-    margin: 0px 10px;
-} */
+.btn-sortBy {
+    border:none;
+    padding:0px;
+    padding-top: 5px;;
+    padding-bottom: 5px;
+    width: fit-content;
+    border-radius:10px;
+    background-color: transparent;
+}
+.btn-sortBy:hover {
+    border:none;
+    padding:0px;
+    padding-top: 5px;;
+    padding-bottom: 5px;
+    border-radius:10px;
+    width: fit-content;
+    background-color: whitesmoke;
+}
 
 .input-group-text {
     background-color: white;
     color:black;
     padding:0px !important;
-    border:none !important;
-}
-
-.form-control {
     border:none !important;
 }
 
@@ -480,6 +483,20 @@ tr td{
     font-size: 7vw;
 }
 
+.floating-list {
+    position: absolute;
+    z-index: 3;
+    clear: both;
+    width: 300px;
+    background-color: white;
+    top:40px;
+    padding-left: 10px;
+    font-family: 'Times New Roman', Times, serif;
+    overflow-y:scroll; 
+    height:fit-content;
+    max-height: 300px;
+}
+
 .nav-item {
     font-size: x-large;
     color: black;
@@ -500,6 +517,50 @@ tr td{
 .MuiList-root {
     width:100%
 }
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+/*----------Material SnackBar---------- */
+.MuiAlert-standardSuccess {
+    color: white !important;
+    background-color:#238c09 !important;
+    box-shadow: black !important;
+    font-weight: bolder !important;
+}
+
+.MuiAlert-standardSuccess .MuiAlert-icon {
+    color: white !important;
+}
+
+.MuiAlert-standardWarning {
+    color: white !important;
+    background-color:#ff9800 !important;
+    /* background-color:#ffc107 !important; */
+    box-shadow: black !important;
+    font-weight: bolder !important;
+}
+
+.MuiAlert-standardWarning .MuiAlert-icon {
+    color: white !important;
+}
+
+.MuiAlert-standardInfo {
+    color: white !important;
+    background-color:#0799f1 !important;
+    /* background-color:#ffc107 !important; */
+    box-shadow: black !important;
+    font-weight: bolder !important;
+}
+
+.MuiAlert-standardInfo .MuiAlert-icon {
+    color: white !important;
+}
+/*----------Material SnackBar---------- */
+
 
 /* -----Star Rating component CSS -----*/
 .MuiRating-label {
@@ -537,8 +598,4 @@ tr td{
     /* flex-shrink: 0; */
     /* box-sizing: border-box; */
     /* color: hsl(0,0%,80%); */
-}
-
-.react-select__indicators {
-    display :none;
 }

@@ -74,8 +74,7 @@ class Order extends Component {
                                 <h1>No Order Found</h1>
                             </div> 
                             : this.state.orders.map(order =>
-                            <div className="card p-3 m-3">
-                                {console.log(order)}
+                            <div className="card p-3 m-3" key={order._id}>
                                 <span><strong style={{color:"#cb7b13"}}>TRANSIT&emsp;</strong> 
                                     Order By: {order._id}
                                 </span>

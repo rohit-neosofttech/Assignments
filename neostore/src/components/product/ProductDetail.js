@@ -5,6 +5,9 @@ import Rating from '@material-ui/lab/Rating'
 import { Button, Modal } from 'react-bootstrap';
 import * as api from '../../api'
 
+import Loading from 'react-fullscreen-loading';
+import SnackAlert from '../SnackAlert'
+
 const userToken = localStorage.getItem("userToken")
 
 class ProductDetail extends PureComponent {
@@ -14,7 +17,11 @@ class ProductDetail extends PureComponent {
             product:[],
             fullImage:'',
             show:false,
-            newRating:0
+            newRating:0,
+            open:false,
+            message:'',
+            type:'',
+            loading:true
         }
         this.imageChangeHandler = this.imageChangeHandler.bind(this);
     }
@@ -23,13 +30,28 @@ class ProductDetail extends PureComponent {
         const id =this.props.match.params.product_id
         axios.get(`${api.baseurl}/commonProducts?_id=${id}`)
             .then(res =>{
-                console.log(res)
-                this.setState({product:res.data.product_details[0]})
+                this.setState({product:res.data.product_details[0],loading:false})
                 this.setState({fullImage:`${api.baseurl}/`+ this.state.product.subImages_id.product_subImages[0]})
             })
             .catch((err)=> {
                 console.log(err)
+                alert("No Product Detail Found")
             })
+    }
+
+    componentDidUpdate(prevProps) {
+        if(this.props.match.params.product_id!==prevProps.match.params.product_id) {
+        const id =this.props.match.params.product_id
+        axios.get(`${api.baseurl}/commonProducts?_id=${id}`)
+            .then(res =>{
+                this.setState({product:res.data.product_details[0],loading:false})
+                this.setState({fullImage:`${api.baseurl}/`+ this.state.product.subImages_id.product_subImages[0]})
+            })
+            .catch((err)=> {
+                console.log(err)
+                alert("No Product Detail Found")
+            })
+        }
     }
  
     imageChangeHandler(e) {
@@ -50,17 +72,36 @@ class ProductDetail extends PureComponent {
         if(item.length===0) {
             oldCart.push(newItem);
             localStorage.setItem('cart',JSON.stringify(oldCart))
-            alert("Product Added to Cart")
+            // alert("Product Added to Cart")
+            this.setState({
+                type:'success',
+                message:"Product Added to Cart",
+                open:true
+            })
 
         }
         else{
-            alert("Product already in present in cart")
+            // alert("Product already in present in cart")
+            this.setState({
+                type:'warning',
+                message:"Product already in present in cart",
+                open:true
+            })
         }
     }
 
     handleClose = () => {
         this.setState({show:false})
     }
+
+    handleSnackClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        this.setState({
+            open:false
+        })
+    };
 
     handleShow = () => {
         if(!localStorage.getItem('userToken')) {
@@ -119,9 +160,16 @@ class ProductDetail extends PureComponent {
         const product_material = product.product_material
         const product_producer = product.product_producer
 
+        // if (this.state.loading) {
+        //     return <div className="div-default"><Loading loading loaderColor="#3498db" /></div>;
+        // }
+
         return (
             <>
             <Header/>
+            {(this.state.loading)
+            ?<div className="div-default"><Loading loading loaderColor="#3498db" /></div>
+            :
             <div className="container pad">
                 <div className="row">
                     <div className="col-md-6">
@@ -190,6 +238,8 @@ class ProductDetail extends PureComponent {
                         </div>
                     </div>
                 </div>
+                {this.state.open && <SnackAlert open={this.state.open} message={this.state.message} 
+                    type={this.state.type} handleClose={this.handleSnackClose}/>}
                 <Modal show={this.state.show} onHide={()=>this.handleClose()}>
                     <Modal.Header>
                     <Modal.Title className="center">Rate Product</Modal.Title>
@@ -204,6 +254,7 @@ class ProductDetail extends PureComponent {
                     </Modal.Footer>
                 </Modal>
             </div>
+            }
             </>
         )
     }

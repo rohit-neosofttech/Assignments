@@ -1,14 +1,21 @@
-import React from 'react';
+import React, {useState}  from 'react';
 import { Link } from 'react-router-dom'
 import Rating from '@material-ui/lab/Rating'
 import * as api from '../../api'
 
-import Loading from 'react-fullscreen-loading';
+import SnackAlert from '../SnackAlert'
+// import Loading from 'react-fullscreen-loading';
 
-const ProductsCard = ({ products, loading, error }) => {
-  if (loading) {
-    return <Loading loading loaderColor="#3498db" />;
-  }
+function ProductsCard ({ products }) {
+  // function ProductsCard ({ products, loading, error }) {
+
+  const [open, setOpen] = React.useState(false);
+  const [message, setMessage] = React.useState('');
+  const [type, setType] = React.useState('');
+
+  // if (loading) {
+  //   return <Loading loading loaderColor="#3498db" />;
+  // }
 
   const addToCart = (product) => {
     console.log(products)
@@ -25,32 +32,42 @@ const ProductsCard = ({ products, loading, error }) => {
     if(item.length===0) {
         oldCart.push(newItem);
         localStorage.setItem('cart',JSON.stringify(oldCart))
-        alert("Product Added to Cart")
+        // alert("Product Added to Cart")
+        setType('success')
+        setMessage("Product Added to Cart")
+        setOpen(true);
     }
     else{
-        alert("Product already in present in cart")
+        // alert("Product already in present in cart")
+        setType('warning')
+        setMessage("Product already present in cart")
+        setOpen(true);
     }
 }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
   return (
     <>
-    {
-        (error) ? <h3>No Product Found</h3> :
-        <>
-          {products.map(product => (
-            <div key={product.product_id} className='col-sm-4'>
-              <div className='cards'>
-                <img className={'cardimage'} src={`${api.baseurl}/`+product.product_image} alt="Card Images"/>
-                <label><Link to={'/productdetail/' + product.product_id} style={{color:"#3368bb"}}>{product.product_name}</Link></label>
-                <div className="bottomCenter">
-                  <label><strong>&#8377; {product.product_cost}</strong></label><br/>
-                  <button className="btn-add" onClick={()=>addToCart(product)}>Add to Cart</button><br/>
-                  <Rating name="rating" precision={0.1} value={Number(product.product_rating)} disabled />
-                </div>
-              </div>
+      {products.map(product => (
+        <div className='col-sm-4' key={product.product_id} >
+          <div className='cards'spinnerFlag='true' >
+            <img className={'cardimage'} src={`${api.baseurl}/`+product.product_image} alt="Card Images"/>
+            <label><Link to={'/productdetail/' + product.product_id} style={{color:"#3368bb"}}>{product.product_name}</Link></label>
+            <div className="bottomCenter">
+              <label><strong>&#8377; {product.product_cost}</strong></label><br/>
+              <button className="btn-add" onClick={()=>addToCart(product)}>Add to Cart</button><br/>
+              <Rating name="rating" precision={0.1} value={Number(product.product_rating)} disabled />
             </div>
-          ))}
-        </>
-      }
+          </div>
+        </div>
+      ))}
+      {open && <SnackAlert open={open} message={message} type={type} handleClose={handleClose}/>}
     </>
   );
 };

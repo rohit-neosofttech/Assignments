@@ -1,27 +1,28 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
-import { withRouter } from 'react-router-dom';
 import NoProduct from './NoProduct'
 import * as api from '../../api'
+
+import SnackAlert from '../SnackAlert'
 
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-
-const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
 const userToken = localStorage.getItem("userToken")
 
-
-class DeliveryAddress extends Component {
+class DeliveryAddress extends PureComponent {
     constructor(props) {
         super(props);
         this.state={
             address:[],
             value:null,
             checkAddr:'',
-            empty:false
+            empty:false,
+            open:false,
+            message:'',
+            type:''
         }
     }
     
@@ -33,7 +34,6 @@ class DeliveryAddress extends Component {
         })
         .then((res)=>{
             const addr = res.data.customer_address
-            console.log(addr)
             this.setState({address:addr})
         })
         .catch((err) => {
@@ -46,7 +46,6 @@ class DeliveryAddress extends Component {
     }
 
     handleChange = (addr) => {
-        console.log(addr)
         this.setState({checkAddr:addr.address_id})
         axios.put(`${api.baseurl}/updateAddress`,{
             address_id:addr.address_id,
@@ -57,21 +56,38 @@ class DeliveryAddress extends Component {
               }
         })
         .then((res)=>{
-            console.log(res)
+            // console.log(res)
+            // console.log('Address updated')
+            this.setState({
+                type:'info',
+                message:"Address updated",
+                open:true
+            })
+
         })
         .catch((err) => {
             alert('Invalid Address API call')
         })
     };
 
-    placeOrder =() => {
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        this.setState({
+            open:false
+        })
+    };
+
+    placeOrder = () => {
+        const  {history} = this.props.props
         if(this.state.checkAddr==='') {
             alert("Please Select a Delivery Address")
         }
         else {
+
             let cart = JSON.parse(localStorage.getItem("cart"))
             cart=[...cart,{'flag': "checkout"}]
-            console.log(cart)
                 
             axios.post(`${api.baseurl}/addProductToCartCheckout`,
                 cart
@@ -81,25 +97,22 @@ class DeliveryAddress extends Component {
                 }
             })
             .then((res)=>{
-                console.log(res)
-                this.props.history.push('/orderPlaced')
                 localStorage.removeItem('cart')
                 localStorage.removeItem('tempCart')
+                history.push('/orderPlaced')
             })
             .catch((err) => {
-                this.props.history.push('/orderPlaced')
-                localStorage.removeItem('cart')
-                localStorage.removeItem('tempCart')
-                console.log('Invalid Address API call')
+                console.log('Invalid Address API call', err)
             })
         }    
     }
     
 
     render() {
+        console.log('at delievery address', this.props)
         return (
             <div>
-                {(this.state.empty)
+                {(this.state.empty || !localStorage.getItem("cart"))
                 ? <NoProduct/>
                 :
                 <div className="container card">
@@ -136,10 +149,12 @@ class DeliveryAddress extends Component {
                     </div>
                     <div style={{display:"inline-block"}}>
                         <Link to='/addAddress'><button className="btn-edit" style={{width:'150px'}}>Add Address</button></Link>
-                        <button className="btn-edit" style={{width:'150px'}} onClick={()=>this.placeOrder()}>Place Order</button>
+                        <button className="btn-edit" style={{marginLeft:'50px',width:'150px'}} onClick={this.placeOrder}>Place Order</button>
                     </div>
                 </div>
                 }
+                {this.state.open && <SnackAlert open={this.state.open} message={this.state.message} 
+                    type={this.state.type} handleClose={this.handleClose}/>}
             </div>
         )
     }

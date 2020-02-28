@@ -47,11 +47,24 @@ class ProductsPage extends Component {
     }
 
     handleClickCatergory = () => {
-        this.setState({Catopen:!this.state.Catopen});
+        if(this.state.Catopen) {
+            this.setState({categoryId:'',Catopen:false});
+        }
+        else {
+            this.setState({Catopen:true});
+        }
+        // this.setState({Catopen:!this.state.Catopen});
+
     };
     
     handleClickColor = () => {
-        this.setState({Colopen:!this.state.Colopen});
+        if(this.state.Colopen) {
+            this.setState({colorId:'',Colopen:false});
+        }
+        else {
+            this.setState({Colopen:true});
+        }
+        // this.setState({Colopen:!this.state.Colopen});
     };
 
     handleAllProduct = () => {
@@ -63,7 +76,7 @@ class ProductsPage extends Component {
             categoryName:''
         });
     }
-        render() {
+    render() {
         return (
             <>
             <Header/>
@@ -82,7 +95,7 @@ class ProductsPage extends Component {
                                 <List className="">
                                     <ListItem button onClick={this.handleClickCatergory.bind(this)}>
                                         <label>Categories</label>
-                                        {this.state.Catopen ? <ExpandLess /> : <ExpandMore />}
+                                        {this.state.Catopen===false ? <ExpandLess /> : <ExpandMore />}
                                     </ListItem>
                                     <Collapse in={this.state.Catopen} timeout="auto" unmountOnExit>
                                         <List component="div" disablePadding>
@@ -103,7 +116,7 @@ class ProductsPage extends Component {
                                 <List className="">
                                     <ListItem button onClick={this.handleClickColor.bind(this)}>
                                         <label>Color</label>
-                                        {this.state.Colopen ? <ExpandLess /> : <ExpandMore />}
+                                        {this.state.Colopen===false  ? <ExpandLess /> : <ExpandMore />}
                                     </ListItem>
                                     <Collapse in={this.state.Colopen} timeout="auto" unmountOnExit>
                                         <List component="div" disablePadding>
@@ -118,26 +131,8 @@ class ProductsPage extends Component {
                                 </List>
                             </div>
                         </div>
-                        <div className="col-md-9">
-                            <div className="row">
-                                <div className="col-md-8 text-align-left">
-                                {
-                                    (this.state.categoryId!=='') ? <h3>{this.state.categoryName}</h3>:<h3>All Categories</h3>
-                                }
-                                {/* <h3>All Categories</h3> */}
-                                </div>
-                                <div className="col-md-4" style={{marginLeft:"auto"}}>
-                                    Sort By:
-                                    <i id="icon-blue" class="fas fa-star" onClick={()=>this.setState({sortBy:"Rating"})}></i>
-                                    <i id="icon-blue" class="fas fa-arrow-up" onClick={()=>this.setState({sortBy:"Cost",sortIn:'true'})}>&#8377;</i>
-                                    <i id="icon-blue" class="fas fa-arrow-down" onClick={()=>this.setState({sortBy:"cost",sortIn:'false'})}>&#8377;</i>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <AllProduct categoryId={this.state.categoryId} colorId={this.state.colorId}
-                                sortBy={this.state.sortBy} sortIn={this.state.sortIn}/>
-                            </div>
-                        </div>
+                        <AllProduct categoryId={this.state.categoryId} colorId={this.state.colorId}
+                        sortBy={this.state.sortBy} sortIn={this.state.sortIn}/>
                     </div>
                 </div>
             </div>
