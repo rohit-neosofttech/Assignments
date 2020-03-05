@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom'
 import * as api from '../../api'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import SnackAlert from '../SnackAlert'
+import sweetalert from 'sweetalert'
 
 const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
 const userToken = localStorage.getItem("userToken")
@@ -38,54 +39,60 @@ class Address extends PureComponent {
         })
         .catch((err) => {
             // alert('Invalid Address API call')
-            this.setState({loader:false,open:true})
+            this.setState({loader:false})
             if (err.response) {
-            this.setState({
-                message: (err.response.data.message)?err.response.data.message:`Problem While Fetching the Address: ${err.response.status}..${err.response.statusText}`,
-                type: 'error',
-                // title: 'Problem While Fetching the Address'
-            })
-            // alert(error.response.data.message)
+                sweetalert(err.response.data.message?`${err.response.data.message}` : "Error has occured", {button:false});
             } else if (err.request) {
-                alert(err.request);
+                sweetalert('', `${err.request}`, "error");
             } else {
-                alert('Error', err.message);
+                sweetalert('', `${err.message}`, "error");
             }
         })
     }
 
     deleteAddress = (id) => {
-        axios.delete(`${api.baseurl}/deladdress/${id}`, {
-            headers: {
-                Authorization: 'Bearer ' + userToken
-              }
+        sweetalert("Are you sure you want to delete address?", {
+            buttons: {
+            cancel: 'Cancel',
+            confirm: {
+                text: "Confirm",
+                value: "confirm",
+              },
+            },
         })
-        .then((res)=> {
-            // console.log(res)
-            // alert("Address Deteted")
-            const addr = this.state.address.filter(address => address.address_id!==id)
-            this.setState({
-                address:addr,
-                open:true,
-                message:"Address Deleted",
-                type:'success'
-            })
-        })
-        .catch((err)=> {
-            this.setState({loader:false,open:true})
-            if (err.response) {
-            this.setState({
-                message: (err.response.data.message)?err.response.data.message:`Something Went Wrong: ${err.response.status}..${err.response.statusText}`,
-                type: 'error',
-                // title: 'Problem While Fetching the Address'
-            })
-            // alert(error.response.data.message)
-            } else if (err.request) {
-                alert(err.request);
-            } else {
-                alert('Error', err.message);
+        .then((value) => {
+            switch (value) {
+        
+            case "confirm":
+                axios.delete(`${api.baseurl}/deladdress/${id}`, {
+                    headers: {
+                        Authorization: 'Bearer ' + userToken
+                      }
+                })
+                .then((res)=> {
+                    const addr = this.state.address.filter(address => address.address_id!==id)
+                    this.setState({
+                        address:addr,
+                        open:true,
+                        message:"Address Deleted",
+                        type:'success'
+                    })
+                })
+                .catch((err)=> {
+                    this.setState({loader:false})
+                    if (err.response) {
+                        sweetalert('',err.response.data.message?`${err.response.data.message}` : "Error has occured", 'error',{button:false});
+                    } else if (err.request) {
+                        sweetalert('', `${err.request}`, "error");
+                    } else {
+                        sweetalert('', `${err.message}`, "error");
+                    }
+                })
+                break;
+            default:
+                
             }
-        })
+        });
     }
 
     handleClose = (event, reason) => {

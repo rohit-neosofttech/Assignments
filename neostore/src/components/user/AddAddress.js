@@ -1,12 +1,6 @@
 import React, { Component } from 'react'
 import Header from '../header/Header'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { List, ListItem } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import AddressSidePanel from './AddressSidePanel'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {TextField, TextareaAutosize} from '@material-ui/core/';
 
@@ -18,9 +12,7 @@ import axios from 'axios'
 import * as api from '../../api'
 
 const userToken = localStorage.getItem("userToken")
-const textOnly = RegExp(
-    /^[a-zA-Z ]*$/
-  );
+const textOnly = RegExp(/^[a-zA-Z,./ ]*$/);
 
 const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
@@ -36,17 +28,17 @@ const formValid = ({ formErrors, ...rest }) => {
     });
   
     return valid;
-};
+  };
 
 class AddAddress extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state={
-            address:'',
-            pincode:'',
-            city:'', 
-            state:'',
-            country:'',
+            address:null,
+            pincode:null,
+            city:null, 
+            state:null,
+            country:null,
             formErrors: {
                 address:'',
                 pincode:'',
@@ -156,9 +148,7 @@ class AddAddress extends Component {
     };
 
     profileUpdateCancel = () => {
-        if(window.confirm("All changes will be lost")) {
-            this.props.history.push("/address")
-        }
+        this.props.history.push("/address")
     }
 
     render() {
@@ -168,47 +158,11 @@ class AddAddress extends Component {
             <div className="container p-5">
                 <h3>My Account</h3><hr/><br/>
                 <div className="row">
-                    <div className="col-md-4 p-3">
-                        <ExpansionPanel>
-                            <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="orderPanel"
-                            >
-                            <Typography>Order</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                            <List>
-                                <Link to="/order">
-                                    <ListItem button>Order</ListItem>
-                                </Link>
-                            </List>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel><br/>
-                        <ExpansionPanel>
-                            <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel2a-content"
-                            id="accountPanel"
-                            >
-                            <Typography>Account</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                            <List>
-                                <Link to="/profile">
-                                    <ListItem button>Profile</ListItem>
-                                </Link><hr/>
-                                <Link to='/address'>
-                                    <ListItem button>Addresses</ListItem>
-                                </Link>
-                            </List>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                    </div>
+                    <AddressSidePanel/>
                     <div className="col-md-8 card p-3">
                         <h4>Add New Address</h4><hr/><br/>
                         <form onSubmit={this.onSubmitAddress} autoComplete='off'>
-                        <TextField style={{width:'50%'}}
+                            <TextField style={{width:'50%'}}
                                 label="Address"
                                 type="text"
                                 name="address"
@@ -219,11 +173,35 @@ class AddAddress extends Component {
                                 variant='outlined'
                                 error={this.state.formErrors.address.length > 0}
                             /><br/><br/>
+                            {/* <div class="MuiFormControl-root MuiTextField-root" style={{width: "50%"}}>
+                                <div class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl">
+                                    <TextareaAutosize  className="MuiInputBase-input MuiOutlinedInput-input"
+                                        type="text"
+                                        name="address"
+                                        label='Address'
+                                        placeholder="Address"
+                                        helperText={this.state.formErrors.address.length > 0 && this.state.formErrors.address}
+                                        value={this.state.address}
+                                        onChange={this.handleChange}
+                                        onBlur={this.handleChange}
+                                        error={this.state.formErrors.address.length > 0}
+                                        aria-invalid="false"
+                                    />
+                                    <fieldset aria-hidden="true" class="PrivateNotchedOutline-root-186 MuiOutlinedInput-notchedOutline">
+                                        <legend class="PrivateNotchedOutline-legendLabelled-188"><span>Address</span>
+                                        </legend>
+                                    </fieldset>
+                                </div>
+                            </div><br/><br/> */}
 
                             <TextField style={{width:'30%'}} 
                                 label="Pincode"
                                 type="number"
                                 name="pincode"
+                                onInput = {(e) =>{
+                                  e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,6)
+                                }}
+                                onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-' || evt.key === '+' ) && evt.preventDefault() }
                                 helperText={this.state.formErrors.pincode.length > 0 && this.state.formErrors.pincode}
                                 value={this.state.pincode}
                                 onChange={this.handleChange}

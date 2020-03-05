@@ -5,6 +5,7 @@ import NoProduct from './NoProduct'
 import * as api from '../../api'
 
 import SnackAlert from '../SnackAlert'
+import sweetalert from 'sweetalert'
 
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -37,7 +38,13 @@ class DeliveryAddress extends PureComponent {
             this.setState({address:addr})
         })
         .catch((err) => {
-            // alert('Invalid Address API call')
+            // if (err.response) {
+            //     sweetalert("Error", err.response.data.message?`${err.response.data.message}` : "Error has occured", "error", {button:false});
+            // } else if (err.request) {
+            //     sweetalert("Error", `${err.request}`, "error");
+            // } else {
+            //     sweetalert("Error", `${err.message}`, "error");
+            // }
         })
 
         if(localStorage.getItem("cart")) { 

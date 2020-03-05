@@ -52,8 +52,8 @@ class Logout extends Component {
         localStorage.removeItem('CustDetail')
         localStorage.removeItem('userToken')
         
-        // const { history } = this.props;
-        // // history.push(`/`);
+        const { history } = this.props;
+        history.push(`/`);
     }
     render() {
         return (

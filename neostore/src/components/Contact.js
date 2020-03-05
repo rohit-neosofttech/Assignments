@@ -15,9 +15,7 @@ const emailRegex = RegExp(
     // /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-]{2,5})+.([A-Za-z]{2,4})$/  
     /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
   );
-const textOnly = RegExp(
-    /^[a-zA-Z ]*$/
-  );
+const textOnly = RegExp(/^[a-zA-Z]*$/);
   
   const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
@@ -209,6 +207,10 @@ class Contact extends Component {
                                 label="Mobile Number"
                                 type="number"
                                 name="mobile"
+                                onInput = {(e) =>{
+                                  e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
+                                }}
+                                onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-') && evt.preventDefault() }
                                 helperText={this.state.formErrors.mobile.length > 0 && this.state.formErrors.mobile}
                                 value={this.state.mobile}
                                 onChange={this.handleChange}

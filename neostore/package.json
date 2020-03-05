@@ -22,6 +22,7 @@
     "react-dom": "^16.12.0",
     "react-floating-input": "^2.1.10",
     "react-fullscreen-loading": "0.0.4",
+    "react-image-magnifiers": "^1.2.3",
     "react-image-magnify": "^2.7.4",
     "react-js-pagination": "^3.0.2",
     "react-loading-overlay": "^1.0.1",
@@ -30,9 +31,11 @@
     "react-scripts": "3.3.0",
     "react-select": "^3.0.8",
     "react-star-rating": "^1.4.2",
+    "react-tooltip": "^4.0.3",
     "reactstrap": "^8.4.1",
     "redux": "^4.0.5",
-    "suggestion-react-input-search": "^1.4.0"
+    "suggestion-react-input-search": "^1.4.0",
+    "sweetalert": "^2.1.2"
   },
   "scripts": {
     "start": "react-scripts start",

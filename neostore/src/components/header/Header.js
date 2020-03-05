@@ -3,7 +3,7 @@ import {NavLink, Link} from 'react-router-dom'
 import Badge from '@material-ui/core/Badge';
 import User from '../../defaultUser.png'
 import axios from 'axios'
-
+import sweetalert from 'sweetalert'
 import * as api from '../../api'
 
 import './Header.css'
@@ -19,7 +19,7 @@ class Header extends Component {
             cartproducts:[],
             text:'',
             // profile_image:(localStorage.getItem("CustDetail")) ? custDetail.profile_img : null,
-            profile_image: '',
+            // profile_image: null,
             count:0,
             selectedOption:'',
             options:[],
@@ -35,9 +35,9 @@ class Header extends Component {
     }
     
     componentDidMount() {
-        this.setState({
-            profile_image:(localStorage.getItem("CustDetail")) ? custDetail.profile_img : null,
-        })
+        // this.setState({
+        //     profile_image:(localStorage.getItem("CustDetail")) ? custDetail.profile_img : null,
+        // })
         if(localStorage.getItem('userToken'))
         {
             this.setState({
@@ -45,7 +45,7 @@ class Header extends Component {
                             <Link className="dropdown-item" to='/profile'>Profile</Link>
                             <Link className="dropdown-item" to='/logout'>Log out</Link>
                         </>,
-                image: <img className="user-avatar" src={(localStorage.getItem("CustDetail") && this.state.profile_image===null)? User:`${api.baseurl}/${custDetail.profile_img}`} alt='' />
+                image: <img className="user-avatar" src={(localStorage.getItem("CustDetail") && custDetail.profile_img==null)? User:`${api.baseurl}/${custDetail.profile_img}`} alt='' />
          })
         }
         else {
@@ -63,7 +63,17 @@ class Header extends Component {
             this.setState({products:res.data.product_details})
         })
         .catch((err) => {
-            alert("Wrong API call")
+            if (err.response) {
+                err.response.data.message 
+                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                : sweetalert("Oops!", 'Something Went Wrong getting Products Data', "error",{button:false})
+          
+                // alert(error.response.data.message)
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
+            } else {
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+            }
         })
 
         if(localStorage.getItem('cart')) {

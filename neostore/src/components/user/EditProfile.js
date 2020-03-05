@@ -1,13 +1,9 @@
 import React, { Component } from 'react'
 import Header from '../header/Header'
 import UserHome from './UserHome'
-import InputFloat from 'react-floating-input'
 import axios from 'axios'
 import * as api from '../../api'
 
-import Snackbar from '@material-ui/core/Snackbar';
-import Slide from '@material-ui/core/Slide';
-import { Alert, AlertTitle } from '@material-ui/lab';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import {TextField} from '@material-ui/core/';
@@ -15,10 +11,13 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
+import sweetalert from 'sweetalert';
+import SnackAlert from '../SnackAlert'
+
 const userToken = localStorage.getItem('userToken')
 
 const emailRegex = RegExp(/^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/);
-const textOnly = RegExp(/^[a-zA-Z ]*$/);
+const textOnly = RegExp(/^[a-zA-Z]*$/);
 
   
   const formValid = ({ formErrors, ...rest }) => {
@@ -58,7 +57,9 @@ class EditProfile extends Component {
                 profile_img:''
             },
             open:false,
-            loader:false
+            loader:false,
+            type:'',
+            message:''
         }
     }
     
@@ -73,7 +74,6 @@ class EditProfile extends Component {
             gender:profile.gender,
             dob:profile.dob,
             // profile_img:''
-            // img:''
         })
         this.setState({loader:false})
     }
@@ -114,23 +114,73 @@ class EditProfile extends Component {
     };
 
     onDateChange = e => {
+        var date = e.target.value
         let today = new Date()
-        let selected = new Date(e.target.value)
-        if(selected<today) {
-            console.log("valid")
-            this.setState({ dob: e.target.value })
+        let minDate = new Date()
+        minDate.setFullYear(today.getFullYear()-100)
+        var selected = new Date(e.target.value)
+        console.log(minDate)
+        console.log(selected)
+        if(selected<today && selected>minDate) {
+            var age = selected
+            age.setFullYear(age.getFullYear()+18)
+            if(age<today) {
+                console.log("valid")
+                this.setState(prevState => ({
+                    dob: date,
+                    formErrors: {                  
+                        ...prevState.formErrors,   
+                        dob: ''
+                    }
+                }))
+            }
+            else {
+                this.setState(prevState => ({
+                    dob: date,
+                    formErrors: {                  
+                        ...prevState.formErrors,   
+                        dob: 'User Must be +18'
+                    }
+                }))
+            }
         }
         else{
             console.log("Invalid")
-            this.setState({formErrors:{dob:'Enter a Valid Date'}})
+            this.setState(prevState => ({
+                formErrors: {                  
+                    ...prevState.formErrors,   
+                    dob: 'Enter a Valid Date of Birth'
+                }
+            }))
         }
         
     }
 
     onImageChange = e => {
-        console.log(e.target.files)
-        this.setState({ profile_img: e.target.files });
-        // this.setState({ img: e.target.files });
+        if(e.target.files.length!==0) {
+            const acceptedImageTypes = ['image/jpeg', 'image/png'];
+    
+            if(e.target.files && acceptedImageTypes.includes(e.target.files[0].type) ) {
+                this.setState({ profile_img: e.target.files });
+                this.setState(prevState => ({
+                    formErrors: {                  
+                        ...prevState.formErrors,   
+                        profile_img: ''
+                    }
+                }))
+            }
+            else {
+                this.setState(prevState => ({
+                    open:true,
+                    type:"error",
+                    message:'Invalid format for Profile Image ',
+                    formErrors: {                  
+                        ...prevState.formErrors,   
+                        profile_img: 'The File should be of image format (i.e. jpeg | png)'
+                    }
+                }))
+            }
+        }
     }
 
     onRadioChange = (e) => {
@@ -147,65 +197,38 @@ class EditProfile extends Component {
 
     handleProfileUpdate = (e) => {
         e.preventDefault();
-        // console.log(this.state.profile_img)
-
         if (this.state.profile_img==='') {
-            if(window.confirm("Are you sure you want to Update Profile without a Profile Image?")) {
-                this.profileUpdate()
-            }
+            sweetalert("Are you sure you want to Update Profile without a Profile Image?", {
+                buttons: {
+                cancel: 'Cancel',
+                confirm: {
+                    text: "Confirm",
+                    value: "confirm",
+                  },
+                },
+            })
+            .then((value) => {
+                switch (value) {
+            
+                case "confirm":
+                    this.profileUpdate()
+                    // sweetalert('',"Profile Updated Successfully","success", {button: false})
+                    break;
+                default:
+                    
+                }
+            });
         }
         else {
             this.profileUpdate()
         }
-        // if (formValid(this.state)) {
-        //     this.setState({loader:true})
-        //     let formData = new FormData()
-        //     if(this.state.profile_img==='') {
-        //         // formData.append('profile_img',this.state.profile_img)
-        //     } else {
-        //         formData.append('profile_img',this.state.profile_img[0],this.state.profile_img[0].name)
+        // if (this.state.profile_img==='') {
+        //     if(window.confirm("Are you sure you want to Update Profile without a Profile Image?")) {
+        //         this.profileUpdate()
         //     }
-        //     formData.append('first_name',this.state.firstName)
-        //     formData.append('last_name',this.state.lastName)
-        //     formData.append('email',this.state.email)
-        //     formData.append('dob',this.state.dob)
-        //     formData.append('phone_no',this.state.mobile)
-        //     formData.append('gender',this.state.gender)
-        //     console.log("formdata: ",formData)
-
-        //     axios.put(`${api.baseurl}/profile`, formData , {
-        //         headers: {
-        //         Authorization: 'Bearer ' + userToken
-        //         }}
-        //     )
-        //     .then(res => {
-        //         this.setState({
-        //             loader:false,
-        //             open:true,
-        //             message: res.data.message,
-        //             type: 'success',
-        //             title: 'Form Submitted'
-        //         })
-        //         localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_details))
-        //         alert("Form submitted");
-        //         // this.props.history.push("/profile")
-        //     })
-        //     .catch(error => {
-        //         this.setState({loader:false,open:true})
-        //         if (error.response) {
-        //         this.setState({
-        //             message: (error.response.data.message)?error.response.data.message:`Server Error: ${error.response.status}..${error.response.statusText}`,
-        //             type: 'error',
-        //             title: 'Log in Error'
-        //         })
-        //         // alert(error.response.data.message)
-        //         } else if (error.request) {
-        //             alert(error.request);
-        //         } else {
-        //             alert('Error', error.message);
-        //         }
-        //         alert('Edit Profile Error')
-        //     });
+        // }
+        // else {
+        //     this.profileUpdate()
         // }
     };
 
@@ -233,39 +256,36 @@ class EditProfile extends Component {
             )
             .then(res => {
                 this.setState({
-                    loader:false,
-                    open:true,
-                    message: res.data.message,
-                    type: 'success',
-                    title: 'Form Submitted'
+                    loader:false
                 })
+                localStorage.removeItem('CustDetail')
                 localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_details))
-                alert("Form submitted");
-                this.props.history.push("/profile")
+                sweetalert("Form Submitted!", `${res.data.message}`, "success", {
+                    buttons: false, timer:2000,
+                })
+                .then((value) => {
+                    switch (value) {
+                      default:
+                        this.props.history.push("/profile")
+                        window.location.reload(false)
+                    }
+                });
             })
             .catch(error => {
-                this.setState({loader:false,open:true})
+                this.setState({loader:false})
                 if (error.response) {
-                this.setState({
-                    message: (error.response.data.message)?error.response.data.message:`Server Error: ${error.response.status}..${error.response.statusText}`,
-                    type: 'error',
-                    title: 'Log in Error'
-                })
-                // alert(error.response.data.message)
+                    sweetalert("Error", error.response.data.message ? `${error.response.data.message}` : "Error has occured", "error", {button:false});
                 } else if (error.request) {
-                    alert(error.request);
+                    sweetalert("Error", `${error.request}`, "error");
                 } else {
-                    alert('Error', error.message);
+                    sweetalert("Error", `${error.message}`, "error");
                 }
-                alert('Edit Profile Error ',this.state.message )
             });
         }
     }
 
     profileUpdateCancel = () => {
-        if(window.confirm("All changes will be lost")) {
-            this.props.history.push("/profile")
-        }
+        this.props.history.push("/profile")
     }
 
     render() {
@@ -285,22 +305,22 @@ class EditProfile extends Component {
                                 label="First Name"
                                 type="text"
                                 name="firstName"
-                                helperText={this.state.formErrors.firstName.length > 0 && this.state.formErrors.firstName}
+                                helperText={this.state.formErrors.firstName!=='' && this.state.formErrors.firstName}
                                 value={this.state.firstName}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
-                                error={this.state.formErrors.firstName.length > 0}
+                                error={this.state.formErrors.firstName!==''}
                             /><br/><br/>
 
                             <TextField fullWidth
                                 label="Last Name"
                                 type="text"
                                 name="lastName"
-                                helperText={this.state.formErrors.lastName.length > 0 && this.state.formErrors.lastName}
+                                helperText={this.state.formErrors.lastName!=='' && this.state.formErrors.lastName}
                                 value={this.state.lastName}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
-                                error={this.state.formErrors.lastName.length > 0}
+                                error={this.state.formErrors.lastName!==''}
                             /><br/><br/>
                             
                             <RadioGroup aria-label="gender" name="gender" value={this.state.gender} onChange={this.onRadioChange} style={{display:"inline-block"}}>
@@ -308,33 +328,40 @@ class EditProfile extends Component {
                                 <FormControlLabel value="Female" control={<Radio />} label="Female" />
                             </RadioGroup>
 
-                            <input className="form-control" type="date" value={this.state.dob} onChange={this.onDateChange} name="date"/>
+                            <input className="form-control" type="date" value={this.state.dob} onChange={(e) => this.setState({dob:e.target.value})} onBlur={this.onDateChange} name="date"/>
+                            {this.state.formErrors.dob!=='' ? <><span className="errorMessage">{this.state.formErrors.dob}</span><br/></> : <></>}
                             <br/>
-                            {this.state.formErrors.dob.length>0 ? <span className="error">{this.state.formErrors.dob}</span> : <></>}
 
                             <TextField fullWidth
                                 label="Mobile Number"
                                 type="number"
                                 name="mobile"
-                                helperText={this.state.formErrors.mobile.length > 0 && this.state.formErrors.mobile}
+                                onInput = {(e) =>{
+                                    e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
+                                  }}
+                                onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-' ) && evt.preventDefault() }
+                                helperText={this.state.formErrors.mobile!=='' && this.state.formErrors.mobile}
                                 value={this.state.mobile}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
-                                error={this.state.formErrors.mobile.length > 0}
+                                error={this.state.formErrors.mobile!==''}
                             /><br/><br/>
 
                             <TextField fullWidth
                                 label="Email"
                                 type="text"
                                 name="email"
-                                helperText={this.state.formErrors.email.length > 0 && this.state.formErrors.email}
+                                helperText={this.state.formErrors.email!=='' && this.state.formErrors.email}
                                 value={this.state.email}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
-                                error={this.state.formErrors.email.length > 0}
+                                error={this.state.formErrors.email!==''}
                             /><br/><br/>
                            
-                            <input type="file" onChange={this.onImageChange}/><br/>
+                            <input type="file" onChange={this.onImageChange}/>
+                            {this.state.formErrors.profile_img!=='' ? <span className="errorMessage">{this.state.formErrors.profile_img}</span> : <></>}
+    
+                            <br/>
                             <hr/>
                             {this.state.loader
                                 ? 
@@ -361,18 +388,9 @@ class EditProfile extends Component {
                         </form>
                     </div>
                 </div><br/><br/><br/>
-                {this.state.open && 
-                  <Snackbar anchorOrigin={{ vertical:'top', horizontal:'center' }} open={this.state.open} 
-                  autoHideDuration={3000} onClose={this.handleSnackClose} >
-                      <Slide direction="down" in={true}>
-                          <Alert variant="filled" severity={this.state.type}>
-                              <AlertTitle>{this.state.title}</AlertTitle>
-                              {this.state.message}
-                              <button onClose={this.handleSnackClose}>Close</button>
-                          </Alert>
-                      </Slide>
-                  </Snackbar>
-                }
+
+                {this.state.open && <SnackAlert open={this.state.open} message={this.state.message} type={this.state.type} handleClose={this.handleSnackClose}/>}
+
             </div>
         </>
         )

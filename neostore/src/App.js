@@ -48,8 +48,8 @@ function App() {
         <ProtectedRoute path='/changePass' component={ChangePass}/>
         <ProtectedRoute path='/profile' component={Profile}/>
         <ProtectedRoute path='/editProfile' component={EditProfile}/>
+        <ProtectedRoute path='/orderPlaced' component={OrderPlaced}/>
         <Route path='/maincart' component={MainCart}/>
-        <Route path='/orderPlaced' component={OrderPlaced}/>
         <Route path='/login' component={Login}/>
         <Route path='/logout' component={Logout}/>
         <Route path='/register' component={Register}/>

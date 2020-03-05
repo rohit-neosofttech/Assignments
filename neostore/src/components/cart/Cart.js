@@ -6,6 +6,7 @@ import NoProduct from './NoProduct'
 import * as api from '../../api'
 // import { Link } from 'react-router-dom';
 import { List , ListItem } from '@material-ui/core';
+import sweetalert from 'sweetalert'
 
 // const userToken = localStorage.getItem("userToken")
 // const cart = JSON.parse(localStorage.getItem("cart"))
@@ -21,8 +22,8 @@ class Cart extends Component {
             subTotal:0,
             gst:5,
             orderTotal:0,
-            max:false,
-            min:false
+            disabledMaxButton:[],
+            disabledMinButton:[]
         }
     }
     
@@ -33,14 +34,17 @@ class Cart extends Component {
     addQuantity = (product) => {
         let item = this.state.cartProduct.filter(item => item.product_id===product.product_id)
         if(item[0].quantity===9) {
-            alert(`Quantity reached MAX value`)
+            this.setState({disabledMaxButton:[...this.state.disabledMaxButton,item[0].product_id]})
+            // sweetalert(`Quantity reached MAX value`,{button:false})
         } else {
             item[0].quantity++
             item[0].total = item[0].quantity * item[0].product_cost
             this.setState(
                 ()=>{return {cartProduct:this.state.cartProduct}}
             )
-        localStorage.setItem("cart",JSON.stringify(this.state.cartProduct))
+            var btn = this.state.disabledMinButton.filter(bttn => bttn!==item[0].product_id)
+            btn ? this.setState({disabledMinButton:btn}) : console.log(btn) 
+            localStorage.setItem("cart",JSON.stringify(this.state.cartProduct))
         }
         this.addTotal()
     }
@@ -48,35 +52,67 @@ class Cart extends Component {
     removeQuantity = (product) => {
         let item = this.state.cartProduct.filter(item => item.product_id===product.product_id)
         if(item[0].quantity===1) {
-            alert(`Quantity reached MIN value`)
+            this.setState({disabledMinButton:[...this.state.disabledMinButton,item[0].product_id]})
+            // sweetalert(`Quantity reached MIN value`,{button:false})
         } else {
             item[0].quantity--
             item[0].total = item[0].quantity * item[0].product_cost
             this.setState(
                 ()=>{return {cartProduct:this.state.cartProduct}}
             )
-        localStorage.setItem("cart",JSON.stringify(this.state.cartProduct))
+            var btn = this.state.disabledMaxButton.filter(bttn => bttn!==item[0].product_id)
+            btn ? this.setState({disabledMaxButton:btn}) : console.log(btn) 
+            localStorage.setItem("cart",JSON.stringify(this.state.cartProduct))
         }
         this.addTotal()
     }
 
     removeItem = (product) => {
-        if (window.confirm("Are you sure you want to delete this item from cart")) {
-            let item = this.state.cartProduct.filter(item => item.product_id!==product.product_id)
-            if(item.length!==0) {
-                this.setState(
-                    {cartProduct:item}
-                )
-                localStorage.setItem("cart",JSON.stringify(item))
+        sweetalert("Are you sure you want to delete this item from cart", {
+            buttons: {
+            cancel: 'Cancel',
+            confirm: {
+                text: "Confirm",
+                value: "confirm",
+              },
+            },
+        })
+        .then((value) => {
+            switch (value) {
+            case "confirm":
+                let item = this.state.cartProduct.filter(item => item.product_id!==product.product_id)
+                if(item.length!==0) {
+                    this.setState({cartProduct:item})
+                    localStorage.setItem("cart",JSON.stringify(item))
+                    this.addTotal()
+                } else {
+                    this.setState({cartProduct:item})
+                    localStorage.removeItem('cart')
+                    this.forceUpdate()
+                }
                 this.addTotal()
-            } else {
-                this.setState(
-                    {cartProduct:item}
-                )
-                localStorage.removeItem('cart')
+                break;
+            default:     
+                break;
             }
-            this.addTotal()
-        }
+        });
+
+        // if (window.confirm("Are you sure you want to delete this item from cart")) {
+        //     let item = this.state.cartProduct.filter(item => item.product_id!==product.product_id)
+        //     if(item.length!==0) {
+        //         this.setState(
+        //             {cartProduct:item}
+        //         )
+        //         localStorage.setItem("cart",JSON.stringify(item))
+        //         this.addTotal()
+        //     } else {
+        //         this.setState(
+        //             {cartProduct:item}
+        //         )
+        //         localStorage.removeItem('cart')
+        //     }
+        //     this.addTotal()
+        // }
     }
 
     addTotal = () => {
@@ -98,10 +134,6 @@ class Cart extends Component {
     componentDidUpdate(prevState) {
         if(prevState.subTotal!==this.state.subTotal) {
         }
-    }
-
-    handleClick = () => {
-        console.log(this.props)
     }
 
     render() {
@@ -145,9 +177,9 @@ class Cart extends Component {
                                         </div>
                                     </td>
                                     <td>
-                                        <button className="cart-quantity-btn" onClick={()=>this.removeQuantity(product)} >-</button>
+                                        <button className="cart-quantity-btn" style={{}} onClick={()=>this.removeQuantity(product)} disabled={this.state.disabledMinButton.filter(bttn =>bttn===product.product_id).length!==0} >-</button>
                                         <span>&emsp;{product.quantity}&emsp;</span>
-                                        <button className="cart-quantity-btn" onClick={()=>this.addQuantity(product)} >+</button>
+                                        <button className="cart-quantity-btn" onClick={()=>this.addQuantity(product)} disabled={this.state.disabledMaxButton.filter(bttn =>bttn===product.product_id).length!==0} >+</button>
                                     </td>
                                     <td>{product.product_cost}</td>
                                     <td>{product.total}</td>
@@ -173,7 +205,7 @@ class Cart extends Component {
                                     <h5>Order Total</h5><h5 className="right">{this.state.orderTotal}</h5>
                                 </ListItem>
                             </List><br/>
-                            <button className="btn-order" onClick={()=>this.props.handleSelect('address')}>Proceed To Buy</button>
+                            <button className="btn-order" onClick={()=>this.props.handleSelect('address')} >Proceed To Buy</button>
                         </div>
                     </div>
                 </div>

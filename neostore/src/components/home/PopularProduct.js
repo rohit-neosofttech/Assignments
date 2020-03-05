@@ -4,6 +4,7 @@ import axios from 'axios'
 import * as api from '../../api'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Link } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip'
 
 class PopularProduct extends PureComponent {
     constructor() {
@@ -28,7 +29,7 @@ class PopularProduct extends PureComponent {
                 this.setState({
                     message: (err.response.data.message)?err.response.data.message:`Address Edit Error: ${err.response.status}..${err.response.statusText}`,
                     type: 'error',
-                    title: 'Address Edit Error'
+                    title: 'Popular Product Error'
                 })
                 // alert(error.response.data.message)
                 } else if (err.request) {
@@ -36,7 +37,7 @@ class PopularProduct extends PureComponent {
                 } else {
                     alert('Error', err.message);
                 }
-                alert('Encounted Problem while Updating address  ',this.state.message )
+                alert('Popular Product Invalid API call',this.state.message )
         })
     }
 
@@ -44,7 +45,7 @@ class PopularProduct extends PureComponent {
         return (
             <div className="container">
                 <h3 className="center">Popular Product</h3>
-                <p className="center"><Link to="/productspage">View All</Link></p><br/>
+                <p className="center"><Link to="/productspage" data-tip="Displays All the Product">View All</Link></p><br/>
                     <div className="row">
                     {this.state.loader
                     ? 
@@ -65,6 +66,7 @@ class PopularProduct extends PureComponent {
                     </>
                     }
                     </div>
+                    <ReactTooltip />
             </div>
         )
     }

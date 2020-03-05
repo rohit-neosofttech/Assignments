@@ -1,12 +1,6 @@
 import React, { Component } from 'react'
 import Header from '../header/Header'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { List, ListItem } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import AddressSidePanel from './AddressSidePanel'
 import * as api from '../../api'
 import {TextField} from '@material-ui/core/';
 
@@ -18,7 +12,7 @@ import axios from 'axios'
 
 const userToken = localStorage.getItem('userToken')
 
-const textOnly = RegExp(/^[a-zA-Z ]*$/);
+const textOnly = RegExp(/^[a-zA-Z.,/ ]*$/);
 
   
 const formValid = ({ formErrors, ...rest }) => {
@@ -40,12 +34,12 @@ class EditAddress extends Component {
     constructor(props) {
         super(props);
         this.state={
-            address_id:'',
-            address:'',
-            pincode:'',
-            city:'',
-            _state:'',
-            country:'',
+            address_id:null,
+            address:null,
+            pincode:null,
+            city:null,
+            _state:null,
+            country:null,
             formErrors : {
                 address_id:'',
                 address:'',
@@ -182,43 +176,7 @@ class EditAddress extends Component {
             <div className="container p-5">
                 <h3>My Account</h3><hr/><br/>
                 <div className="row">
-                    <div className="col-md-4 p-3">
-                        <ExpansionPanel>
-                            <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="orderPanel"
-                            >
-                            <Typography>Order</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                            <List>
-                                <Link to="/order">
-                                    <ListItem button>Order</ListItem>
-                                </Link>
-                            </List>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel><br/>
-                        <ExpansionPanel>
-                            <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel2a-content"
-                            id="accountPanel"
-                            >
-                            <Typography>Account</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                            <List>
-                                <Link to="/profile">
-                                    <ListItem button>Profile</ListItem>
-                                </Link><hr/>
-                                <Link to='/address'>
-                                    <ListItem button>Addresses</ListItem>
-                                </Link>
-                            </List>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                    </div>
+                    <AddressSidePanel/>
                     <div className="col-md-8 card p-3">
                         <h4>Edit Address</h4><hr/><br/>
                         <form onSubmit={this.onFormSubmit} autoComplete="off"> 
@@ -238,6 +196,10 @@ class EditAddress extends Component {
                                 label="Pincode"
                                 type="number"
                                 name="pincode"
+                                onInput = {(e) =>{
+                                    e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,6)
+                                  }}
+                                onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-' || evt.key === '+' ) && evt.preventDefault() }
                                 helperText={this.state.formErrors.pincode.length > 0 && this.state.formErrors.pincode}
                                 value={this.state.pincode}
                                 onChange={this.handleChange}

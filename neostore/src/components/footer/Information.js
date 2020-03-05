@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import axios from 'axios'
 import * as api from '../../api'
-
+import sweetalert from 'sweetalert'
 import { Link } from 'react-router-dom';
 
 class Information extends PureComponent {
@@ -20,7 +20,17 @@ class Information extends PureComponent {
             this.setState({terms:res.data.termsAndConditions_details[0]})     
         })
         .catch((err)=> {
-            alert("Wrong API call")
+            if (err.response) {
+                err.response.data.message 
+                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                : sweetalert("Oops!", 'Something Went Wrong Getting Terms And Conditions', "error",{button:false})
+          
+                // alert(error.response.data.message)
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
+            } else {
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+            }
         })
 
         //Axios for Gurantee and Return Policy on the footer
@@ -29,7 +39,17 @@ class Information extends PureComponent {
             this.setState({policy:res.data.guarantee_details[0]})     
         })
         .catch((err)=> {
-            alert("Wrong API call")
+            if (err.response) {
+                err.response.data.message 
+                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                : sweetalert("Oops!", 'Something Went Wrong getting Guarantee', "error",{button:false})
+          
+                // alert(error.response.data.message)
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
+            } else {
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+            }
         })
     }
     render() {

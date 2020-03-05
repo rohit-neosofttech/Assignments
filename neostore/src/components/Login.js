@@ -7,6 +7,7 @@ import './Form.css'
 import {TextField} from '@material-ui/core/';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import sweetalert from 'sweetalert'
 import Snackbar from '@material-ui/core/Snackbar';
 import Slide from '@material-ui/core/Slide';
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -63,28 +64,28 @@ class Login extends Component {
             // this.getPreviousCart(res.data.token)
             localStorage.setItem('userToken',`${res.data.token}`)
             localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_details) )
-            this.setState({loader:false,open:true})
-            this.setState({
-              message: res.data.message,
-              type: 'success',
-              title: 'User Logged In'
-            })
-            this.props.history.push(`/`);
+            this.setState({loader:false})
+            // sweetalert("Successful Login!", `${res.data.message}`, "success", {
+            //   buttons: false, timer:2000,
+            // })
+            sweetalert(res.data.message,{button:false, timer:2000,})
+            .then((value) => {
+                switch (value) {
+                  default:
+                    this.props.history.push(`/`);
+                    window.location.reload(false)
+                }
+            });            
           })
           .catch((error) => {
-            this.setState({loader:false,open:true})
-            if (error.response) {
-              this.setState({
-                message: (error.response.data.message)?error.response.data.message:`Server Error: ${error.response.status}..${error.response.statusText}`,
-                type: 'error',
-                title: 'Log in Error'
-              })
-              // alert(error.response.data.message)
-            } else if (error.request) {
-                alert(error.request);
-            } else {
-                alert('Error', error.message);
-            }
+            this.setState({loader:false})
+              if (error.response) {
+                  sweetalert("Error", error.response.data.message?`${error.response.data.message}` : "Error has occured", "error", {button:false});
+              } else if (error.request) {
+                  sweetalert("Error", `${error.request}`, "error");
+              } else {
+                  sweetalert("Error", `${error.message}`, "error");
+              }
           });
         } 
         else {
@@ -143,8 +144,10 @@ class Login extends Component {
             (emailRegex.test(value)? "" : "invalid email address")
           break;
         case "password":
-          formErrors.password = 
-            (value.length === 0 ? "*required" : "")
+          formErrors.password =
+            (value.length === 0 ? "*required" : "") ||
+            (value.length < 8 ? "minimum 8 characaters required" : "") ||
+            (value.length >12 ? "maximum 12 characaters required" : "")
             break;
         default:
           break;
@@ -254,19 +257,6 @@ class Login extends Component {
                     </pre>
                 </div>
             </div>
-
-            {this.state.open && 
-            <Snackbar anchorOrigin={{ vertical:'top', horizontal:'center' }} open={this.state.open} 
-            autoHideDuration={3000} onClose={this.handleSnackClose} >
-                <Slide direction="down" in={true}>
-                    <Alert onClose={this.handleSnackClose} variant="filled" severity={this.state.type}>
-                        <AlertTitle>{this.state.title}</AlertTitle>
-                        {this.state.message}
-                    </Alert>
-                </Slide>
-            </Snackbar>
-            }
-
           </>
         )
     }

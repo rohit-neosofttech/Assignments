@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import Header from '../header/Header'
 import UserHome from './UserHome'
 import axios from 'axios'
+import CircularProgress from '@material-ui/core/CircularProgress';
 import * as api from '../../api'
 
 const userToken = localStorage.getItem("userToken")
@@ -10,11 +11,13 @@ class Order extends Component {
     constructor(props) {
         super(props);
         this.state= {
-            orders : []
+            orders : [],
+            loader:false
         }
     }
 
     componentDidMount() {
+        this.setState({loader:true})
         axios.get(`${api.baseurl}/getOrderDetails`,{
             headers:{
                 Authorization: 'Bearer ' + userToken
@@ -23,12 +26,13 @@ class Order extends Component {
         .then((res)=>{
             // console.log(res.data.product_details)
             this.setState({
-                orders:res.data.product_details
+                orders:res.data.product_details,
+                loader:false
             })
 
         })
         .catch((err)=> {
-            alert("Invalid componentDidMount API call")      
+            alert("There is a Problem Getting your Order Details")      
         })
     }
 
@@ -68,7 +72,14 @@ class Order extends Component {
                 <div className="row">
                     <UserHome />
                     <div className="col-md-8 p-3">
+                        {this.state.loader
+                        ? 
+                            <div className="center" >
+                                <CircularProgress/>
+                            </div>
+                        :
                         <div>
+                        
                         { this.state.orders.length===0 
                             ? <div className="col-md-7">
                                 <h1>No Order Found</h1>
@@ -92,6 +103,7 @@ class Order extends Component {
                             </div> 
                         )}
                         </div>
+                        }
                     </div>
                 </div>
             </div>

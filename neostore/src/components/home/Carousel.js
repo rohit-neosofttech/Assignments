@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom';
+import * as api from '../../api'
 
-const baseurl = "http://180.149.241.208:3022/"
 function Carousel({carousel}) {
     const history = useHistory()
 
@@ -11,8 +11,8 @@ function Carousel({carousel}) {
 
     } 
     return (
-        <div>
-            <img onClick={() => onClickHandler()} className="div-carousel" src={`${baseurl}`+carousel.product_image} alt="Card Images"/>
+        <div data-tip={carousel.product_name}>
+            <img onClick={() => onClickHandler()} className="div-carousel" src={`${api.baseurl}/`+carousel.product_image} alt="Card Images" />
         </div>
     )
 }

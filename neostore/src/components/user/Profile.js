@@ -32,33 +32,42 @@ export class Profile extends PureComponent {
         )
         .then(res => {
             const profile = res.data.customer_proile
+            var newDob
+            if(profile.dob!==null) {
+                var date = new Date(profile.dob)
+                newDob = `${date.getDay()}-${date.getMonth()+1}-${date.getFullYear()}`
+            } 
+            else {
+                newDob = `xx-xx-xxxx`
+            }
+            
             this.setState({
                 profile_img : profile.profile_img,
                 firstName : profile.first_name,
                 lastName : profile.last_name,
                 email : profile.email,
-                dob : profile.dob,
+                dob : newDob,
                 mobile : profile.phone_no,
                 gender : profile.gender,
                 loader:false
             })
-            localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_proile) )
+            // localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_proile) )
         })
         .catch(err => {
             this.setState({loader:false,open:true})
-                if (err.response) {
-                this.setState({
-                    message: (err.response.data.message)?err.response.data.message:`Address Edit Error: ${err.response.status}..${err.response.statusText}`,
-                    type: 'error',
-                    title: 'Address Edit Error'
-                })
-                // alert(error.response.data.message)
-                } else if (err.request) {
-                    alert(err.request);
-                } else {
-                    alert('Error', err.message);
-                }
-                alert('Encounted Problem while Updating address  ',this.state.message )
+            if (err.response) {
+            this.setState({
+                message: (err.response.data.message)?err.response.data.message:`Address Edit Error: ${err.response.status}..${err.response.statusText}`,
+                type: 'error',
+                title: 'Address Edit Error'
+            })
+            // alert(error.response.data.message)
+            } else if (err.request) {
+                alert(err.request);
+            } else {
+                alert('Error', err.message);
+            }
+            alert('Encounted Problem while Updating address  ',this.state.message )
         });
     }
 

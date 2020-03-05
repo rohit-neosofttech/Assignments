@@ -25,7 +25,7 @@ export class SnackAlert extends Component {
     render() {
         return (
             <Snackbar anchorOrigin={{ vertical:'top', horizontal:'center' }} open={this.state.open} 
-            autoHideDuration={3000} onClose={this.props.handleClose} >
+            autoHideDuration={2000} onClose={this.props.handleClose} >
             {/* TransitionComponent={<Slide direction="down" />}> */}
                 <Slide direction="down" in={true}>
                     <MuiAlert onClose={this.props.handleClose} severity={this.state.type}>

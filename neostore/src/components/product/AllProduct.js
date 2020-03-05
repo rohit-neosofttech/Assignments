@@ -3,7 +3,8 @@ import axios from 'axios'
 import ProductsCard from './ProductsCard';
 import Pagination from './Pagination';
 import * as api from '../../api'
-
+import ReactTooltip from 'react-tooltip'
+import Loading from 'react-fullscreen-loading';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 class AllProduct extends Component {
@@ -167,10 +168,11 @@ class AllProduct extends Component {
                     </div>
                     <div className="col-md-4" style={{marginLeft:"auto"}}>
                         Sort By:
-                        <button className="btn-sortBy" onClick={this.sortByRating}><i id="icon-blue" className="fas fa-star"></i></button>
-                        <button className="btn-sortBy" onClick={this.sortByAscending}><i id="icon-blue" className="fas fa-arrow-up" >&#8377;</i></button>
-                        <button className="btn-sortBy" onClick={this.sortByDescending}><i id="icon-blue" className="fas fa-arrow-down" >&#8377;</i></button>
+                        <button className="btn-sortBy" onClick={this.sortByRating}><i id="icon-blue" className="fas fa-star" data-tip="Sort By Rating"></i></button>
+                        <button className="btn-sortBy" onClick={this.sortByAscending}><i id="icon-blue" className="fas fa-arrow-up" data-tip="Sort By Ascending">&#8377;</i></button>
+                        <button className="btn-sortBy" onClick={this.sortByDescending}><i id="icon-blue" className="fas fa-arrow-down" data-tip="Sort By Descending">&#8377;</i></button>
                     </div>
+                    <ReactTooltip />
                 </div>
                 <div className="row">
                 {this.state.loader
@@ -178,12 +180,18 @@ class AllProduct extends Component {
                     <> 
                     {
                         this.state.error 
-                        ? <div className="div-default"><h1 className="center">No Product Found</h1></div> 
-                        :
-                        <div className='center' style={{margin:'auto',height:'400px',width:'100%'}}>
+                        ? 
+                        <div className="center" style={{height:"300px"}}>
                             <br/><br/><br/><br/>
-                            <CircularProgress />
-                        </div>
+                            <img src="https://lh3.googleusercontent.com/proxy/rXicg6dlWfhuKlAa-bXoXvSBlnRLpcA4FDm_jD1MlbPiMXwMAwohTN-U0oPNJOmqv3hhBZJjWsy7NbHwmUCAmk2whH4BDBXgJxDSePBrU8SfcF2lmWieBJySaLQ69Go" alt="Error Icon" style={{height:'200px'}}/>
+                            <h1 className="center" style={{color:'#ff5b5b'}}>No Product Found</h1>
+                        </div> 
+                        :
+                        <div className="div-default"><Loading loading loaderColor="#3498db" /></div>
+                        // <div className='center' style={{margin:'auto',height:'400px',width:'100%'}}>
+                        //     <br/><br/><br/><br/>
+                        //     <CircularProgress />
+                        // </div>
                     }
                     </>
                 :

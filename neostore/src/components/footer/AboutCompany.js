@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import * as api from '../../api'
 import axios from 'axios'
+import sweetalert from 'sweetalert'
 
 class AboutCompany extends PureComponent {
     constructor() {
@@ -17,7 +18,17 @@ class AboutCompany extends PureComponent {
             this.setState({company_details:res.data.company_details[0]})   
         })
         .catch((err)=> {
-            alert("Wrong API call")
+            if (err.response) {
+                err.response.data.message 
+                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                : sweetalert("Oops!", 'Something Went Wrong getting Company Data', "error",{button:false})
+          
+                // alert(error.response.data.message)
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
+            } else {
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+            }
         })
     }
 

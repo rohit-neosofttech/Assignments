@@ -15,9 +15,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import sweetalert from 'sweetalert';
+
 
 const emailRegex = RegExp(/^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/);
-const textOnly = RegExp(/^[a-zA-Z ]*$/);
+const textOnly = RegExp(/^[a-zA-Z]*$/);
   
   const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
@@ -56,6 +58,7 @@ const textOnly = RegExp(/^[a-zA-Z ]*$/);
               gender:""
             },
             showPassword:false,
+            showConfPassword:false,
             open:false,
             loader:false
           };
@@ -78,22 +81,23 @@ const textOnly = RegExp(/^[a-zA-Z ]*$/);
       .then((res) => {
         this.setState({loader:false,open:true})
         const { history } = this.props;
-        history.push(`/`);
-        alert(res.data.message);
+        history.push(`/login`);
+        sweetalert("Successful Registered!", `${res.data.message}`, "success", {
+          buttons: false, timer:2000,
+        })
       })
       .catch((error) => {
         this.setState({loader:false,open:true})
         if (error.response) {
-          this.setState({
-            message: (error.response.data.message)?error.response.data.message:`Server Error: ${error.response.status}..${error.response.statusText}`,
-            type: 'error',
-            title: 'Log in Error'
-          })
+          error.response.data.message 
+          ? sweetalert("Oops!", `${error.response.data.message}`, "error",{button:false})
+          : sweetalert("Oops!", 'Something Went Wrong', "error",{button:false})
+    
           // alert(error.response.data.message)
         } else if (error.request) {
-            alert(error.request);
+            sweetalert("Oops!", `${error.request}`, "error",{button:false})
         } else {
-            alert('Error', error.message);
+            sweetalert("Oops!", `${error.message}`, "error",{button:false})
         }
       })
     } else {
@@ -131,7 +135,6 @@ const textOnly = RegExp(/^[a-zA-Z ]*$/);
           (value.length < 3 ? "minimum 3 characaters required" : "")
         break;
       case "email":
-        
         formErrors.email = 
           (value.length === 0 ? "*required" : "") ||
           (emailRegex.test(value)? "" : "invalid email address")
@@ -141,18 +144,27 @@ const textOnly = RegExp(/^[a-zA-Z ]*$/);
           (value.length === 0 ? "*required" : "") ||
           (value.length < 8 ? "minimum 8 characaters required" : "") ||
           (value.length >12 ? "maximum 12 characaters required" : "")
-        formErrors.confpass =
-          this.state.password!==this.state.confpass ? "the password does not match" : "";
+          if(this.state.confpass!==null) {
+            formErrors.confpass =
+              this.state.password!==this.state.confpass ? "the password does not match" : "";
+          }
         break;
       case "confpass":
         formErrors.confpass =
           this.state.password!==this.state.confpass ? "the password does not match" : "";
         break;
       case "mobile":
-        formErrors.mobile =
-          (value.length === 0 ? "*required" : "") ||
-          ((value < 6999999999 || value > 9999999999) ? "Invalid Mobile number" : "" )
-          // (value.length !== 10 ? "Invalid Mobile number" : "")
+        if(value.startsWith("+") === true) {
+          formErrors.mobile =
+            (value.length === 0 ? "*required" : "") ||
+            ((value.length !==13 ) ? "Invalid Mobile number" : "" )
+        }
+        else {
+          formErrors.mobile =
+            (value.length === 0 ? "*required" : "") ||
+            ((value < 6999999999 || value > 9999999999) ? "Invalid Mobile number" : "" )
+            // (value.length !== 10 ? "Invalid Mobile number" : "")
+        }
         break;
       default:
         break;
@@ -163,6 +175,10 @@ const textOnly = RegExp(/^[a-zA-Z ]*$/);
   
   handleShowPassword = () => {
     this.setState({showPassword:!this.state.showPassword})
+  }
+
+  handleShowConfPassword = () => {
+    this.setState({showConfPassword:!this.state.showConfPassword})
   }
 
   onRadioChange = (e) => {
@@ -288,22 +304,23 @@ const textOnly = RegExp(/^[a-zA-Z ]*$/);
                           <TextField fullWidth
                             // id="outlined-error-helper-text"
                             label="Confirm Password"
-                            type={this.state.showPassword ? 'text' : 'password'}
+                            type={this.state.showConfPassword ? 'text' : 'password'}
                             name="confpass"
                             helperText={this.state.formErrors.confpass.length > 0 && this.state.formErrors.confpass}
                             value={this.state.confpass}
                             onChange={this.handleChange}
                             onBlur={this.handleChange}
                             error={this.state.formErrors.confpass.length > 0}
+                            disabled={this.state.formErrors.password==='' ? false : true }
                             />
                         </div>
                         <div className="col-sm-2">
                           {
-                            this.state.showPassword ? <>
-                            <i id="icon-black" className="fas fa-eye input-icon" style={{cursor:'pointer'}} onClick={this.handleShowPassword}></i>
+                            this.state.showConfPassword ? <>
+                            <i id="icon-black" className="fas fa-eye input-icon" style={{cursor:'pointer'}} onClick={this.handleShowConfPassword}></i>
                           </>
                           :<>
-                            <i id="icon-black" className="fas fa-eye-slash input-icon" style={{cursor:'pointer'}} onClick={this.handleShowPassword}></i>
+                            <i id="icon-black" className="fas fa-eye-slash input-icon" style={{cursor:'pointer'}} onClick={this.handleShowConfPassword}></i>
                           </>
                           }
                         </div>
@@ -316,6 +333,10 @@ const textOnly = RegExp(/^[a-zA-Z ]*$/);
                             label="Mobile Number"
                             type="number"
                             name="mobile"
+                            onInput = {(e) =>{
+                              e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
+                            }}
+                            onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-') && evt.preventDefault() }
                             helperText={this.state.formErrors.mobile.length > 0 && this.state.formErrors.mobile}
                             value={this.state.mobile}
                             onChange={this.handleChange}
@@ -351,7 +372,7 @@ const textOnly = RegExp(/^[a-zA-Z ]*$/);
                       </div><br/>
                     </div>
                 </form>
-
+{/* 
                 {this.state.open && 
                   <Snackbar anchorOrigin={{ vertical:'top', horizontal:'center' }} open={this.state.open} 
                   autoHideDuration={3000} onClose={this.handleSnackClose} >
@@ -362,7 +383,7 @@ const textOnly = RegExp(/^[a-zA-Z ]*$/);
                           </Alert>
                       </Slide>
                   </Snackbar>
-                }
+                } */}
             </div>
           </>
         )

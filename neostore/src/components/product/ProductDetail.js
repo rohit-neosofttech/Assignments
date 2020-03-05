@@ -7,10 +7,17 @@ import * as api from '../../api'
 
 import Loading from 'react-fullscreen-loading';
 import SnackAlert from '../SnackAlert'
+import sweetalert from 'sweetalert'
 
-import Snackbar from '@material-ui/core/Snackbar';
-import Slide from '@material-ui/core/Slide';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import {
+    Magnifier,
+    SideBySideMagnifier,
+    MOUSE_ACTIVATION,
+    TOUCH_ACTIVATION,
+    MagnifierZoom,
+    MagnifierPreview,
+    MagnifierContainer
+  } from "react-image-magnifiers";
 
 const userToken = localStorage.getItem("userToken")
 
@@ -39,7 +46,8 @@ class ProductDetail extends PureComponent {
             })
             .catch((err)=> {
                 console.log(err)
-                alert("No Product Detail Found")
+                sweetalert("No Product Detail Found",{button:false})
+                this.props.history.push("/productsPage")
             })
     }
 
@@ -53,7 +61,8 @@ class ProductDetail extends PureComponent {
             })
             .catch((err)=> {
                 console.log(err)
-                alert("No Product Detail Found")
+                sweetalert("No Product Detail Found",{button:false})
+                this.props.history.push("/productsPage")
             })
         }
     }
@@ -76,7 +85,6 @@ class ProductDetail extends PureComponent {
         if(item.length===0) {
             oldCart.push(newItem);
             localStorage.setItem('cart',JSON.stringify(oldCart))
-            // alert("Product Added to Cart")
             this.setState({
                 type:'success',
                 message:"Product Added to Cart",
@@ -85,7 +93,6 @@ class ProductDetail extends PureComponent {
 
         }
         else{
-            // alert("Product already in present in cart")
             this.setState({
                 type:'warning',
                 message:"Product already in present in cart",
@@ -109,8 +116,13 @@ class ProductDetail extends PureComponent {
 
     handleShow = () => {
         if(!localStorage.getItem('userToken')) {
-            alert("Login is Required")
-            this.props.history.push('/login')
+            sweetalert('',"Login Required",'warning',{button:false})
+            .then((value) => {
+                switch (value) {
+                  default:
+                    this.props.history.push('/login')
+                }
+            });
         } 
         else {
             this.setState({show:true})
@@ -204,7 +216,11 @@ class ProductDetail extends PureComponent {
                 <div className="row">
                     <div className="col-md-6">
                         <div className="row">
-                            <div className="fullImage">
+                            <div className="">
+                                {/* <SideBySideMagnifier 
+                                    imageSrc={this.state.fullImage}
+                                    zoomPosition="right"
+                                /> */}
                                 <img className="fullImage img-responsive" src={this.state.fullImage} alt="FullImage"/>
                             </div>
                         </div>
@@ -270,6 +286,7 @@ class ProductDetail extends PureComponent {
                 </div>
                 {this.state.open && <SnackAlert open={this.state.open} message={this.state.message} 
                     type={this.state.type} handleClose={this.handleSnackClose}/>}
+
                 <Modal show={this.state.show} onHide={()=>this.handleClose()}>
                     <Modal.Header>
                     <Modal.Title className="center">Rate Product</Modal.Title>
@@ -284,7 +301,6 @@ class ProductDetail extends PureComponent {
                     </Modal.Footer>
                 </Modal>
 
-                
             </div>
             }
             </>
