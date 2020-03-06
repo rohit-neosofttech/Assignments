@@ -26,6 +26,7 @@ import Login from './components/Login'
 import Logout from './components/Logout'
 import Register from './components/Register'
 import ForgotPass from './components/ForgotPass'
+import RecoverPass from './components/RecoverPass'
 import Contact from './components/Contact'
 import Location from './components/Location'
 
@@ -54,6 +55,7 @@ function App() {
         <Route path='/logout' component={Logout}/>
         <Route path='/register' component={Register}/>
         <Route path='/forgotPass' component={ForgotPass}/>
+        <Route path='/recoverPass' component={RecoverPass}/>
         <Route path='/contact' component={Contact}/>
         <Route path='/location' component={Location}/>
         <Route path='/subscribe' component={Subscribe}/>

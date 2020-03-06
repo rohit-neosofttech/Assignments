@@ -5,10 +5,6 @@ import * as api from '../../api'
 
 import SnackAlert from '../SnackAlert'
 
-// import Snackbar from '@material-ui/core/Snackbar';
-// import Slide from '@material-ui/core/Slide';
-// import MuiAlert from '@material-ui/lab/Alert';
-
 function ProductCard({product}) {
     const product_id = product.DashboardProducts[0].product_id
     const product_image = product.DashboardProducts[0].product_image
@@ -34,13 +30,11 @@ function ProductCard({product}) {
         if(item.length===0) {
             oldCart.push(newItem);
             localStorage.setItem('cart',JSON.stringify(oldCart))
-            // alert("Product Added to Cart")
             setType('success')
             setMessage("Product Added to Cart")
             setOpen(true);
         }
         else{
-            // alert("Product already in present in cart")
             setType('warning')
             setMessage("Product already in present in cart")
             setOpen(true);

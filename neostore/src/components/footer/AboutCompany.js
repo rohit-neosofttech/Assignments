@@ -22,8 +22,6 @@ class AboutCompany extends PureComponent {
                 err.response.data.message 
                 ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
                 : sweetalert("Oops!", 'Something Went Wrong getting Company Data', "error",{button:false})
-          
-                // alert(error.response.data.message)
             } else if (err.request) {
                   sweetalert("Oops!", `${err.request}`, "error",{button:false})
             } else {

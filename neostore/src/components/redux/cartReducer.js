@@ -12,7 +12,8 @@ const cartReducer = (state=initialState,action) => {
     switch(action.type) {
         case "ADD_CART_COUNT" : 
         return {
-            cartCount:state.cartCount+1
+            // cartCount:state.cartCount+1
+            cartCount:localStorage.getItem('cart')? localStorage.getItem('cart').length : 0
         }
         default: 
             return state

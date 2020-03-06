@@ -6,15 +6,12 @@ import * as api from '../api'
 import './Form.css'
 import {TextField} from '@material-ui/core/';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
 import sweetalert from 'sweetalert'
-import Snackbar from '@material-ui/core/Snackbar';
-import Slide from '@material-ui/core/Slide';
-import { Alert, AlertTitle } from '@material-ui/lab';
 
 const emailRegex = RegExp(
     // /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-])+.([A-Za-z]{2,4})$/
-    /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+    // /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+    /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
   );
   
   const formValid = ({ formErrors, ...rest }) => {
@@ -68,7 +65,7 @@ class Login extends Component {
             // sweetalert("Successful Login!", `${res.data.message}`, "success", {
             //   buttons: false, timer:2000,
             // })
-            sweetalert(res.data.message,{button:false, timer:2000,})
+            sweetalert(res.data.message,{icon:"success",button:false, timer:2000,})
             .then((value) => {
                 switch (value) {
                   default:
@@ -88,15 +85,6 @@ class Login extends Component {
               }
           });
         } 
-        else {
-          // this.setState(prevState=>({
-          //   formErrors: {
-          //     email: (prevState.email?prevState.formErrors.email:'*required'),
-          //     password: (prevState.password?prevState.formErrors.password:'*required'),
-          //   }
-          // }))
-          alert("Please fill the required fields");
-        }
     };
 
     // getPreviousCart = (token) => {

@@ -33,10 +33,6 @@ button {
     background-color: whitesmoke;
 }
 
-.pad {
-    margin: 40px auto;
-}
-
 .userImg {
     height: 200px;
     width: 200px;
@@ -536,6 +532,10 @@ button[disabled]{
   border: 1px solid #999999;
   background-color: #cccccc;
   color: #666666;
+}
+
+.swal-footer {
+    text-align:center;
 }
 
 /*----------Material SnackBar---------- */

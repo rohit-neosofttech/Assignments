@@ -4,6 +4,7 @@ import UserHome from './UserHome'
 import axios from 'axios'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import * as api from '../../api'
+import sweetalert from 'sweetalert'
 
 const userToken = localStorage.getItem("userToken")
 
@@ -24,7 +25,6 @@ class Order extends Component {
             }
         })
         .then((res)=>{
-            // console.log(res.data.product_details)
             this.setState({
                 orders:res.data.product_details,
                 loader:false
@@ -32,7 +32,15 @@ class Order extends Component {
 
         })
         .catch((err)=> {
-            alert("There is a Problem Getting your Order Details")      
+            if (err.response) {
+                err.response.data.message 
+                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                : sweetalert("Oops!", 'Something Went Wrong getting your Order', "error",{button:false})
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
+            } else {
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+            }
         })
     }
 
@@ -52,13 +60,20 @@ class Order extends Component {
             }
         })
         .then((res)=>{
-            console.log(res)
             const url = `${api.baseurl}/${res.data.receipt}`
             window.open(url, '_blank');
-            alert(`${res.data.message}`) 
+            sweetalert(`${res.data.message}`) 
         })
         .catch((err)=> {
-            alert("invoice generation failed")      
+            if (err.response) {
+                err.response.data.message 
+                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                : sweetalert("Oops!", 'Invoice Generation Failed', "error",{button:false})
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
+            } else {
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+            } 
         })
     }
 

@@ -45,8 +45,15 @@ class ProductDetail extends PureComponent {
                 this.setState({fullImage:`${api.baseurl}/`+ this.state.product.subImages_id.product_subImages[0]})
             })
             .catch((err)=> {
-                console.log(err)
-                sweetalert("No Product Detail Found",{button:false})
+                if (err.response) {
+                    err.response.data.message 
+                    ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                    : sweetalert("Oops!", 'No Product Detail Found', "error",{button:false})
+                } else if (err.request) {
+                      sweetalert("Oops!", `${err.request}`, "error",{button:false})
+                } else {
+                      sweetalert("Oops!", `${err.message}`, "error",{button:false})
+                }
                 this.props.history.push("/productsPage")
             })
     }
@@ -60,8 +67,15 @@ class ProductDetail extends PureComponent {
                 this.setState({fullImage:`${api.baseurl}/`+ this.state.product.subImages_id.product_subImages[0]})
             })
             .catch((err)=> {
-                console.log(err)
-                sweetalert("No Product Detail Found",{button:false})
+                if (err.response) {
+                    err.response.data.message 
+                    ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                    : sweetalert("Oops!", 'No Product Detail Found', "error",{button:false})
+                } else if (err.request) {
+                      sweetalert("Oops!", `${err.request}`, "error",{button:false})
+                } else {
+                      sweetalert("Oops!", `${err.message}`, "error",{button:false})
+                }
                 this.props.history.push("/productsPage")
             })
         }
@@ -150,22 +164,17 @@ class ProductDetail extends PureComponent {
                     message: res.data.message,
                     type: 'success',
                 })
-                // alert("Product Rating Submitted")
             })
             .catch((err)=> {
-                this.setState({loader:false,open:true})
                 if (err.response) {
-                this.setState({
-                    message: (err.response.data.message)?err.response.data.message:`Encountered an Error: ${err.response.status}..${err.response.statusText}`,
-                    type: 'error',
-                })
-                // alert(error.response.data.message)
+                    err.response.data.message 
+                    ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                    : sweetalert("Oops!", 'Something Went Wrong Providing Rating', "error",{button:false})
                 } else if (err.request) {
-                    alert(err.request);
+                      sweetalert("Oops!", `${err.request}`, "error",{button:false})
                 } else {
-                    alert('Error', err.message);
+                      sweetalert("Oops!", `${err.message}`, "error",{button:false})
                 }
-                alert('Encounted Problem while Updating address  ',this.state.message )     
             })
             this.setState({show:false})
         }
@@ -201,10 +210,6 @@ class ProductDetail extends PureComponent {
         const product_dimension = product.product_dimension
         const product_material = product.product_material
         const product_producer = product.product_producer
-
-        // if (this.state.loading) {
-        //     return <div className="div-default"><Loading loading loaderColor="#3498db" /></div>;
-        // }
 
         return (
             <>

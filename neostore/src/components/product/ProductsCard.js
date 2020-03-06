@@ -32,13 +32,11 @@ function ProductsCard ({ products }) {
     if(item.length===0) {
         oldCart.push(newItem);
         localStorage.setItem('cart',JSON.stringify(oldCart))
-        // alert("Product Added to Cart")
         setType('success')
         setMessage("Product Added to Cart")
         setOpen(true);
     }
     else{
-        // alert("Product already in present in cart")
         setType('warning')
         setMessage("Product already present in cart")
         setOpen(true);

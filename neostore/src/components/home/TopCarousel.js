@@ -5,6 +5,7 @@ import * as api from '../../api'
 import axios from 'axios'
 import "react-bootstrap-carousel/dist/react-bootstrap-carousel.css";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import sweetalert from 'sweetalert'
 
 class TopCarousel extends Component {
     constructor() {
@@ -22,7 +23,17 @@ class TopCarousel extends Component {
             this.setState({carousel_img:res.data.category_details , loader:false})
         })
         .catch((err)=> {
-            alert("Wrong API call")
+            if (err.response) {
+                err.response.data.message 
+                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                : sweetalert("Oops!", 'Something Went Wrong with Carousel Categories', "error",{button:false})
+          
+                // alert(error.response.data.message)
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
+            } else {
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+            }
         })
     }
 

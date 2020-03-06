@@ -4,15 +4,13 @@ import AddressSidePanel from './AddressSidePanel'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {TextField, TextareaAutosize} from '@material-ui/core/';
 
-import Snackbar from '@material-ui/core/Snackbar';
-import Slide from '@material-ui/core/Slide';
-import { Alert, AlertTitle } from '@material-ui/lab';
-
 import axios from 'axios'
 import * as api from '../../api'
 
+import sweetalert from 'sweetalert'
+
 const userToken = localStorage.getItem("userToken")
-const textOnly = RegExp(/^[a-zA-Z,./ ]*$/);
+const textOnly = RegExp(/^[a-zA-Z,.-/ ]*$/);
 
 const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
@@ -60,7 +58,7 @@ class AddAddress extends Component {
             case "address":
               formErrors.address =
                   (value.length === 0 ? "*required" : "") ||
-                  (textOnly.test(value)? "" : "should contain only character") ||
+                //   (textOnly.test(value)? "" : "should contain only character") ||
                   (value.length < 3 ? "minimum 3 characaters required" : "")
               break;
             
@@ -114,27 +112,20 @@ class AddAddress extends Component {
                   }
             })
             .then((res) => {
-                this.setState({loader:false,open:true})
-                this.setState({
-                    message: res.data.message,
-                    type: 'success',
-                    title: 'Address Form'
-                })
-                alert("Address Added")
+                this.setState({loader:false})
+                sweetalert('Address Updated',`${res.data.message}`,"success",{button:false})
                 this.props.history.push('/address')
             })
-            .catch((error) => {
-                this.setState({loader:false,open:true})
-                if (error.response) {
-                    this.setState({
-                    message: (error.response.data.error_message)?error.response.data.error_message:`Server Error: ${error.response.status}..${error.response.statusText}`,
-                    type: 'error',
-                    title: 'Contact Form Error'
-                })
-                } else if (error.request) {
-                    alert(error.request);
+            .catch((err) => {
+                this.setState({loader:false})
+                if (err.response) {
+                    err.response.data.message 
+                    ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                    : sweetalert("Oops!", 'Something Went Wrong while updating the Address', "error",{button:false})
+                } else if (err.request) {
+                      sweetalert("Oops!", `${err.request}`, "error",{button:false})
                 } else {
-                    alert('Error', error.message);
+                      sweetalert("Oops!", `${err.message}`, "error",{button:false})
                 }
             })
         }
@@ -162,7 +153,8 @@ class AddAddress extends Component {
                     <div className="col-md-8 card p-3">
                         <h4>Add New Address</h4><hr/><br/>
                         <form onSubmit={this.onSubmitAddress} autoComplete='off'>
-                            <TextField style={{width:'50%'}}
+                            <div className="container" style={{padding:"0px 50px"}}>
+                            <TextField fullWidth
                                 label="Address"
                                 type="text"
                                 name="address"
@@ -193,8 +185,8 @@ class AddAddress extends Component {
                                     </fieldset>
                                 </div>
                             </div><br/><br/> */}
-
-                            <TextField style={{width:'30%'}} 
+                            <div className="d-flex justify-content-between" >
+                            <TextField style={{width:'45%'}}
                                 label="Pincode"
                                 type="number"
                                 name="pincode"
@@ -208,9 +200,9 @@ class AddAddress extends Component {
                                 onBlur={this.handleChange}
                                 variant='outlined'
                                 error={this.state.formErrors.pincode.length > 0}
-                            /><br/><br/>
-                            <div style={{display:'inline'}}>
-                            <TextField style={{paddingRight:"30px"}}
+                            />
+                            
+                            <TextField style={{width:'45%'}}
                                 label="City"
                                 type="text"
                                 name="city"
@@ -221,8 +213,10 @@ class AddAddress extends Component {
                                 variant='outlined'
                                 error={this.state.formErrors.city.length > 0}
                             />
+                            </div><br/>
 
-                            <TextField 
+                            <div className="d-flex justify-content-between" >
+                            <TextField style={{width:'45%'}}
                                 label="State"
                                 type="text"
                                 name="state"
@@ -233,8 +227,7 @@ class AddAddress extends Component {
                                 variant='outlined'
                                 error={this.state.formErrors.state.length > 0}
                             />
-                            </div><br/><br/>
-                            <TextField style={{width:'30%'}} 
+                            <TextField style={{width:'45%'}} 
                                 label="Country"
                                 type="text"
                                 name="country"
@@ -244,7 +237,8 @@ class AddAddress extends Component {
                                 onBlur={this.handleChange}
                                 variant='outlined'
                                 error={this.state.formErrors.country.length > 0}
-                            /><br/><br/>
+                            />
+                            </div><br/>
                             <hr/>
 
                             {this.state.loader
@@ -267,20 +261,10 @@ class AddAddress extends Component {
                                     </>}
                                 </>
                             } 
+                            </div>
                         </form>
                     </div>
                 </div>
-                {this.state.open && 
-                    <Snackbar anchorOrigin={{ vertical:'top', horizontal:'center' }} open={this.state.open} 
-                    autoHideDuration={3000} onClose={this.handleSnackClose} >
-                        <Slide direction="down" in={true}>
-                            <Alert onClose={this.handleSnackClose} variant="filled" severity={this.state.type}>
-                                <AlertTitle>{this.state.title}</AlertTitle>
-                                {this.state.message}
-                            </Alert>
-                        </Slide>
-                    </Snackbar>
-                }
             </div>
             </>
         )

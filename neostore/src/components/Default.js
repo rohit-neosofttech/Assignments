@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Header from './header/Header'
 
-export class Default extends Component {
+class Default extends Component {
     render() {
         return (
             <>
@@ -9,7 +9,7 @@ export class Default extends Component {
             <div className="div-default">
                 <div className="container center">
                     <br/><br/><br/>
-                    <img src='logo192.png' alt=""/><br/>
+                    <img src='https://i.dlpng.com/static/png/6815287_thumb.webp'  alt="" style={{width:'auto',height:'300px'}} /><br/>
                     <h1>Error 404 : Page Not Found</h1>
                 </div>
             </div>

@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import Header from '../header/Header'
 import axios from 'axios'
+import * as api from '../../api'
 
 import {Link} from 'react-router-dom'
 import AllProduct from  './AllProduct'
 // import Product from  './Product'
 // import ProductsFilter from './ProductsFilter'
 
+import sweetalert from 'sweetalert'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Collapse from '@material-ui/core/Collapse';
@@ -29,20 +31,36 @@ class ProductsPage extends Component {
         }
     }
     componentDidMount() {
-        axios.get(`http://180.149.241.208:3022/getAllCategories`)
+        axios.get(`${api.baseurl}/getAllCategories`)
         .then((res)=>{
             this.setState({categories:res.data.category_details})
         })
         .catch((err)=> {
-            alert("Invalid API call")
+            if (err.response) {
+                err.response.data.message 
+                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                : sweetalert("Oops!", 'Something Went Wrong getting Categories Data', "error",{button:false})
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
+            } else {
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+            }
         })
 
-        axios.get(`http://180.149.241.208:3022/getAllColors`)
+        axios.get(`${api.baseurl}/getAllColors`)
         .then((res)=>{
             this.setState({colors:res.data.color_details})
         })
         .catch((err)=> {
-            alert("Invalid API call")
+            if (err.response) {
+                err.response.data.message 
+                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                : sweetalert("Oops!", 'Something Went Wrong getting Color Data', "error",{button:false})
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
+            } else {
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+            }
         })
     }
 
@@ -53,7 +71,6 @@ class ProductsPage extends Component {
         else {
             this.setState({Catopen:true});
         }
-        // this.setState({Catopen:!this.state.Catopen});
 
     };
     
@@ -64,7 +81,6 @@ class ProductsPage extends Component {
         else {
             this.setState({Colopen:true});
         }
-        // this.setState({Colopen:!this.state.Colopen});
     };
 
     handleAllProduct = () => {

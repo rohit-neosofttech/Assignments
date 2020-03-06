@@ -4,9 +4,7 @@ import AddressSidePanel from './AddressSidePanel'
 import * as api from '../../api'
 import {TextField} from '@material-ui/core/';
 
-import Snackbar from '@material-ui/core/Snackbar';
-import Slide from '@material-ui/core/Slide';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import sweetalert from 'sweetalert'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios'
 
@@ -78,7 +76,7 @@ class EditAddress extends Component {
             case "address":
                 formErrors.address =
                     (value.length === 0 ? "*required" : "") ||
-                    (textOnly.test(value)? "" : "should contain only character") ||
+                    // (textOnly.test(value)? "" : "should contain only character") ||
                     (value.length < 3 ? "minimum 3 characaters required" : "")
                 break;
               
@@ -119,6 +117,7 @@ class EditAddress extends Component {
         e.preventDefault()
         if (formValid(this.state)) {
             this.setState({loader:true})
+            
             axios.put(`${api.baseurl}/updateAddress`, {
                 address_id:this.state.address_id,
                 address:this.state.address,
@@ -132,41 +131,28 @@ class EditAddress extends Component {
                 }}
             )
             .then(res => {
-                this.setState({
-                    loader:false,
-                    open:true,
-                    message: res.data.message,
-                    type: 'success',
-                    title: 'Form Submitted'
-                })
-                alert("Address Updated")
+                sweetalert("Address Updated",`${res.data.message}`,"success",{button:false})
                 this.props.history.push("/address")
                 
             })
             .catch(err => {
                 this.setState({loader:false,open:true})
                 if (err.response) {
-                this.setState({
-                    message: (err.response.data.message)?err.response.data.message:`Address Edit Error: ${err.response.status}..${err.response.statusText}`,
-                    type: 'error',
-                    title: 'Address Edit Error'
-                })
-                // alert(error.response.data.message)
+                    err.response.data.message 
+                    ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                    : sweetalert("Oops!", 'Something Went Wrong while Updating address', "error",{button:false})
                 } else if (err.request) {
-                    alert(err.request);
+                      sweetalert("Oops!", `${err.request}`, "error",{button:false})
                 } else {
-                    alert('Error', err.message);
+                      sweetalert("Oops!", `${err.message}`, "error",{button:false})
                 }
-                alert('Encounted Problem while Updating address  ',this.state.message )                
             });
 
         }
     }
 
     addressUpdateCancel = () => {
-        if(window.confirm("All changes will be lost")) {
-            this.props.history.push("/address")
-        }
+        this.props.history.push("/address")
     }
 
     render() {
@@ -180,7 +166,8 @@ class EditAddress extends Component {
                     <div className="col-md-8 card p-3">
                         <h4>Edit Address</h4><hr/><br/>
                         <form onSubmit={this.onFormSubmit} autoComplete="off"> 
-                            <TextField style={{width:'50%'}}
+                            <div className="container" style={{padding:"0px 50px"}}>
+                            <TextField fullWidth
                                 label="Address"
                                 type="text"
                                 name="address"
@@ -192,7 +179,8 @@ class EditAddress extends Component {
                                 error={this.state.formErrors.address.length > 0}
                             /><br/><br/>
 
-                            <TextField style={{width:'30%'}}
+                            <div className="d-flex justify-content-between" >
+                            <TextField style={{width:'45%'}}
                                 label="Pincode"
                                 type="number"
                                 name="pincode"
@@ -206,10 +194,9 @@ class EditAddress extends Component {
                                 onBlur={this.handleChange}
                                 variant='outlined'
                                 error={this.state.formErrors.pincode.length > 0}
-                            /><br/><br/>
+                            />
 
-                            <div style={{display:'inline-block'}}>
-                            <TextField style={{paddingRight:'30px'}}
+                            <TextField style={{width:'45%'}}
                                 label="City"
                                 type="text"
                                 name="city"
@@ -220,8 +207,10 @@ class EditAddress extends Component {
                                 variant='outlined'
                                 error={this.state.formErrors.city.length > 0}
                             />
+                            </div><br/>
 
-                            <TextField 
+                            <div className="d-flex justify-content-between" >
+                            <TextField style={{width:'45%'}}
                                 label="State"
                                 type="text"
                                 name="_state"
@@ -232,9 +221,8 @@ class EditAddress extends Component {
                                 variant='outlined'
                                 error={this.state.formErrors._state.length > 0}
                             />
-                            </div><br/><br/>
 
-                            <TextField style={{paddingRight:'30px'}}
+                            <TextField style={{width:'45%'}}
                                 label="Country"
                                 type="text"
                                 name="country"
@@ -244,7 +232,8 @@ class EditAddress extends Component {
                                 onBlur={this.handleChange}
                                 variant='outlined'
                                 error={this.state.formErrors.country.length > 0}
-                            /><br/><br/>
+                            />
+                            </div><br/>
                             <hr/>
                             {this.state.loader
                                 ? 
@@ -267,21 +256,10 @@ class EditAddress extends Component {
                                 }
                                 </>
                             }
+                            </div>
                         </form>
                     </div>
                 </div>
-                {this.state.open && 
-                  <Snackbar anchorOrigin={{ vertical:'top', horizontal:'center' }} open={this.state.open} 
-                  autoHideDuration={3000} onClose={this.handleSnackClose} >
-                      <Slide direction="down" in={true}>
-                          <Alert variant="filled" severity={this.state.type}>
-                              <AlertTitle>{this.state.title}</AlertTitle>
-                              {this.state.message}
-                              <button onClose={this.handleSnackClose}>Close</button>
-                          </Alert>
-                      </Slide>
-                  </Snackbar>
-                }
             </div>
             </>
         )

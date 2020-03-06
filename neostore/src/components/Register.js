@@ -4,10 +4,6 @@ import './Form.css'
 import axios from 'axios';
 import * as api from '../api'
 
-import Snackbar from '@material-ui/core/Snackbar';
-import Slide from '@material-ui/core/Slide';
-import { Alert, AlertTitle } from '@material-ui/lab';
-
 import {TextField} from '@material-ui/core/';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -18,7 +14,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import sweetalert from 'sweetalert';
 
 
-const emailRegex = RegExp(/^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/);
+const emailRegex = RegExp(    
+  /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
+);
 const textOnly = RegExp(/^[a-zA-Z]*$/);
   
   const formValid = ({ formErrors, ...rest }) => {
@@ -100,20 +98,7 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
             sweetalert("Oops!", `${error.message}`, "error",{button:false})
         }
       })
-    } else {
-      // this.setState(prevState=>({
-      //   formErrors: {
-      //     firstName: (prevState.firstName?prevState.formErrors.firstName:'*required'),
-      //     lastName: (prevState.lastName?prevState.formErrors.lastName:'*required'),
-      //     email: (prevState.email?prevState.formErrors.email:'*required'),
-      //     password: (prevState.password?prevState.formErrors.password:'*required'),
-      //     confpass: (prevState.confpass?prevState.formErrors.confpass:'*required'),
-      //     mobile: (prevState.mobile?prevState.formErrors.mobile:'*required'),
-      //     gender: (prevState.gender?prevState.formErrors.gender:'*required')
-      //   }
-      // }))
-      alert("FORM INVALID");
-    }
+    } 
   };
 
   handleChange = (e) => {
@@ -372,18 +357,6 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
                       </div><br/>
                     </div>
                 </form>
-{/* 
-                {this.state.open && 
-                  <Snackbar anchorOrigin={{ vertical:'top', horizontal:'center' }} open={this.state.open} 
-                  autoHideDuration={3000} onClose={this.handleSnackClose} >
-                      <Slide direction="down" in={true}>
-                          <Alert onClose={this.handleSnackClose} variant="filled" severity={this.state.type}>
-                              <AlertTitle>{this.state.title}</AlertTitle>
-                              {this.state.message}
-                          </Alert>
-                      </Slide>
-                  </Snackbar>
-                } */}
             </div>
           </>
         )

@@ -6,6 +6,7 @@ import axios from 'axios'
 import sweetalert from 'sweetalert'
 import * as api from '../../api'
 
+// import {connect} from 'react-redux'
 import './Header.css'
 import Search from './Search'
 
@@ -38,6 +39,10 @@ class Header extends Component {
         // this.setState({
         //     profile_image:(localStorage.getItem("CustDetail")) ? custDetail.profile_img : null,
         // })
+        if(localStorage.getItem('cart')) {
+            this.setState({cartproducts:localStorage.getItem('cart')})
+        }
+
         if(localStorage.getItem('userToken'))
         {
             this.setState({
@@ -113,6 +118,8 @@ class Header extends Component {
                                 <button className="btn-cart">
                                     <Badge className="badge" anchorOrigin={{vertical: 'top',horizontal: 'right',}} 
                                     badgeContent={this.state.count}>
+                                    {/* badgeContent={this.props.cartCount}> */}
+
                                         <i className="fa fa-shopping-cart"></i>
                                     </Badge>Cart
                                 </button>
@@ -133,4 +140,11 @@ class Header extends Component {
     }
 }
 
+// const mapStateToProps = (state) => {
+//     return {
+//         cartCount:state.cartCount
+//     }
+// }
+ 
+// export default connect(mapStateToProps)(Header)
 export default Header

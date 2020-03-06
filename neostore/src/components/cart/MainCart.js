@@ -31,12 +31,11 @@ function MainCart(props) {
         <Header/>
         <div>
             <hr/>
-
             <Tabs className="nav nav-tabs justify-content-between" id="controlled-tab-example" activeKey={key} onSelect={k => setKey(k)}>
-                <Tab className="nav-link" eventKey="cart" title={<><i style={{color:"black"}} className="fas fa-cart-plus"></i>Cart</>} disabled>
+                <Tab className="nav-link" eventKey="cart" title={<><i style={{color:"black"}} className="fas fa-cart-plus"></i>Cart</>} >
                     <Cart handleSelect={handleSelect}/>
                 </Tab>
-                <Tab className="nav-link" eventKey="address" title={<span onClick={()=>handleLogin()} ><i style={{color:"black"}} className="fas fa-address-book"></i>Delivery Address</span>} disabled>
+                <Tab className="nav-link" eventKey="address" title={<span onClick={()=>handleLogin()} ><i style={{color:"black"}} className="fas fa-address-book"></i>Delivery Address</span>} >
                     <DeliveryAddress props={props}/>
                 </Tab>
             </Tabs>

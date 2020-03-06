@@ -27,5 +27,5 @@ function Location(props) {
 
 // export default Location
 export default GoogleApiWrapper({
-    apiKey: 'AIzaSyDujXF32QT3242tqSeZWIPBVvtaAhX9XvA'
+    apiKey: ''
   })(Location);

@@ -6,13 +6,11 @@ import {TextField} from '@material-ui/core/';
 import './Form.css'
 
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-import Snackbar from '@material-ui/core/Snackbar';
-import Slide from '@material-ui/core/Slide';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import sweetalert from 'sweetalert'
 
 const emailRegex = RegExp(
-    /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+    // /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.]+)\.([A-Za-z]{2,4})$/
+    /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
   );
   
 const formValid = ({ formErrors, ...rest }) => {
@@ -47,46 +45,26 @@ class ForgotPass extends Component {
     handleSubmit = e => {
         e.preventDefault();
         if (formValid(this.state)) {
-            this.setState({loader:true})
-
+          this.setState({loader:true})
           axios.post(`${api.baseurl}/forgotPassword`, {
-            // customer_id : this.state.customer_id,
             email : this.state.email
           })
           .then((res) => {
-            // console.log(res);
-            this.setState({loader:false,open:true})
-            this.setState({
-                message: res.data.message,
-                type: 'success',
-                title: 'Recovery Password'
-            })
-            this.props.history.push(`/`)
+            this.setState({loader:false})
+            this.props.history.push(`/recoverPass`,res.data.token)
           })
-          .catch((error) => {
-            this.setState({loader:false,open:true})
-            if (error.response) {
-                console.log(error.response)
-              this.setState({
-                message: (error.response.data.error_message)?error.response.data.error_message:`Server Error: ${error.response.status}..${error.response.statusText}`,
-                type: 'error',
-                title: 'Error'
-              })
-              // alert(error.response.data.message)
-            } else if (error.request) {
-                alert(error.request);
+          .catch((err) => {
+            this.setState({loader:false})
+            if (err.response) {
+              err.response.data.message 
+              ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+              : sweetalert("Oops!", 'Something Went Wrong getting Company Data', "error",{button:false})
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
             } else {
-                alert('Error', error.message);
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
             }
           })
-        } 
-        else {
-        //   this.setState(prevState=>({
-        //     formErrors: {
-        //       email: (prevState.email?prevState.formErrors.email:'*required'),
-        //     }
-        //   }))
-          alert("FORM INVALID");
         }
     };
 
@@ -117,7 +95,7 @@ class ForgotPass extends Component {
     render() {
         return (
             <>
-            <Header/>a
+            <Header/>
             <div className="container p-5">
                 <div className="card" style={{width:"60%",margin:"auto",backgroundColor:"#eeeeee"}}>
                     <div class="card-body">
@@ -136,33 +114,13 @@ class ForgotPass extends Component {
                             /><br/><br/>
                             <div className="center">
                             {this.state.loader
-                                ? 
-                                    <div >
-                                        <CircularProgress/>
-                                    </div>
-                                :
-                                 <>
-                                  {formValid(this.state) 
-                                ? <button className="btn btn-primary" type='submit'>Submit</button>
-                                : <button className="btn btn-primary" type='submit' style={{backgroundColor:'gray',cursor:'default'}} disabled>Submit</button>}
-                                 </>
-                                }  
+                              ? <CircularProgress/>
+                              : <button className="btn btn-primary" type='submit' disabled={!formValid(this.state)}>Submit</button>
+                            }  
                             </div>
                         </form>
                     </div>
                 </div>
-
-                {this.state.open && 
-                    <Snackbar anchorOrigin={{ vertical:'top', horizontal:'center' }} open={this.state.open} 
-                    autoHideDuration={3000} onClose={this.handleSnackClose} >
-                        <Slide direction="down" in={true}>
-                            <Alert onClose={this.handleSnackClose} variant="filled" severity={this.state.type}>
-                                <AlertTitle>{this.state.title}</AlertTitle>
-                                {this.state.message}
-                            </Alert>
-                        </Slide>
-                    </Snackbar>
-                }
             </div>
             </>
         )

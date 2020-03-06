@@ -6,7 +6,6 @@ function Carousel({carousel}) {
     const history = useHistory()
 
     const onClickHandler= () => {
-        // history.push(`productsPage/${carousel.category_id}`);
         history.push(`/productsPage`,carousel);
 
     } 

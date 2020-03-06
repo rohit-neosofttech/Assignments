@@ -5,15 +5,14 @@ import * as api from '../api'
 import {TextField} from '@material-ui/core/';
 import './Form.css'
 
-import CircularProgress from '@material-ui/core/CircularProgress';
-
-import Snackbar from '@material-ui/core/Snackbar';
-import Slide from '@material-ui/core/Slide';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import CircularProgress from '@material-ui/core/CircularProgress'
+import sweetalert from 'sweetalert'
 
 const emailRegex = RegExp(
     // /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-]{2,5})+.([A-Za-z]{2,4})$/  
-    /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+    // /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+    /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
+
   );
 const textOnly = RegExp(/^[a-zA-Z]*$/);
   
@@ -72,43 +71,23 @@ class Contact extends Component {
             message : this.state.message
           })
           .then((res) => {
-            // console.log(res);
-            this.setState({loader:false,open:true})
-            this.setState({
-                mess: res.data.message,
-                type: 'success',
-                title: 'Contact Form'
-            })
+            this.setState({loader:false})
+            sweetalert("Contact Form Submitted!", `${res.data.message}`, "success",{button:false})
+            
             this.props.history.push(`/`)
           })
-          .catch((error) => {
-            this.setState({loader:false,open:true})
-            if (error.response) {
-                console.log(error.response)
-              this.setState({
-                mess: (error.response.data.error_message)?error.response.data.error_message:`Server Error: ${error.response.status}..${error.response.statusText}`,
-                type: 'error',
-                title: 'Contact Form Error'
-              })
-              // alert(error.response.data.message)
-            } else if (error.request) {
-                alert(error.request);
+          .catch((err) => {
+            this.setState({loader:false})
+            if (err.response) {
+              err.response.data.message 
+              ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+              : sweetalert("Oops!", 'Something Went Wrong ', "error",{button:false})
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
             } else {
-                alert('Error', error.message);
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
             }
           })
-        } 
-        else {
-        //   this.setState(prevState=>({
-        //     formErrors: {
-        //       name: (prevState.name?prevState.formErrors.name:'*required'),
-        //       email: (prevState.email?prevState.formErrors.email:'*required'),
-        //       mobile: (prevState.mobile?prevState.formErrors.mobile:'*required'),
-        //       subject: (prevState.subject?prevState.formErrors.subject:'*required'),
-        //       message: (prevState.message?prevState.formErrors.message:'*required')
-        //     }
-        //   }))
-          alert("FORM INVALID");
         }
       };
     
@@ -259,18 +238,6 @@ class Contact extends Component {
                         </form>
                     </div>
                 </div>
-
-                {this.state.open && 
-                    <Snackbar anchorOrigin={{ vertical:'top', horizontal:'center' }} open={this.state.open} 
-                    autoHideDuration={3000} onClose={this.handleSnackClose} >
-                        <Slide direction="down" in={true}>
-                            <Alert onClose={this.handleSnackClose} variant="filled" severity={this.state.type}>
-                                <AlertTitle>{this.state.title}</AlertTitle>
-                                {this.state.mess}
-                            </Alert>
-                        </Slide>
-                    </Snackbar>
-                }
             </div>
             </>
         )

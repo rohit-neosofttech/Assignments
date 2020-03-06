@@ -63,8 +63,6 @@ class DeliveryAddress extends PureComponent {
               }
         })
         .then((res)=>{
-            // console.log(res)
-            // console.log('Address updated')
             this.setState({
                 type:'info',
                 message:"Address updated",
@@ -73,7 +71,15 @@ class DeliveryAddress extends PureComponent {
 
         })
         .catch((err) => {
-            alert('Invalid Address API call')
+            if (err.response) {
+                err.response.data.message 
+                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                : sweetalert("Oops!", 'Something Went Wrong while updating the address', "error",{button:false})
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
+            } else {
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+            }
         })
     };
 
@@ -89,7 +95,7 @@ class DeliveryAddress extends PureComponent {
     placeOrder = () => {
         const  {history} = this.props.props
         if(this.state.checkAddr==='') {
-            alert("Please Select a Delivery Address")
+            sweetalert("Please Select a Delivery Address",'','warning',{button:false,timer:2000})
         }
         else {
 
@@ -109,7 +115,15 @@ class DeliveryAddress extends PureComponent {
                 history.push('/orderPlaced')
             })
             .catch((err) => {
-                console.log('Invalid Address API call', err)
+                if (err.response) {
+                    err.response.data.message 
+                    ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                    : sweetalert("Oops!", 'Something Went Wrong while Placing the Order', "error",{button:false})
+                } else if (err.request) {
+                      sweetalert("Oops!", `${err.request}`, "error",{button:false})
+                } else {
+                      sweetalert("Oops!", `${err.message}`, "error",{button:false})
+                }
             })
         }    
     }

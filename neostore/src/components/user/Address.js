@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import SnackAlert from '../SnackAlert'
 import sweetalert from 'sweetalert'
 
-const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
+// const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
 const userToken = localStorage.getItem("userToken")
 
 class Address extends PureComponent {
@@ -38,7 +38,6 @@ class Address extends PureComponent {
             })
         })
         .catch((err) => {
-            // alert('Invalid Address API call')
             this.setState({loader:false})
             if (err.response) {
                 sweetalert(err.response.data.message?`${err.response.data.message}` : "Error has occured", {button:false});

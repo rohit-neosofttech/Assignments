@@ -16,7 +16,9 @@ import SnackAlert from '../SnackAlert'
 
 const userToken = localStorage.getItem('userToken')
 
-const emailRegex = RegExp(/^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/);
+const emailRegex = RegExp(    
+    /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
+);
 const textOnly = RegExp(/^[a-zA-Z]*$/);
 
   
@@ -212,7 +214,6 @@ class EditProfile extends Component {
             
                 case "confirm":
                     this.profileUpdate()
-                    // sweetalert('',"Profile Updated Successfully","success", {button: false})
                     break;
                 default:
                     
@@ -267,6 +268,7 @@ class EditProfile extends Component {
                     switch (value) {
                       default:
                         this.props.history.push("/profile")
+                        // this.forceUpdate()
                         window.location.reload(false)
                     }
                 });
@@ -327,7 +329,7 @@ class EditProfile extends Component {
                                 <FormControlLabel value="Male" control={<Radio />} label="Male" />&emsp;&emsp;
                                 <FormControlLabel value="Female" control={<Radio />} label="Female" />
                             </RadioGroup>
-
+                            {console.log(this.state.dob)}
                             <input className="form-control" type="date" value={this.state.dob} onChange={(e) => this.setState({dob:e.target.value})} onBlur={this.onDateChange} name="date"/>
                             {this.state.formErrors.dob!=='' ? <><span className="errorMessage">{this.state.formErrors.dob}</span><br/></> : <></>}
                             <br/>
