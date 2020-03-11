@@ -259,6 +259,13 @@ i {
     border-bottom: 2px solid royalblue;
 }
 
+li a:hover {
+    color:white !important;
+    text-decoration:none;
+}
+nav a:hover {
+    text-decoration:none;
+}
 #nav-home-tab, #nav-profile-tab {
     padding: 10px 40px;
 }
@@ -538,6 +545,11 @@ button[disabled]{
     text-align:center;
 }
 
+
+.swal-button--confirm {
+    background-color: #00adff !important;
+}
+
 /*----------Material SnackBar---------- */
 .MuiAlert-standardSuccess {
     color: white !important;
@@ -626,3 +638,4 @@ button[disabled]{
     /* box-sizing: border-box; */
     /* color: hsl(0,0%,80%); */
 }
+

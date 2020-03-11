@@ -216,7 +216,7 @@ class ChangePass extends Component {
                                         type={this.state.confpassIcon ? 'text' : 'password'}
                                         value={this.state.confpass}
                                         onChange={this.handleChange}
-                                        onBlur={this.handleChange}
+                                        onKeyUp={this.handleChange}
                                         endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton

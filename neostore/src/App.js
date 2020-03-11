@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { Provider } from 'react-redux'
 import store from './components/redux/store'
+// import { createStore } from 'redux';
 import {Switch,Route} from 'react-router-dom'
 
 import { ProtectedRoute } from './components/protected.route'

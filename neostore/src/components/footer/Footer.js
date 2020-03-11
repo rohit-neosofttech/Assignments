@@ -17,7 +17,7 @@ function Footer() {
                     <NewsLetter/>
                 </div>
             </div>
-            <p>Copyright 2017 NeoSOFT Technologies All rights reserved | Design By ...</p>
+            <p >Copyright 2017 NeoSOFT Technologies All rights reserved | Design By ...</p>
         </div>
     )
 }

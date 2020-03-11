@@ -158,7 +158,7 @@ class Login extends Component {
         return (
           <>
           <Header/>
-            <div className="container pad">
+            <div className="container p-5">
                 <div className="row">
                     <div className="col-md-6">
                         <button className="social-btn" style={{backgroundColor: '#3b5998'}}>

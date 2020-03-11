@@ -4,6 +4,8 @@ import axios from 'axios';
 import Rating from '@material-ui/lab/Rating'
 import { Button, Modal } from 'react-bootstrap';
 import * as api from '../../api'
+import {addToCartCount} from '../redux'
+import {connect} from 'react-redux'
 
 import Loading from 'react-fullscreen-loading';
 import SnackAlert from '../SnackAlert'
@@ -18,6 +20,8 @@ import {
     MagnifierPreview,
     MagnifierContainer
   } from "react-image-magnifiers";
+
+import ReactImageMagnify from 'react-image-magnify';
 
 const userToken = localStorage.getItem("userToken")
 
@@ -104,6 +108,7 @@ class ProductDetail extends PureComponent {
                 message:"Product Added to Cart",
                 open:true
             })
+            this.props.addToCartCount()
 
         }
         else{
@@ -211,22 +216,41 @@ class ProductDetail extends PureComponent {
         const product_material = product.product_material
         const product_producer = product.product_producer
 
+        const fullImage = this.state.fullImage
         return (
             <>
             <Header/>
             {(this.state.loading)
             ?<div className="div-default"><Loading loading loaderColor="#3498db" /></div>
             :
-            <div className="container pad">
+            <div className="container" style={{paddingTop:"30px"}}>
                 <div className="row">
                     <div className="col-md-6">
                         <div className="row">
                             <div className="">
-                                {/* <SideBySideMagnifier 
+                                <SideBySideMagnifier 
                                     imageSrc={this.state.fullImage}
                                     zoomPosition="right"
-                                /> */}
-                                <img className="fullImage img-responsive" src={this.state.fullImage} alt="FullImage"/>
+                                />
+
+                                {/* <ReactImageMagnify style={{width:'100% !important',height:"300px !important"}} {...{
+                                    smallImage: {
+                                        alt: 'Wristwatch by Ted Baker London',
+                                        isFluidWidth: true,
+                                        isFluidHeight: true,
+                                        src: fullImage,
+                                        // srcSet: 'fullImage 355w',
+                                        width: '400px',
+                                        height: '300px'
+                                        
+                                    },
+                                    largeImage: {
+                                        src: fullImage,
+                                        width: 1200,
+                                        height: 1800  
+                                    }
+                                }} /> */}
+                                {/* <img className="fullImage img-responsive" src={this.state.fullImage} alt="FullImage"/> */}
                             </div>
                         </div>
                         <div className="row">
@@ -313,4 +337,11 @@ class ProductDetail extends PureComponent {
     }
 }
 
-export default ProductDetail
+// export default ProductDetail
+const mapDispatchToProps = dispatch => {
+    return {
+        addToCartCount: () => dispatch(addToCartCount())
+    }
+  }
+  
+  export default connect(null, mapDispatchToProps)(ProductDetail)

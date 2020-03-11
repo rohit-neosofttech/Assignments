@@ -125,10 +125,19 @@ class Contact extends Component {
             break;
 
           case "mobile":
-            formErrors.mobile =
-              (value.length === 0 ? "*required" : "") ||
-              ((value < 6999999999 || value > 9999999999) ? "Invalid Mobile number" : "" )
-              // (value.length !== 10 ? "Invalid Mobile number" : "")
+            if(value.startsWith("+") === true) {
+              formErrors.mobile =
+                (isNaN(value) ? "Must Be a number" : "") ||
+                (value.length === 0 ? "*required" : "") ||
+                ((value.length !==13 ) ? "Invalid Mobile number" : "" )
+            }
+            else {
+              formErrors.mobile =
+                (isNaN(value) ? "Must Be a number" : "") ||
+                (value.length === 0 ? "*required" : "") ||
+                ((value < 6999999999 || value > 9999999999) ? "Invalid Mobile number" : "" )
+                // (value.length !== 10 ? "Invalid Mobile number" : "")
+            }
             break;
           default:
             break;
@@ -158,7 +167,7 @@ class Contact extends Component {
                     <div class="card-body">
                         <h1 className="center">Contact Form</h1>
                         <form className="container p-5" onSubmit={this.handleSubmit} noValidate autoComplete='off'>
-                            <TextField fullWidth
+                            <TextField fullWidth style={{}}
                                 label="Name"
                                 type="text"
                                 name="name"
@@ -167,6 +176,9 @@ class Contact extends Component {
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'
+                                InputProps={{
+                                  labelWidth:'150px'
+                                }}
                                 error={this.state.formErrors.name.length > 0}
                             /><br/><br/>
 
@@ -184,12 +196,13 @@ class Contact extends Component {
 
                             <TextField style={{width:'100%'}}
                                 label="Mobile Number"
-                                type="number"
+                                type="text"
                                 name="mobile"
-                                onInput = {(e) =>{
-                                  e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
-                                }}
-                                onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-') && evt.preventDefault() }
+                                // onInput = {(e) =>{
+                                //   e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
+                                // }}
+                                onKeyDown={ (evt) => !((evt.keyCode>=96 && evt.keyCode<=105) || (evt.keyCode>=47 && evt.keyCode<=57) || evt.key === '+' || evt.keyCode === 8 || evt.keyCode === 46) && evt.preventDefault() }
+                                // onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-') && evt.preventDefault() }
                                 helperText={this.state.formErrors.mobile.length > 0 && this.state.formErrors.mobile}
                                 value={this.state.mobile}
                                 onChange={this.handleChange}

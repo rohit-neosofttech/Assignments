@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import sweetalert from 'sweetalert'
 
 export const ProtectedRoute = ({
   component: Component,
@@ -14,15 +15,19 @@ export const ProtectedRoute = ({
         } else {
           return (
             <>
-                <Redirect
+                {/* {sweetalert("Please Login First",{icon:"error",button:{cancel: "Close"}})} */}
+                {/* <Redirect
                 to={{
                     pathname: "/login",
                     state: {
                     from: props.location
                     }
                 }}
-                />
+                /> */}
                 {alert("Please Login First")}
+                {props.history.push('/login')}
+                {/* {sweetalert("Please Login First",{icon:"error",button:{cancel: "Close"}})} */}
+
             </>
           );
         }

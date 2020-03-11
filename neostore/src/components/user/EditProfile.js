@@ -104,9 +104,19 @@ class EditProfile extends Component {
                 (emailRegex.test(value)? "" : "invalid email address")
             break;
         case "mobile":
-            formErrors.mobile =
-                (value.length === 0 ? "*required" : "") ||
-                ((value < 6999999999 || value > 9999999999) ? "Invalid Mobile number" : "" )
+            if(value.startsWith("+") === true) {
+                formErrors.mobile =
+                  (isNaN(value) ? "Must Be a number" : "") ||
+                  (value.length === 0 ? "*required" : "") ||
+                  ((value.length !==13 ) ? "Invalid Mobile number" : "" )
+              }
+              else {
+                formErrors.mobile =
+                  (isNaN(value) ? "Must Be a number" : "") ||
+                  (value.length === 0 ? "*required" : "") ||
+                  ((value < 6999999999 || value > 9999999999) ? "Invalid Mobile number" : "" )
+                  // (value.length !== 10 ? "Invalid Mobile number" : "")
+              }
             break;
         default:
             break;
@@ -336,12 +346,13 @@ class EditProfile extends Component {
 
                             <TextField fullWidth
                                 label="Mobile Number"
-                                type="number"
+                                type="text"
                                 name="mobile"
-                                onInput = {(e) =>{
-                                    e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
-                                  }}
-                                onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-' ) && evt.preventDefault() }
+                                // onInput = {(e) =>{
+                                //     e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
+                                //   }}
+                                // onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-' ) && evt.preventDefault() }
+                                onKeyDown={ (evt) => !((evt.keyCode>=96 && evt.keyCode<=105) || (evt.keyCode>=47 && evt.keyCode<=57) || evt.key === '+' || evt.keyCode === 8 || evt.keyCode === 46) && evt.preventDefault() }
                                 helperText={this.state.formErrors.mobile!=='' && this.state.formErrors.mobile}
                                 value={this.state.mobile}
                                 onChange={this.handleChange}

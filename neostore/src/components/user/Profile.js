@@ -89,6 +89,7 @@ export class Profile extends PureComponent {
                                 <CircularProgress/>
                             </div>
                         :
+                        <>
                         <table>
                             <tbody>
                                 <tr>
@@ -111,11 +112,13 @@ export class Profile extends PureComponent {
                                 </tr>
                             </tbody>
                         </table>
-                        }
                         <hr/>
                         <button className="btn-edit" onClick={this.handleClick}>
                             <i id="icon-black" className="fa fa-edit"></i>Edit
                         </button>
+                        </>
+                        }
+                        
                     </div>
                 </div>
                 <br/><br/>

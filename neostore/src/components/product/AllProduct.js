@@ -15,14 +15,14 @@ class AllProduct extends Component {
             // loading:true,
             loader:false,
             currentPage:1,
-            // postsPerPage:8,
+            postsPerPage:8,
             categoryName:'',
             // categoryId:'',
             // colorId:'',
             // sortBy:'',
             // sortIn:'',
-            pageNo:1,
-            perPage:8,
+            // pageNo:1,
+            // perPage:8,
             error:false,
             prodLen:''
         }
@@ -49,13 +49,13 @@ class AllProduct extends Component {
         // console.log(`${api.baseurl}/commonProducts?category_id=${this.props.categoryId}&color_id=${this.props.colorId}&sortBy=${this.props.sortBy}&sortIn=${this.props.sortIn}&pageNo=${this.state.pageNo}&perPage=${this.state.perPage}`)
         if (this.props !== prevProps || this.state.pageNo!== prevState.pageNo) {
             this.setState({loader:true,error:false})
-             axios.get(`${api.baseurl}/commonProducts?category_id=${this.props.categoryId}&color_id=${this.props.colorId}&sortBy=${this.props.sortBy}&sortIn=${this.props.sortIn}&pageNo=${this.state.pageNo}&perPage=${this.state.perPage}`)
+             axios.get(`${api.baseurl}/commonProducts?category_id=${this.props.categoryId}&color_id=${this.props.colorId}&sortBy=${this.props.sortBy}&sortIn=${this.props.sortIn}`)
             .then((res)=>{
                 this.setState({
                     products:res.data.product_details,
                     categoryName:res.data.product_details[0].category_id.category_name,
                     prodLen:res.data.total_count,
-                    // loading:false,
+                    currentPage:1,
                     loader:false
                 })
             })
@@ -69,13 +69,13 @@ class AllProduct extends Component {
         }
         if (this.state.pageNo!== prevState.pageNo) {
             this.setState({loader:true,error:false})
-            axios.get(`${api.baseurl}/commonProducts?category_id=${this.props.categoryId}&color_id=${this.props.colorId}&sortBy=${this.props.sortBy}&sortIn=${this.props.sortIn}&pageNo=${this.state.pageNo}&perPage=${this.state.perPage}`)
+            axios.get(`${api.baseurl}/commonProducts?category_id=${this.props.categoryId}&color_id=${this.props.colorId}&sortBy=${this.props.sortBy}&sortIn=${this.props.sortIn}`)
            .then((res)=>{
                this.setState({
                    products:res.data.product_details,
                    categoryName:res.data.product_details[0].category_id.category_name,
                    prodLen:res.data.total_count,
-                //    loading:false,
+                   currentPage:1,
                    loader:false
                })
            })
@@ -97,7 +97,7 @@ class AllProduct extends Component {
                 products:res.data.product_details,
                 categoryName:"Highest Rated Product",
                 prodLen:res.data.total_count,
-                // loading:false,
+                currentPage:1,
                 loader:false
             })
         })
@@ -117,7 +117,7 @@ class AllProduct extends Component {
                 products:res.data.product_details,
                 categoryName:"Products In Descending by Cost",
                 prodLen:res.data.total_count,
-                // loading:false,
+                currentPage:1,
                 loader:false
             })
         })
@@ -137,7 +137,7 @@ class AllProduct extends Component {
                 products:res.data.product_details,
                 categoryName:"Products In Ascending by Cost",
                 prodLen:res.data.total_count,
-                // loading:false,
+                currentPage:1,
                 loader:false
             })
         })
@@ -151,11 +151,12 @@ class AllProduct extends Component {
 
     render() {
 
-        // const indexOfLastPost = this.state.currentPage * this.state.postsPerPage;
-        // const indexOfFirstPost = indexOfLastPost - this.state.postsPerPage;
-        // const currentPosts = this.state.products.slice(indexOfFirstPost, indexOfLastPost);
+        const indexOfLastPost = this.state.currentPage * this.state.postsPerPage;
+        const indexOfFirstPost = indexOfLastPost - this.state.postsPerPage;
+        const currentPosts = this.state.products.slice(indexOfFirstPost, indexOfLastPost);
 
-        const paginate = pageNumber => this.setState({pageNo:pageNumber})
+        const paginate = pageNumber => this.setState({currentPage:pageNumber});
+        // const paginate = pageNumber => this.setState({pageNo:pageNumber})
 
         return (
             <div className="col-md-9">
@@ -183,7 +184,7 @@ class AllProduct extends Component {
                         ? 
                         <div className="center" style={{height:"300px"}}>
                             <br/><br/><br/><br/>
-                            <img src="https://lh3.googleusercontent.com/proxy/rXicg6dlWfhuKlAa-bXoXvSBlnRLpcA4FDm_jD1MlbPiMXwMAwohTN-U0oPNJOmqv3hhBZJjWsy7NbHwmUCAmk2whH4BDBXgJxDSePBrU8SfcF2lmWieBJySaLQ69Go" alt="Error Icon" style={{height:'200px'}}/>
+                            <img src="https://lh3.googleusercontent.com/proxy/H-X7TexFX8i2o0qn9cNys0HAlPVjUO17lzOK00nqoMtugBkVAYqIvHhltDqWA7WckvCHAE_OguhDmC41M2kq_FYjDh6KETZ1e3AVic9LEzxxuPVtgCrssb5DGMkqQ5E" alt="Error Icon" style={{height:'200px'}}/>
                             <h1 className="center" style={{color:'#ff5b5b'}}>No Product Found</h1>
                         </div> 
                         :
@@ -199,12 +200,18 @@ class AllProduct extends Component {
                         <>
                             <div className="row">
                                 {/* <ProductsCard products={this.state.products} loading={this.state.loading} error={this.state.error}/> */}
-                                <ProductsCard products={this.state.products} />
+                                {/* <ProductsCard products={this.state.products} /> */}
+                                <ProductsCard products={currentPosts} />
                             </div>
 
-                            <Pagination
+                            {/* <Pagination
                                 postsPerPage={this.state.perPage}
                                 totalPosts={this.state.prodLen}
+                                paginate={paginate}
+                            /> */}
+                            <Pagination
+                                postsPerPage={this.state.postsPerPage}
+                                totalPosts={this.state.products.length}
                                 paginate={paginate}
                             />
                         </>

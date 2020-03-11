@@ -64,6 +64,7 @@ class AddAddress extends Component {
             
             case "pincode":
               formErrors.pincode =
+                (isNaN(value) ? "Must Be a number" : "") ||
                 (value.length === 0 ? "*required" : "") ||
                 (value.length !== 6 ? "Pincode should be of 6 digit" : "")
               break;
@@ -71,15 +72,15 @@ class AddAddress extends Component {
             case "city":
               formErrors.city =
                 (value.length === 0 ? "*required" : "") ||
-                (textOnly.test(value)? "" : "should contain only character") ||
-                (value.length < 3 ? "minimum 3 characaters required" : "")
+                (textOnly.test(value)? "" : "should contain only character") 
+                // (value.length < 3 ? "minimum 3 characaters required" : "")
               break;
               
             case "state":
               formErrors.state =
                 (value.length === 0 ? "*required" : "") ||
-                (textOnly.test(value)? "" : "should contain only character") ||
-                (value.length < 3 ? "minimum 3 characaters required" : "")
+                (textOnly.test(value)? "" : "should contain only character") 
+                // (value.length < 3 ? "minimum 3 characaters required" : "")
               break;
 
             case "country":

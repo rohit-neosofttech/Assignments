@@ -3,6 +3,9 @@ import axios from 'axios'
 import {Link} from 'react-router-dom'
 import NoProduct from './NoProduct'
 import * as api from '../../api'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import {connect} from 'react-redux'
+import {removeCart} from '../redux'
 
 import SnackAlert from '../SnackAlert'
 import sweetalert from 'sweetalert'
@@ -10,6 +13,8 @@ import sweetalert from 'sweetalert'
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Loading from 'react-fullscreen-loading';
+
 
 const userToken = localStorage.getItem("userToken")
 
@@ -21,13 +26,16 @@ class DeliveryAddress extends PureComponent {
             value:null,
             checkAddr:'',
             empty:false,
+            loader:false,
             open:false,
             message:'',
-            type:''
+            type:'',
+            tab:false
         }
     }
     
     componentDidMount() {
+        this.setState({loader:true})
         axios.get(`${api.baseurl}/getCustAddress`, {
             headers: {
                 Authorization: 'Bearer ' + userToken
@@ -35,7 +43,10 @@ class DeliveryAddress extends PureComponent {
         })
         .then((res)=>{
             const addr = res.data.customer_address
-            this.setState({address:addr})
+            this.setState({
+                address:addr, 
+                loader:false
+            })
         })
         .catch((err) => {
             // if (err.response) {
@@ -53,7 +64,10 @@ class DeliveryAddress extends PureComponent {
     }
 
     handleChange = (addr) => {
-        this.setState({checkAddr:addr.address_id})
+        this.setState({
+            checkAddr:addr.address_id, 
+            loader:true
+        })
         axios.put(`${api.baseurl}/updateAddress`,{
             address_id:addr.address_id,
             isDeliveryAddress:true
@@ -66,11 +80,13 @@ class DeliveryAddress extends PureComponent {
             this.setState({
                 type:'info',
                 message:"Address updated",
+                loader:false,
                 open:true
             })
 
         })
         .catch((err) => {
+            this.setState({loader:false})
             if (err.response) {
                 err.response.data.message 
                 ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
@@ -101,7 +117,8 @@ class DeliveryAddress extends PureComponent {
 
             let cart = JSON.parse(localStorage.getItem("cart"))
             cart=[...cart,{'flag': "checkout"}]
-                
+            
+            this.setState({tab:true}) 
             axios.post(`${api.baseurl}/addProductToCartCheckout`,
                 cart
             , {
@@ -110,11 +127,14 @@ class DeliveryAddress extends PureComponent {
                 }
             })
             .then((res)=>{
+                this.setState({tab:false}) 
                 localStorage.removeItem('cart')
                 localStorage.removeItem('tempCart')
+                this.props.removeCart()
                 history.push('/orderPlaced')
             })
             .catch((err) => {
+                this.setState({tab:false}) 
                 if (err.response) {
                     err.response.data.message 
                     ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
@@ -132,54 +152,89 @@ class DeliveryAddress extends PureComponent {
     render() {
         console.log('at delievery address', this.props)
         return (
+            <>
+            {this.state.tab
+            ?
+            <div style={{minHeight:'600px'}}>
+                <Loading loading loaderColor="#3498db" />
+                <div className="div-default center">
+                    <br/><br/><br/>
+                    <p className="order-placed">Your Order is in Process</p>
+                    <p>Please Wait while we confirm your order</p>
+                    <Link to="/mainCart"><button className="btn btn-primary">Return To Cart</button></Link>
+                </div>
+            </div>
+            :
             <div>
                 {(this.state.empty || !localStorage.getItem("cart"))
                 ? <NoProduct/>
                 :
-                <div className="container card">
+                <div className="container card p-4">
                     <h2>Address</h2>
                         <hr/><br/>
-                    <div className="row" >
-                        { this.state.address.length===0 
-                        ? <div className="col-md-7">
-                            <h1>No Address Found</h1>
-                        </div> 
-                        :  this.state.address.map(addr =>
-                        <>
-                            <div className="col-md-4 card p-3 m-3" key={addr.address_id}>
-                                <span>{addr.address}</span>
-                                <span>{`${addr.city} - ${addr.pincode}`}</span>
-                                <span>{`${addr.state}, ${addr.country}`}</span><br/>
-                                <div className="row">
-                                    <div className="col">
-                                    <RadioGroup aria-label="Address" name="Address" value={this.state.value}>
-                                        <FormControlLabel value={addr.address_id} control={<Radio />} label="Select" onChange={()=>this.handleChange(addr)} 
-                                        checked={this.state.checkAddr === addr.address_id}/>
-                                    </RadioGroup>
-                                    </div>
-                                    <div className="col">
-                                    <Link to={{pathname:`/editAddress/${addr.address_id}`,state:{addr}}}>
-                                        <button className="btn btn-primary" style={{width:'100px'}} >Edit</button>
-                                    </Link>
+                    {this.state.loader
+                    ? 
+                        <div className="center" >
+                            <CircularProgress/>
+                        </div>
+                    :
+                    <>
+                        <div className="row" >
+                            { this.state.address.length===0 
+                            ? <div className="col-md-7">
+                                <h1>No Address Found</h1>
+                            </div> 
+                            :  this.state.address.map(addr =>
+                            <>
+                                <div className="col card p-3 m-3" key={addr.address_id}>
+                                    <span>{addr.address}</span>
+                                    <span>{`${addr.city} - ${addr.pincode}`}</span>
+                                    <span>{`${addr.state}, ${addr.country}`}</span><br/>
+                                    <div className="row">
+                                        <div className="col">
+                                        <RadioGroup aria-label="Address" name="Address" value={this.state.value}>
+                                            <FormControlLabel value={addr.address_id} control={<Radio />} label="Select" onChange={()=>this.handleChange(addr)} 
+                                            checked={this.state.checkAddr === addr.address_id}/>
+                                        </RadioGroup>
+                                        </div>
+                                        <div className="col">
+                                        <Link to={{pathname:`/editAddress/${addr.address_id}`,state:{addr}}}>
+                                            <button className="btn btn-primary" style={{width:'100px'}} >Edit</button>
+                                        </Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <hr/>   
-                        </>
-                        )}
-                    </div>
-                    <div style={{display:"inline-block"}}>
-                        <Link to='/addAddress'><button className="btn-edit" style={{width:'150px'}}>Add Address</button></Link>
-                        <button className="btn-edit" style={{marginLeft:'50px',width:'150px'}} onClick={this.placeOrder}>Place Order</button>
-                    </div>
+                                <hr/>   
+                            </>
+                            )}
+                        </div>
+                        <div style={{display:"inline-block"}}>
+                            <Link to='/addAddress'><button className="btn-edit" style={{width:'150px'}}>Add Address</button></Link>
+                            <button className="btn-edit" style={{marginLeft:'50px',width:'150px'}} onClick={this.placeOrder}>Place Order</button>
+                        </div>
+                    </>
+                    }
                 </div>
                 }
                 {this.state.open && <SnackAlert open={this.state.open} message={this.state.message} 
                     type={this.state.type} handleClose={this.handleClose}/>}
             </div>
+            }
+            </>
         )
     }
 }
 
-export default DeliveryAddress
+// export default DeliveryAddress
+const mapStateToProps = (state) => ({
+    
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        removeCart : () => dispatch(removeCart())
+    }
+}
+
+export default connect(null,mapDispatchToProps)(DeliveryAddress)
 

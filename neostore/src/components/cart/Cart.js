@@ -4,6 +4,8 @@ import NoProduct from './NoProduct'
 // import axios from 'axios'
 
 import * as api from '../../api'
+import {removeToCartCount} from '../redux'
+import {connect} from 'react-redux'
 // import { Link } from 'react-router-dom';
 import { List , ListItem } from '@material-ui/core';
 import sweetalert from 'sweetalert'
@@ -28,6 +30,9 @@ class Cart extends Component {
     }
     
     componentDidMount() {
+        // if(localStorage.getItem('cart')) {
+
+        // }
         this.addTotal()
     }
 
@@ -91,6 +96,7 @@ class Cart extends Component {
                     this.forceUpdate()
                 }
                 this.addTotal()
+                this.props.removeToCartCount()
                 break;
             default:     
                 break;
@@ -215,5 +221,12 @@ class Cart extends Component {
     }
 }
 
-export default Cart
+// export default Cart
+const mapDispatchToProps = dispatch => {
+    return {
+        removeToCartCount: () => dispatch(removeToCartCount())
+    }
+  }
+  
+  export default connect(null, mapDispatchToProps)(Cart)
 

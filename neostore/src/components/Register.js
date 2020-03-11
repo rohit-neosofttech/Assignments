@@ -141,11 +141,13 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
       case "mobile":
         if(value.startsWith("+") === true) {
           formErrors.mobile =
+            (isNaN(value) ? "Must Be a number" : "") ||
             (value.length === 0 ? "*required" : "") ||
             ((value.length !==13 ) ? "Invalid Mobile number" : "" )
         }
         else {
           formErrors.mobile =
+            (isNaN(value) ? "Must Be a number" : "") ||
             (value.length === 0 ? "*required" : "") ||
             ((value < 6999999999 || value > 9999999999) ? "Invalid Mobile number" : "" )
             // (value.length !== 10 ? "Invalid Mobile number" : "")
@@ -294,9 +296,9 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
                             helperText={this.state.formErrors.confpass.length > 0 && this.state.formErrors.confpass}
                             value={this.state.confpass}
                             onChange={this.handleChange}
-                            onBlur={this.handleChange}
+                            onKeyUp={this.handleChange}
                             error={this.state.formErrors.confpass.length > 0}
-                            disabled={this.state.formErrors.password==='' ? false : true }
+                            disabled={(this.state.formErrors.password==='') ? false : true }
                             />
                         </div>
                         <div className="col-sm-2">
@@ -316,12 +318,14 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
                           <TextField fullWidth
                             // id="outlined-error-helper-text"
                             label="Mobile Number"
-                            type="number"
+                            type="text"
                             name="mobile"
-                            onInput = {(e) =>{
-                              e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
-                            }}
-                            onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-') && evt.preventDefault() }
+                            // onInput = {(e) =>{
+                            //   e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
+                            // }}
+                            // onKeyDown={ (evt) => (evt.key=== 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-') && evt.preventDefault() }
+                            onKeyDown={ (evt) => !((evt.keyCode>=96 && evt.keyCode<=105) || (evt.keyCode>=47 && evt.keyCode<=57) ||(evt.keyCode>=37 && evt.keyCode<=40) || evt.key === '+' || evt.keyCode === 8 || evt.keyCode === 46) && evt.preventDefault() }
+                                                        
                             helperText={this.state.formErrors.mobile.length > 0 && this.state.formErrors.mobile}
                             value={this.state.mobile}
                             onChange={this.handleChange}

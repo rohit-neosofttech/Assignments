@@ -147,9 +147,9 @@ class RecoverPass extends Component {
                                 type="number"
                                 name="code"
                                 onInput = {(e) =>{
-                                    e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
+                                    e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,4)
                                   }}
-                                  onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-') && evt.preventDefault() }  
+                                  onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-' || evt.key === '+') && evt.preventDefault() }  
                                 helperText={this.state.formErrors.code ? this.state.formErrors.code:''}
                                 value={this.state.code}
                                 onChange={this.handleChange}
@@ -190,7 +190,7 @@ class RecoverPass extends Component {
                                 type={this.state.confpassIcon ? 'text' : 'password'}
                                 value={this.state.confpass}
                                 onChange={this.handleChange}
-                                onBlur={this.handleChange}
+                                onKeyUp={this.handleChange}
                                 endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton

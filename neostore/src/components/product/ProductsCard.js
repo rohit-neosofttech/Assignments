@@ -2,11 +2,13 @@ import React, {useState}  from 'react';
 import { Link } from 'react-router-dom'
 import Rating from '@material-ui/lab/Rating'
 import * as api from '../../api'
+import {addToCartCount} from '../redux'
+import {connect} from 'react-redux'
 
 import SnackAlert from '../SnackAlert'
 // import Loading from 'react-fullscreen-loading';
 
-function ProductsCard ({ products }) {
+function ProductsCard (props) {
   // function ProductsCard ({ products, loading, error }) {
 
   const [open, setOpen] = React.useState(false);
@@ -18,7 +20,6 @@ function ProductsCard ({ products }) {
   // }
 
   const addToCart = (product) => {
-    console.log(products)
     let oldCart = JSON.parse(localStorage.getItem('cart')) 
     if (oldCart===null) {
         oldCart=[]
@@ -35,6 +36,7 @@ function ProductsCard ({ products }) {
         setType('success')
         setMessage("Product Added to Cart")
         setOpen(true);
+        props.addToCartCount()
     }
     else{
         setType('warning')
@@ -52,7 +54,7 @@ function ProductsCard ({ products }) {
 
   return (
     <>
-      {products.map(product => (
+      {props.products.map(product => (
         <div className='col-sm-4' key={product.product_id} >
           <div className='cards'spinnerFlag='true' >
             <img className={'cardimage'} src={`${api.baseurl}/`+product.product_image} alt="Card Images"/>
@@ -70,4 +72,10 @@ function ProductsCard ({ products }) {
   );
 };
 
-export default ProductsCard
+const mapDispatchToProps = dispatch => {
+  return {
+      addToCartCount: () => dispatch(addToCartCount())
+  }
+}
+
+export default connect(null, mapDispatchToProps)(ProductsCard)

@@ -6,7 +6,7 @@ import axios from 'axios'
 import sweetalert from 'sweetalert'
 import * as api from '../../api'
 
-// import {connect} from 'react-redux'
+import {connect} from 'react-redux'
 import './Header.css'
 import Search from './Search'
 
@@ -17,7 +17,6 @@ class Header extends Component {
         super(props);
         this.state = {
             products:[],
-            cartproducts:[],
             text:'',
             // profile_image:(localStorage.getItem("CustDetail")) ? custDetail.profile_img : null,
             // profile_image: null,
@@ -25,7 +24,8 @@ class Header extends Component {
             selectedOption:'',
             options:[],
             dropdown:'',
-            image:User
+            image:'',
+            img:''
         }
     }
 
@@ -36,13 +36,12 @@ class Header extends Component {
     }
     
     componentDidMount() {
-        // this.setState({
-        //     profile_image:(localStorage.getItem("CustDetail")) ? custDetail.profile_img : null,
-        // })
-        if(localStorage.getItem('cart')) {
-            this.setState({cartproducts:localStorage.getItem('cart')})
-        }
-
+        // var img=''
+        // if(localStorage.getItem("CustDetail")) {
+        //     if(custDetail.profile_img) {
+        //         img=custDetail.profile_img
+        //     }
+        // }
         if(localStorage.getItem('userToken'))
         {
             this.setState({
@@ -50,7 +49,7 @@ class Header extends Component {
                             <Link className="dropdown-item" to='/profile'>Profile</Link>
                             <Link className="dropdown-item" to='/logout'>Log out</Link>
                         </>,
-                image: <img className="user-avatar" src={(localStorage.getItem("CustDetail") && custDetail.profile_img==null)? User:`${api.baseurl}/${custDetail.profile_img}`} alt='' />
+                // image: <img className="user-avatar" src={(img==='')? User:`${api.baseurl}/${custDetail.profile_img}`} alt='' />
          })
         }
         else {
@@ -59,7 +58,7 @@ class Header extends Component {
                             <Link className="dropdown-item" to='/login'>Login</Link>
                             <Link className="dropdown-item" to='/register'>Register</Link>
                         </>,
-                image:<img className="user-avatar" src={User} alt='' />
+                // image:<img className="user-avatar" src={User} alt='' />
             })
         }
         
@@ -72,8 +71,6 @@ class Header extends Component {
                 err.response.data.message 
                 ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
                 : sweetalert("Oops!", 'Something Went Wrong getting Products Data', "error",{button:false})
-          
-                // alert(error.response.data.message)
             } else if (err.request) {
                   sweetalert("Oops!", `${err.request}`, "error",{button:false})
             } else {
@@ -86,6 +83,20 @@ class Header extends Component {
             let cartProduct=JSON.parse(localStorage.getItem('cart')) 
             cartProduct.map(item => count++)
             this.setState({count:count})
+        }
+
+        if(localStorage.getItem('userToken')) {
+            axios.get(`${api.baseurl}/getCustProfile`, {
+                headers:{
+                    Authorization: 'Bearer ' + localStorage.getItem('userToken')
+                }
+            })
+            .then((res)=>{
+                this.setState({img:res.data.customer_proile.profile_img})
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         }
     }
 
@@ -117,8 +128,8 @@ class Header extends Component {
                             <Link to="/maincart">
                                 <button className="btn-cart">
                                     <Badge className="badge" anchorOrigin={{vertical: 'top',horizontal: 'right',}} 
-                                    badgeContent={this.state.count}>
-                                    {/* badgeContent={this.props.cartCount}> */}
+                                    // badgeContent={this.state.count}>
+                                    badgeContent={this.props.cartCount}>
 
                                         <i className="fa fa-shopping-cart"></i>
                                     </Badge>Cart
@@ -126,7 +137,8 @@ class Header extends Component {
                             </Link>
                             <div className="dropdown">
                                 <button className="btn-dropdown dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {this.state.image}
+                                    {/* {this.state.image} */}
+                                    <img className="user-avatar" src={(this.state.img)? `${api.baseurl}/${this.state.img}` : User} alt='' />
                                     </button>
                                 <div className="dropdown-menu dropdown-menu-right">
                                     {this.state.dropdown}
@@ -140,11 +152,11 @@ class Header extends Component {
     }
 }
 
-// const mapStateToProps = (state) => {
-//     return {
-//         cartCount:state.cartCount
-//     }
-// }
+const mapStateToProps = (state) => {
+    return {
+        cartCount:state.cartCount
+    }
+}
  
-// export default connect(mapStateToProps)(Header)
-export default Header
+export default connect(mapStateToProps)(Header)
+// export default Header

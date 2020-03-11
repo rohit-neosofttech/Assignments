@@ -1,25 +1,36 @@
 import React, { PureComponent } from 'react'
 import { withRouter } from 'react-router-dom';
 
+const emailRegex = RegExp(
+    // /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-])+.([A-Za-z]{2,4})$/
+    // /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+    /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
+  );
+
 class Newsletter extends PureComponent {
     constructor(props) {
         super(props);
         this.state={
-            name:''
+            name:'',
+            nameError:'',
+            valid:false
         }
     }
 
     onChangeHandler = (e) => {
-        this.setState({
-            name: e.target.value
-        })
+        if(emailRegex.test(e.target.value)) {
+            this.setState({ valid:true, name: e.target.value, nameError: '' })
+        }
+        else{
+            this.setState({ valid:false, name: e.target.value, nameError: 'invalid email address' })
+        }
     }
 
     onSubscribe = (e) => {
         e.preventDefault();
         const { history } = this.props;
         history.push(`/subscribe`,this.state.name);
-        }
+    }
     
     render() {
         const name=this.state.name
@@ -29,7 +40,7 @@ class Newsletter extends PureComponent {
                 <p>Signup to get exclusive offer from our favorite brands and to be well up in the news</p>
                 <form>
                     <input type="text" placeholder="Your Email..." value={name} onChange={this.onChangeHandler}/><br/><br/>
-                    <button type="submit" onClick={this.onSubscribe}>Subscribe</button>
+                    <button type="submit" onClick={this.onSubscribe} disabled={!this.state.valid}>Subscribe</button>
                 </form>
             </>
         )

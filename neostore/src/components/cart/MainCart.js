@@ -29,7 +29,7 @@ function MainCart(props) {
     return (
         <>
         <Header/>
-        <div>
+        <div style={{minHeight:"600px"}}>
             <hr/>
             <Tabs className="nav nav-tabs justify-content-between" id="controlled-tab-example" activeKey={key} onSelect={k => setKey(k)}>
                 <Tab className="nav-link" eventKey="cart" title={<><i style={{color:"black"}} className="fas fa-cart-plus"></i>Cart</>} >
