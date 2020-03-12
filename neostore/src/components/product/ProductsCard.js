@@ -11,9 +11,9 @@ import SnackAlert from '../SnackAlert'
 function ProductsCard (props) {
   // function ProductsCard ({ products, loading, error }) {
 
-  const [open, setOpen] = React.useState(false);
-  const [message, setMessage] = React.useState('');
-  const [type, setType] = React.useState('');
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [type, setType] = useState('');
 
   // if (loading) {
   //   return <Loading loading loaderColor="#3498db" />;

@@ -164,8 +164,7 @@ class Cart extends Component {
                             </thead>
                             <tbody>
                                 {this.state.cartProduct.map(product =>
-                                    <>
-                                    <tr>
+                                <tr key={product.product_id}>
                                     <td style={{padding: '5px'}}>
                                         {/* {cartItem=this.state.allProduct.filter(item => item.product_id===products.product_id)} */}
                                         {/* {console.log(cartItem)} */}
@@ -190,8 +189,7 @@ class Cart extends Component {
                                     <td>{product.product_cost}</td>
                                     <td>{product.total}</td>
                                     <td><button className="cart-trash-btn" onClick={()=>this.removeItem(product)}><i id="icon-red" className="fa fa-trash"></i></button></td>
-                                    </tr>
-                                    </>
+                                </tr>
                                 )}
                             </tbody>
                             </table>

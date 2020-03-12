@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import sweetalert from 'sweetalert'
 
 export const ProtectedRoute = ({
@@ -12,26 +12,30 @@ export const ProtectedRoute = ({
       render={props => {
         if (localStorage.getItem('userToken')) {
           return <Component {...props} />;
-        } else {
-          return (
-            <>
-                {/* {sweetalert("Please Login First",{icon:"error",button:{cancel: "Close"}})} */}
-                {/* <Redirect
-                to={{
-                    pathname: "/login",
-                    state: {
-                    from: props.location
-                    }
-                }}
-                /> */}
-                {alert("Please Login First")}
-                {props.history.push('/login')}
-                {/* {sweetalert("Please Login First",{icon:"error",button:{cancel: "Close"}})} */}
-
-            </>
-          );
+        } 
+        else {
+          sweetalert("Please Login First",{icon:"error",button:false,timer:3000})
+          props.history.push('/login')
         }
-      }}
+          // return (
+          //   <>
+          //       {/* {sweetalert("Please Login First",{icon:"error",button:{cancel: "Close"}})} */}
+          //       {/* <Redirect
+          //       to={{
+          //           pathname: "/login",
+          //           state: {
+          //           from: props.location
+          //           }
+          //       }}
+          //       /> */}
+          //       {alert("Please Login First")}
+          //       {props.history.push('/login')}
+          //       {/* {sweetalert("Please Login First",{icon:"error",button:{cancel: "Close"}})} */}
+
+          //   </>
+          // );
+        }
+      }
     />
   );
 };

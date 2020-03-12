@@ -5,10 +5,11 @@ import axios from 'axios'
 import sweetalert from 'sweetalert'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import {TextField} from '@material-ui/core/';
+// import {TextField} from '@material-ui/core/';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
@@ -49,6 +50,7 @@ class RecoverPass extends Component {
     }
 
     componentDidMount() {
+        
         if(this.props.location.state) {
             this.setState({token:this.props.location.state})
         }
@@ -65,7 +67,9 @@ class RecoverPass extends Component {
         switch (name) {
           case "code":
             formErrors.code =
-                (value.length === 0 ? "*required" : "")
+                (value.length === 0 ? "*required" : "") ||
+                (value.length !== 4 ? "Must be of 4 digit" : "")
+
             break;
           
           case "newpass":
@@ -120,9 +124,9 @@ class RecoverPass extends Component {
             .catch((err) => {
                 this.setState({loader:false})
                 if (err.response) {
-                err.response.data.message 
-                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
-                : sweetalert("Oops!", 'Something Went Wrong getting Company Data', "error",{button:false})
+                err.response.data.error_message 
+                ? sweetalert("Oops!", `${err.response.data.error_message}`, "error",{button:false})
+                : sweetalert("Oops!", 'Something Went Wrong while recovering the Password', "error",{button:false})
                 } else if (err.request) {
                     sweetalert("Oops!", `${err.request}`, "error",{button:false})
                 } else {
@@ -133,16 +137,15 @@ class RecoverPass extends Component {
     };
 
     render() {
-        console.log(this.props)
         return (
             <>
               <Header/>  
               <div className="container p-5">
                 <div className="card" style={{width:"60%",margin:"auto",backgroundColor:"#eeeeee"}}>
-                    <div class="card-body">
+                    <div className="card-body">
                         <h1 className="center">Recovery Password</h1>
                         <form className="container p-5" onSubmit={this.handleSubmit} noValidate autoComplete='off'>
-                            <TextField fullWidth
+                            {/* <TextField fullWidth
                                 label="Verification code"
                                 type="number"
                                 name="code"
@@ -156,16 +159,43 @@ class RecoverPass extends Component {
                                 onBlur={this.handleChange}
                                 variant='outlined'
                                 error={this.state.formErrors.code.length > 0}
-                            /><br/><br/>
+                            /><br/><br/> */}
 
-                            <FormControl variant="outlined" fullWidth>
+                            <FormControl variant="outlined" 
+                                fullWidth
+                                error={this.state.formErrors.code.length > 0}
+                            >
+                            <InputLabel htmlFor="outlined-adornment-password">Verification code</InputLabel>
+                            <OutlinedInput
+                                type="number"
+                                name="code"
+                                value={this.state.code ? this.state.code :''}
+                                onChange={this.handleChange}
+                                onBlur={this.handleChange}
+                                onInput = {(e) =>{
+                                    e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,4)
+                                  }}
+                                onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-' || evt.key === '+') && evt.preventDefault() }  
+                                maxLength="4"
+                                labelWidth={150}
+                            />
+                            <FormHelperText>
+                            {this.state.formErrors.code ? this.state.formErrors.code:''}
+                            </FormHelperText>
+                            </FormControl>
+                            <br/><br/>
+
+                            <FormControl variant="outlined" 
+                                fullWidth
+                                error={this.state.formErrors.newpass.length > 0}
+                            >
                             <InputLabel htmlFor="outlined-adornment-password">New Password</InputLabel>
                             <OutlinedInput
                                 name="newpass"
                                 type={this.state.newpassIcon ? 'text' : 'password'}
-                                value={this.state.newpass}
+                                value={this.state.newpass ? this.state.newpass : ''}
                                 onChange={this.handleChange}
-                                onBlur={this.handleChange}
+                                onKeyUp={this.handleChange}
                                 endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -179,16 +209,22 @@ class RecoverPass extends Component {
                                 }
                                 labelWidth={150}
                             />
+                            <FormHelperText>
+                                {this.state.formErrors.newpass.length > 0 ? <span className="errorMessage">{this.state.formErrors.newpass}</span>: <></>}
+                            </FormHelperText>
                             </FormControl>
-                            {this.state.formErrors.newpass.length > 0 ? <span className="errorMessage">{this.state.formErrors.newpass}</span>: <></>}
                             <br/><br/>
                             
-                            <FormControl variant="outlined" fullWidth disabled={this.state.formErrors.newpass!==''}>
+                            <FormControl variant="outlined" 
+                                fullWidth 
+                                disabled={this.state.formErrors.newpass!=='' || this.state.newpass===null}
+                                error={this.state.formErrors.confpass.length > 0}
+                            >
                             <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
                             <OutlinedInput
                                 name="confpass"
                                 type={this.state.confpassIcon ? 'text' : 'password'}
-                                value={this.state.confpass}
+                                value={this.state.confpass ? this.state.confpass :''}
                                 onChange={this.handleChange}
                                 onKeyUp={this.handleChange}
                                 endAdornment={
@@ -204,9 +240,12 @@ class RecoverPass extends Component {
                                 }
                                 labelWidth={150}
                             />
+                            <FormHelperText>
+                                {this.state.formErrors.confpass.length > 0 ? <span className="errorMessage">{this.state.formErrors.confpass}</span>: <></>}
+                            </FormHelperText>
                             </FormControl>
-                            {this.state.formErrors.confpass.length > 0 ? <span className="errorMessage">{this.state.formErrors.confpass}</span>: <></>}
                             <br/><br/>
+
                             <div className="center">
                             {this.state.loader
                               ? <CircularProgress/>

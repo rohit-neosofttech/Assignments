@@ -16,11 +16,11 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const userToken = localStorage.getItem('userToken')
 
-const emailRegex = RegExp(
-    // /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-]{2,5})+.([A-Za-z]{2,4})$/  
-    // /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
-    /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
-  );
+// const emailRegex = RegExp(
+//     // /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-]{2,5})+.([A-Za-z]{2,4})$/  
+//     // /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+//     /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
+//   );
 const textOnly = RegExp(/^[a-zA-Z]*$/);
   
 const formValid = ({ formErrors, ...rest }) => {

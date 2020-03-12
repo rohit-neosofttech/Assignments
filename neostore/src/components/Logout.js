@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import * as api from '../api'
+// import axios from 'axios'
+// import * as api from '../api'
 
-const userToken = localStorage.getItem("userToken")
+// const userToken = localStorage.getItem("userToken")
 
 class Logout extends Component {
     componentDidMount() {

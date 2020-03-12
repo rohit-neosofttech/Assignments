@@ -49,6 +49,7 @@ class Header extends Component {
                             <Link className="dropdown-item" to='/profile'>Profile</Link>
                             <Link className="dropdown-item" to='/logout'>Log out</Link>
                         </>,
+                img:custDetail.profile_img
                 // image: <img className="user-avatar" src={(img==='')? User:`${api.baseurl}/${custDetail.profile_img}`} alt='' />
          })
         }
@@ -58,6 +59,7 @@ class Header extends Component {
                             <Link className="dropdown-item" to='/login'>Login</Link>
                             <Link className="dropdown-item" to='/register'>Register</Link>
                         </>,
+                img:''
                 // image:<img className="user-avatar" src={User} alt='' />
             })
         }
@@ -85,19 +87,19 @@ class Header extends Component {
             this.setState({count:count})
         }
 
-        if(localStorage.getItem('userToken')) {
-            axios.get(`${api.baseurl}/getCustProfile`, {
-                headers:{
-                    Authorization: 'Bearer ' + localStorage.getItem('userToken')
-                }
-            })
-            .then((res)=>{
-                this.setState({img:res.data.customer_proile.profile_img})
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-        }
+        // if(localStorage.getItem('userToken')) {
+        //     axios.get(`${api.baseurl}/getCustProfile`, {
+        //         headers:{
+        //             Authorization: 'Bearer ' + localStorage.getItem('userToken')
+        //         }
+        //     })
+        //     .then((res)=>{
+        //         this.setState({img:res.data.customer_proile.profile_img})
+        //     })
+        //     .catch((err) => {
+        //         console.log(err)
+        //     })
+        // }
     }
 
     render() {
@@ -130,9 +132,8 @@ class Header extends Component {
                                     <Badge className="badge" anchorOrigin={{vertical: 'top',horizontal: 'right',}} 
                                     // badgeContent={this.state.count}>
                                     badgeContent={this.props.cartCount}>
-
-                                        <i className="fa fa-shopping-cart"></i>
-                                    </Badge>Cart
+                                        <i className="fa fa-shopping-cart fa-lg"></i>
+                                    </Badge><span >Cart</span>
                                 </button>
                             </Link>
                             <div className="dropdown">

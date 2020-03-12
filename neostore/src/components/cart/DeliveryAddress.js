@@ -35,28 +35,30 @@ class DeliveryAddress extends PureComponent {
     }
     
     componentDidMount() {
-        this.setState({loader:true})
-        axios.get(`${api.baseurl}/getCustAddress`, {
-            headers: {
-                Authorization: 'Bearer ' + userToken
-              }
-        })
-        .then((res)=>{
-            const addr = res.data.customer_address
-            this.setState({
-                address:addr, 
-                loader:false
+        if(localStorage.getItem('userToken')){
+            this.setState({loader:true})
+            axios.get(`${api.baseurl}/getCustAddress`, {
+                headers: {
+                    Authorization: 'Bearer ' + userToken
+                }
             })
-        })
-        .catch((err) => {
-            // if (err.response) {
-            //     sweetalert("Error", err.response.data.message?`${err.response.data.message}` : "Error has occured", "error", {button:false});
-            // } else if (err.request) {
-            //     sweetalert("Error", `${err.request}`, "error");
-            // } else {
-            //     sweetalert("Error", `${err.message}`, "error");
-            // }
-        })
+            .then((res)=>{
+                const addr = res.data.customer_address
+                this.setState({
+                    address:addr, 
+                    loader:false
+                })
+            })
+            .catch((err) => {
+                // if (err.response) {
+                //     sweetalert("Error", err.response.data.message?`${err.response.data.message}` : "Error has occured", "error", {button:false});
+                // } else if (err.request) {
+                //     sweetalert("Error", `${err.request}`, "error");
+                // } else {
+                //     sweetalert("Error", `${err.message}`, "error");
+                // }
+            })
+        }
 
         if(localStorage.getItem("cart")) { 
             this.setState({empty:false}) 
@@ -150,7 +152,6 @@ class DeliveryAddress extends PureComponent {
     
 
     render() {
-        console.log('at delievery address', this.props)
         return (
             <>
             {this.state.tab
@@ -226,9 +227,7 @@ class DeliveryAddress extends PureComponent {
 }
 
 // export default DeliveryAddress
-const mapStateToProps = (state) => ({
-    
-})
+
 
 const mapDispatchToProps = dispatch => {
     return {

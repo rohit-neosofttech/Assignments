@@ -12,16 +12,16 @@ import SnackAlert from '../SnackAlert'
 import sweetalert from 'sweetalert'
 
 import {
-    Magnifier,
+    // Magnifier,
     SideBySideMagnifier,
-    MOUSE_ACTIVATION,
-    TOUCH_ACTIVATION,
-    MagnifierZoom,
-    MagnifierPreview,
-    MagnifierContainer
+    // MOUSE_ACTIVATION,
+    // TOUCH_ACTIVATION,
+    // MagnifierZoom,
+    // MagnifierPreview,
+    // MagnifierContainer
   } from "react-image-magnifiers";
 
-import ReactImageMagnify from 'react-image-magnify';
+// import ReactImageMagnify from 'react-image-magnify';
 
 const userToken = localStorage.getItem("userToken")
 
@@ -216,7 +216,7 @@ class ProductDetail extends PureComponent {
         const product_material = product.product_material
         const product_producer = product.product_producer
 
-        const fullImage = this.state.fullImage
+        // const fullImage = this.state.fullImage
         return (
             <>
             <Header/>

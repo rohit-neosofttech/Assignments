@@ -5,7 +5,7 @@ import Pagination from './Pagination';
 import * as api from '../../api'
 import ReactTooltip from 'react-tooltip'
 import Loading from 'react-fullscreen-loading';
-import CircularProgress from '@material-ui/core/CircularProgress';
+// import CircularProgress from '@material-ui/core/CircularProgress';
 
 class AllProduct extends Component {
     constructor(props) {

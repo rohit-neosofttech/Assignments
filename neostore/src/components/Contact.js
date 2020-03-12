@@ -40,11 +40,11 @@ class Contact extends Component {
         super(props);
         this.state = {
             customer_id:'',
-            name:null,
-            email:null,
-            mobile:null,
-            subject:null,
-            message:null,
+            name:'',
+            email:'',
+            mobile:'',
+            subject:'',
+            message:'',
             loader:false,
             open:false,
             formErrors: {
@@ -148,7 +148,7 @@ class Contact extends Component {
     
     componentDidMount() {
         const id = custDetail ? custDetail.customer_id : ''
-        this.setState({customer_id:id})
+        this.setState({customer_id:id,})
     }
 
     handleSnackClose = (event, reason) => {
@@ -164,7 +164,7 @@ class Contact extends Component {
             <Header/>
             <div className="container p-5">
                 <div className="card" style={{width:"60%",margin:"auto",backgroundColor:"#eeeeee"}}>
-                    <div class="card-body">
+                    <div className="card-body">
                         <h1 className="center">Contact Form</h1>
                         <form className="container p-5" onSubmit={this.handleSubmit} noValidate autoComplete='off'>
                             <TextField fullWidth style={{}}
@@ -176,9 +176,7 @@ class Contact extends Component {
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'
-                                InputProps={{
-                                  labelWidth:'150px'
-                                }}
+                                margin="normal"
                                 error={this.state.formErrors.name.length > 0}
                             /><br/><br/>
 
@@ -242,9 +240,7 @@ class Contact extends Component {
                                     </div>
                                 :
                                  <>
-                                  {formValid(this.state) 
-                                ? <button className="btn btn-primary" type='submit'>Submit</button>
-                                : <button className="btn btn-primary" type='submit' style={{backgroundColor:'gray',cursor:'default'}} disabled>Submit</button>}
+                                  <button className="btn btn-primary" type='submit' disabled={true}>Submit</button>
                                  </>
                                 }  
                             </div>

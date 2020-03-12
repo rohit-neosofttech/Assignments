@@ -639,3 +639,8 @@ button[disabled]{
     /* color: hsl(0,0%,80%); */
 }
 
+.MuiBadge-anchorOriginTopRightRectangle {
+    right:10px !important;
+    opacity: 0.95;
+}
+
