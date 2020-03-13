@@ -15,30 +15,38 @@ class PopularProduct extends PureComponent {
             loader:false
         }
     }
+    _isMounted = false;
 
     componentDidMount(){
+        this._isMounted = true;
         this.setState({loader:true})
-        axios.get(`${api.baseurl}/defaultTopRatingProduct`)
-        .then((res)=>{
-            this.setState({product_details:res.data.product_details , loader:false})
-        })
-        .catch((err)=> {
-            console.log('Popular Product Invalid API call')
-            this.setState({loader:false})
-            if (err.response) {
-                err.response.data.message 
-                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
-                : sweetalert("Oops!", 'Something Went Wrong getting Top Rating Product', "error",{button:false})
-          
-                // alert(error.response.data.message)
-            } else if (err.request) {
-                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
-            } else {
-                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
-            }
-        })
+        if(this._isMounted) {
+            axios.get(`${api.baseurl}/defaultTopRatingProduct`)
+            .then((res)=>{
+                this.setState({product_details:res.data.product_details , loader:false})
+            })
+            .catch((err)=> {
+                // console.log('Popular Product Invalid API call')
+                this.setState({loader:false})
+                if (err.response) {
+                    err.response.data.message 
+                    ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                    : sweetalert("Oops!", 'Something Went Wrong getting Top Rating Product', "error",{button:false})
+            
+                    // alert(error.response.data.message)
+                } else if (err.request) {
+                    sweetalert("Oops!", `${err.request}`, "error",{button:false})
+                } else {
+                    sweetalert("Oops!", `${err.message}`, "error",{button:false})
+                }
+            })
+        }
     }
 
+    componentWillUnmount(){
+        this._isMounted = false;
+    }
+    
     render() {
         return (
             <div className="container">

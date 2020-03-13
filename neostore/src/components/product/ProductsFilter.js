@@ -26,7 +26,7 @@ class ProductsFilter extends PureComponent {
             this.setState({categories:res.data.category_details})
         })
         .catch((err)=> {
-            console.log(err)
+            // console.log(err)
         })
 
         axios.get(`http://180.149.241.208:3022/getAllColors`)
@@ -35,7 +35,7 @@ class ProductsFilter extends PureComponent {
             this.setState({colors:res.data.color_details})
         })
         .catch((err)=> {
-            console.log(err)
+            // console.log(err)
         })
     }
 

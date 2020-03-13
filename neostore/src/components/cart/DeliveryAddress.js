@@ -186,7 +186,7 @@ class DeliveryAddress extends PureComponent {
                                 <h1>No Address Found</h1>
                             </div> 
                             :  this.state.address.map(addr =>
-                            <>
+                            <React.Fragment key={addr.address_id}>
                                 <div className="col card p-3 m-3" key={addr.address_id}>
                                     <span>{addr.address}</span>
                                     <span>{`${addr.city} - ${addr.pincode}`}</span>
@@ -206,7 +206,7 @@ class DeliveryAddress extends PureComponent {
                                     </div>
                                 </div>
                                 <hr/>   
-                            </>
+                            </React.Fragment>
                             )}
                         </div>
                         <div style={{display:"inline-block"}}>

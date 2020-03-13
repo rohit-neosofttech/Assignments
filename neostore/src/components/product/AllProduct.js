@@ -184,7 +184,7 @@ class AllProduct extends Component {
                         ? 
                         <div className="center" style={{height:"300px"}}>
                             <br/><br/><br/><br/>
-                            <img src="https://lh3.googleusercontent.com/proxy/-cnzg8q4zsHyvGWW5GvoYwkNn7DTHnXZz4GMeAjklacBxnnOYO7EQxSvolfQvq1JMQ52Wb97bzye9EPdu_8HISiGUiyllkq2Z6xKlGiptrLMBR3Jq8IbzNJ9fyQtDeQ" alt="Error Icon" style={{height:'200px'}}/>
+                            <img src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2015/12/1450973046wordpress-errors.png" alt="Error Icon" style={{height:'200px'}}/>
                             <h1 className="center" style={{color:'#ff5b5b'}}>No Product Found</h1>
                         </div> 
                         :

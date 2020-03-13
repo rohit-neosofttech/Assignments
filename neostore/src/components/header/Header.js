@@ -10,8 +10,7 @@ import {connect} from 'react-redux'
 import './Header.css'
 import Search from './Search'
 
-const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
-
+// const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -28,6 +27,7 @@ class Header extends Component {
             img:'',
         }
     }
+    _isMounted = false;
 
     onChangeHandler = (e) => {
         this.setState({
@@ -36,6 +36,7 @@ class Header extends Component {
     }
     
     componentDidMount() {
+        this._isMounted = true;
         if(localStorage.getItem('userToken'))
         {
             this.setState({
@@ -53,6 +54,7 @@ class Header extends Component {
                         </>
             })
         }
+        if(this._isMounted) {
         axios.get(`${api.baseurl}/getAllProducts`)
         .then((res)=>{
             this.setState({products:res.data.product_details})
@@ -68,13 +70,13 @@ class Header extends Component {
                   sweetalert("Oops!", `${err.message}`, "error",{button:false})
             }
         })
-
-        if(localStorage.getItem('cart')) {
-            let count=0
-            let cartProduct=JSON.parse(localStorage.getItem('cart')) 
-            cartProduct.map(item => count++)
-            this.setState({count:count})
         }
+        // if(localStorage.getItem('cart')) {
+        //     let count=0
+        //     let cartProduct=JSON.parse(localStorage.getItem('cart')) 
+        //     cartProduct.map(item => count++)
+        //     this.setState({count:count})
+        // }
 
         // if(localStorage.getItem('userToken')) {
         //     axios.get(`${api.baseurl}/getCustProfile`, {
@@ -90,8 +92,9 @@ class Header extends Component {
         //     })
         // }
 
-        if(custDetail) {
-            var img = custDetail.profile_img
+        if(localStorage.getItem('userToken')) {
+            var cust = JSON.parse(localStorage.getItem("CustDetail"))
+            var img = cust.profile_img
             if(img) {
                 this.setState({img:img})
             }
@@ -102,6 +105,7 @@ class Header extends Component {
     }
 
     componentWillUnmount(){
+        this._isMounted = false;
     }
 
     render() {

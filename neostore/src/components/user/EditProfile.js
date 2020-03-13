@@ -95,8 +95,8 @@ class EditProfile extends Component {
         case "lastName":
             formErrors.lastName =
                 (value.length === 0 ? "*required" : "") ||
-                (textOnly.test(value)? "" : "should contain only character") ||
-                (value.length < 3 ? "minimum 3 characaters required" : "")
+                (textOnly.test(value)? "" : "should contain only character")
+                // (value.length < 3 ? "minimum 3 characaters required" : "")
             break;
         case "email":
             formErrors.email = 
@@ -104,19 +104,19 @@ class EditProfile extends Component {
                 (emailRegex.test(value)? "" : "invalid email address")
             break;
         case "mobile":
-            if(value.startsWith("+") === true) {
-                formErrors.mobile =
-                  (isNaN(value) ? "Must Be a number" : "") ||
-                  (value.length === 0 ? "*required" : "") ||
-                  ((value.length !==13 ) ? "Invalid Mobile number" : "" )
-              }
-              else {
+            // if(value.startsWith("+") === true) {
+            //     formErrors.mobile =
+            //       (isNaN(value) ? "Must Be a number" : "") ||
+            //       (value.length === 0 ? "*required" : "") ||
+            //       ((value.length !==13 ) ? "Invalid Mobile number" : "" )
+            //   }
+            //   else {
                 formErrors.mobile =
                   (isNaN(value) ? "Must Be a number" : "") ||
                   (value.length === 0 ? "*required" : "") ||
                   ((value < 6999999999 || value > 9999999999) ? "Invalid Mobile number" : "" )
                   // (value.length !== 10 ? "Invalid Mobile number" : "")
-              }
+            //   }
             break;
         default:
             break;
@@ -333,6 +333,7 @@ class EditProfile extends Component {
                                 <FormControlLabel value="Male" control={<Radio />} label="Male" />&emsp;&emsp;
                                 <FormControlLabel value="Female" control={<Radio />} label="Female" />
                             </RadioGroup>
+
                             <input className="form-control" type="date" value={this.state.dob} onChange={(e) => this.setState({dob:e.target.value})} onBlur={this.onDateChange} name="date"/>
                             {this.state.formErrors.dob!=='' ? <><span className="errorMessage">{this.state.formErrors.dob}</span><br/></> : <></>}
                             <br/>

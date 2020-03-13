@@ -57,13 +57,10 @@ class Login extends Component {
             pass : this.state.password
           })
           .then((res) => {
-            // this.getPreviousCart(res.data.token)
+            this.getPreviousCart(res.data.token)
             localStorage.setItem('userToken',`${res.data.token}`)
             localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_details) )
             this.setState({loader:false})
-            // sweetalert("Successful Login!", `${res.data.message}`, "success", {
-            //   buttons: false, timer:2000,
-            // })
             sweetalert(res.data.message,{icon:"success",button:false, timer:2000,})
             .then((value) => {
                 switch (value) {
@@ -86,38 +83,51 @@ class Login extends Component {
         } 
     };
 
-    // getPreviousCart = (token) => {
-    //   axios.get(`${api.baseurl}/getCartData`,{
-    //     headers:{
-    //         Authorization: 'bearer ' + token
-    //     }}) 
-    //   .then((res) => {
-    //       console.log('getCart',res)
-    //       let oldCart = JSON.parse(localStorage.getItem('cart')) 
-    //       let newItem
-    //       let tempCart=[]
-    //       if (oldCart===null) {
-    //           oldCart=[]
-    //       }
-    //       let product_details = res.data.product_details
-    //       if (product_details.length!==0){
-    //           product_details.map( product =>
-    //           <>
-    //               {newItem = product.product_id}
-    //               {newItem['quantity'] = product.quantity}
-    //               {newItem['total'] = product.quantity * product.product_cost}
-    //               {tempCart.push(newItem)}
-    //           </>
-    //       )}
-    //       var cart = [...new Set([...oldCart, ...tempCart])];
-    //       localStorage.setItem('tempCart',JSON.stringify(tempCart))
-    //       localStorage.setItem('cart',JSON.stringify(cart))
-    //   })
-    //   .catch((err) => {
-    //       console.log(err)
-    //       alert("There is a problem fetching your previous cart")
-    //   })
-    // }
+    getPreviousCart = (token) => {
+      axios.get(`${api.baseurl}/getCartData`,{
+        headers:{
+            Authorization: 'bearer ' + token
+        }}) 
+      .then((res) => {
+          // console.log('getCart',res)
+          let oldCart = JSON.parse(localStorage.getItem('cart')) 
+          let newItem
+          let tempCart=[]
+          if (oldCart===null) {
+              oldCart=[]
+          }
+          let product_details = res.data.product_details
+          if (product_details.length!==0){
+              product_details.map( product =>
+              <React.Fragment key={product._id}>
+                  {newItem = product.product_id}
+                  {newItem['quantity'] = product.quantity}
+                  {newItem['total'] = product.quantity * product.product_cost}
+                  {tempCart.push(newItem)}
+              </React.Fragment>
+          )}
+          // console.log(`length:${tempCart.length}...${oldCart.length}`)
+          // if(tempCart.length!==0 && oldCart.length!==0) {
+          //   let cart = tempCart.map((item, i) => Object.assign({}, item, oldCart[i]));
+          //   localStorage.setItem('tempCart',JSON.stringify(tempCart))
+          //   localStorage.setItem('cart',JSON.stringify(cart))
+          // }
+          // else if(tempCart.length!==0 && oldCart.length===0) {
+          //   localStorage.setItem('tempCart',JSON.stringify(tempCart))
+          //   localStorage.setItem('cart',JSON.stringify(tempCart))
+          // }
+
+          // var cart = [...new Set([...oldCart, ...tempCart])];
+          if(tempCart.length!==0) {
+            localStorage.setItem('cart',JSON.stringify(tempCart))
+          }
+          
+      })
+      .catch((err) => {
+          // console.log(err)
+          // alert("There is a problem fetching your previous cart")
+      })
+    }
 
     handleChange = e => {
       e.preventDefault();

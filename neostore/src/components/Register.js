@@ -17,7 +17,7 @@ const emailRegex = RegExp(
   /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
 );
 const textOnly = RegExp(/^[a-zA-Z]*$/);
-const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}$/)
+const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}$/)
   
   const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
@@ -116,8 +116,8 @@ const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}$
       case "lastName":
         formErrors.lastName =
           (value.length === 0 ? "*required" : "") ||
-          (textOnly.test(value)? "" : "should contain only character") ||
-          (value.length < 3 ? "minimum 3 characaters required" : "")
+          (textOnly.test(value)? "" : "should contain only character") 
+          // (value.length < 3 ? "minimum 3 characaters required" : "")
         break;
       case "email":
         formErrors.email = 
@@ -141,10 +141,10 @@ const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}$
       case "mobile":
         if(value.startsWith("+91") === true) {
           var res = value.slice(3,13);
-          console.log(res)
+          // console.log(res)
           formErrors.mobile =
-            (isNaN(value) ? "Must Be a number" : "") ||
-            (value.length === 0 ? "*required" : "") ||
+            (isNaN(res) ? "Must Be a number" : "") ||
+            (res.length === 0 ? "*required" : "") ||
             ((res < 6999999999 || res > 9999999999) ? "Invalid Mobile number" : "" )
         }
         else if(value.startsWith("+") === true) {

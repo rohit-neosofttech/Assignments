@@ -105,7 +105,7 @@ class RecoverPass extends Component {
     handleSubmit = e => {
         e.preventDefault();
         if (formValid(this.state)) {
-            console.log(this.state.token)
+            // console.log(this.state.token)
             this.setState({loader:true})
             axios.post(`${api.baseurl}/recoverPassword`, {
                 otpCode : this.state.code,

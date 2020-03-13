@@ -1,51 +1,55 @@
 import React, { Component } from 'react'
-// import axios from 'axios'
-// import * as api from '../api'
+import {removeCart} from '../components/redux'
+import {connect} from 'react-redux'
+import axios from 'axios'
+import * as api from '../api'
 
-// const userToken = localStorage.getItem("userToken")
+const userToken = localStorage.getItem("userToken")
 
 class Logout extends Component {
     componentDidMount() {
-        // if(localStorage.getItem('cart')) {
-        //     let cart=''
-        //     cart = JSON.parse(localStorage.getItem("cart"))
-        //     cart=[...cart,{'flag': "logout"}]
+        if(localStorage.getItem('cart')) {
+            // console.log("IF")
+            let cart=''
+            cart = JSON.parse(localStorage.getItem("cart"))
+            cart=[...cart,{'flag': "logout"}]
      
-        //     axios.post(`${api.baseurl}/addProductToCartCheckout`,
-        //         cart
-        //     , {
-        //         headers: {
-        //             Authorization: 'Bearer ' + userToken
-        //         }
-        //     })
-        //     .then((res)=>{
-        //         console.log(res)
-        //         console.log()
-        //         // this.props.history.push('/')
-        //     })
-        //     .catch((err) => {
-        //         alert('Invalid Address API call')
-        //     })
-        // }
-        // else {
-        //     let cart=[]
-        //     cart=[...cart,{'flag': "logout"}]
+            axios.post(`${api.baseurl}/addProductToCartCheckout`,
+                cart
+            , {
+                headers: {
+                    Authorization: 'Bearer ' + userToken
+                }
+            })
+            // .then((res)=>{
+            //     // console.log(res)
+            //     // console.log()
+            //     // this.props.history.push('/')
+            // })
+            // .catch((err) => {
+            //     // alert('Invalid Address API call')
+            // })
+        }
+        else {
+            // console.log("Else")
+            let cart=[]
+            cart=[{'flag': "logout"}]
      
-        //     axios.post(`${api.baseurl}/addProductToCartCheckout`,
-        //         cart
-        //     , {
-        //         headers: {
-        //             Authorization: 'Bearer ' + userToken
-        //         }
-        //     })
-        //     .then((res)=>{
-        //         console.log(res)
-        //         // this.props.history.push('/')
-        //     })
-        //     .catch((err) => {
-        //         alert('Invalid Address API call')
-        //     })
-        // }
+            axios.post(`${api.baseurl}/addProductToCartCheckout`,
+                cart
+            , {
+                headers: {
+                    Authorization: 'Bearer ' + userToken
+                }
+            })
+            // .then((res)=>{
+            //     // console.log(res)
+            //     // this.props.history.push('/')
+            // })
+            // .catch((err) => {
+            //     // alert('Invalid Address API call')
+            // })
+        }
 
         localStorage.removeItem('cart')
         localStorage.removeItem('tempCart')
@@ -54,6 +58,8 @@ class Logout extends Component {
         
         const { history } = this.props;
         history.push(`/`);
+        this.props.removeCart()
+        // window.location.reload(false)
     }
     render() {
         return (
@@ -64,4 +70,11 @@ class Logout extends Component {
     }
 }
 
-export default Logout
+// export default Logout
+const mapDispatchToProps = dispatch => {
+    return {
+        removeCart: () => dispatch(removeCart())
+    }
+  }
+  
+export default connect(null, mapDispatchToProps)(Logout)

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import NoProduct from './NoProduct'
 
-// import axios from 'axios'
+import axios from 'axios'
 
 import * as api from '../../api'
 import {removeToCartCount} from '../redux'
@@ -10,7 +10,7 @@ import {connect} from 'react-redux'
 import { List , ListItem } from '@material-ui/core';
 import sweetalert from 'sweetalert'
 
-// const userToken = localStorage.getItem("userToken")
+const userToken = localStorage.getItem("userToken")
 // const cart = JSON.parse(localStorage.getItem("cart"))
 
 
@@ -40,6 +40,7 @@ class Cart extends Component {
             this.setState({disabledMaxButton:maxProd})
         }
         this.addTotal()
+        
     }
 
     addQuantity = (product) => {
@@ -54,7 +55,7 @@ class Cart extends Component {
                 ()=>{return {cartProduct:this.state.cartProduct}}
             )
             var btn = this.state.disabledMinButton.filter(bttn => bttn!==item[0].product_id)
-            btn ? this.setState({disabledMinButton:btn}) : console.log(btn) 
+            btn && this.setState({disabledMinButton:btn})
             localStorage.setItem("cart",JSON.stringify(this.state.cartProduct))
         }
         this.addTotal()
@@ -95,8 +96,22 @@ class Cart extends Component {
                 if(item.length!==0) {
                     this.setState({cartProduct:item})
                     localStorage.setItem("cart",JSON.stringify(item))
+                    if(localStorage.getItem('userToken')) {
+                        axios.delete(`${api.baseurl}/deleteCustomerCart/${product.product_id}`,{
+                            headers: {
+                            Authorization: 'Bearer ' + userToken
+                            }
+                        })
+                    }
                     this.addTotal()
                 } else {
+                    if(localStorage.getItem('userToken')) {
+                        axios.delete(`${api.baseurl}/deleteCustomerCart/${product.product_id}`,{
+                            headers: {
+                            Authorization: 'Bearer ' + userToken
+                            }
+                        })
+                    }
                     this.setState({cartProduct:item})
                     localStorage.removeItem('cart')
                     this.forceUpdate()
