@@ -18,30 +18,32 @@ class Order extends Component {
     }
 
     componentDidMount() {
-        this.setState({loader:true})
-        axios.get(`${api.baseurl}/getOrderDetails`,{
-            headers:{
-                Authorization: 'Bearer ' + userToken
-            }
-        })
-        .then((res)=>{
-            this.setState({
-                orders:res.data.product_details,
-                loader:false
+        if(localStorage.getItem('userToken')) {
+            this.setState({loader:true})
+            axios.get(`${api.baseurl}/getOrderDetails`,{
+                headers:{
+                    Authorization: 'Bearer ' + userToken
+                }
             })
+            .then((res)=>{
+                this.setState({
+                    orders:res.data.product_details,
+                    loader:false
+                })
 
-        })
-        .catch((err)=> {
-            if (err.response) {
-                err.response.data.message 
-                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
-                : sweetalert("Oops!", 'Something Went Wrong getting your Order', "error",{button:false})
-            } else if (err.request) {
-                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
-            } else {
-                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
-            }
-        })
+            })
+            .catch((err)=> {
+                if (err.response) {
+                    err.response.data.message 
+                    ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                    : sweetalert("Oops!", 'Something Went Wrong getting your Order', "error",{button:false})
+                } else if (err.request) {
+                    sweetalert("Oops!", `${err.request}`, "error",{button:false})
+                } else {
+                    sweetalert("Oops!", `${err.message}`, "error",{button:false})
+                }
+            })
+        }
     }
 
     handleDate = (createdAt) => {

@@ -115,19 +115,19 @@ class AddAddress extends Component {
             })
             .then((res) => {
                 this.setState({loader:false})
-                sweetalert('Address Updated',`${res.data.message}`,"success",{button:false})
+                sweetalert('Address Updated',`${res.data.message}`,"success",{button:false,timer:2500})
                 this.props.history.push('/address')
             })
             .catch((err) => {
                 this.setState({loader:false})
                 if (err.response) {
                     err.response.data.message 
-                    ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
-                    : sweetalert("Oops!", 'Something Went Wrong while updating the Address', "error",{button:false})
+                    ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false,timer:2500})
+                    : sweetalert("Oops!", 'Something Went Wrong while updating the Address', "error",{button:false,timer:2500})
                 } else if (err.request) {
-                      sweetalert("Oops!", `${err.request}`, "error",{button:false})
+                      sweetalert("Oops!", `${err.request}`, "error",{button:false,timer:2500})
                 } else {
-                      sweetalert("Oops!", `${err.message}`, "error",{button:false})
+                      sweetalert("Oops!", `${err.message}`, "error",{button:false,timer:2500})
                 }
             })
         }
@@ -161,7 +161,7 @@ class AddAddress extends Component {
                                 type="text"
                                 name="address"
                                 helperText={this.state.formErrors.address.length > 0 && this.state.formErrors.address}
-                                value={this.state.address}
+                                value={this.state.address ? this.state.address : ''}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'
@@ -197,7 +197,7 @@ class AddAddress extends Component {
                                 }}
                                 onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-' || evt.key === '+' ) && evt.preventDefault() }
                                 helperText={this.state.formErrors.pincode.length > 0 && this.state.formErrors.pincode}
-                                value={this.state.pincode}
+                                value={this.state.pincode ? this.state.pincode : ''}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'
@@ -209,7 +209,7 @@ class AddAddress extends Component {
                                 type="text"
                                 name="city"
                                 helperText={this.state.formErrors.city.length > 0 && this.state.formErrors.city}
-                                value={this.state.city}
+                                value={this.state.city ? this.state.city : ''}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'
@@ -223,7 +223,7 @@ class AddAddress extends Component {
                                 type="text"
                                 name="state"
                                 helperText={this.state.formErrors.state.length > 0 && this.state.formErrors.state}
-                                value={this.state.state}
+                                value={this.state.state ? this.state.state : ''}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'
@@ -234,7 +234,7 @@ class AddAddress extends Component {
                                 type="text"
                                 name="country"
                                 helperText={this.state.formErrors.country.length > 0 && this.state.formErrors.country}
-                                value={this.state.country}
+                                value={this.state.country  ? this.state.country : ''}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'

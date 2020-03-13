@@ -20,7 +20,7 @@ const emailRegex = RegExp(
     /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
 );
 const textOnly = RegExp(/^[a-zA-Z]*$/);
-
+const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}$/)
   
   const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
@@ -89,8 +89,8 @@ class EditProfile extends Component {
         case "firstName":
             formErrors.firstName =
                 (value.length === 0 ? "*required" : "") ||
-                (textOnly.test(value)? "" : "should contain only character") ||
-                (value.length < 3 ? "minimum 3 characaters required" : "")
+                (value.length < 3 ? "minimum 3 characaters required" : "") ||
+                (nameRegex.test(value)? "" : "should contain only character")
             break;
         case "lastName":
             formErrors.lastName =
@@ -131,13 +131,10 @@ class EditProfile extends Component {
         let minDate = new Date()
         minDate.setFullYear(today.getFullYear()-100)
         var selected = new Date(e.target.value)
-        console.log(minDate)
-        console.log(selected)
         if(selected<today && selected>minDate) {
             var age = selected
             age.setFullYear(age.getFullYear()+18)
             if(age<today) {
-                console.log("valid")
                 this.setState(prevState => ({
                     dob: date,
                     formErrors: {                  
@@ -157,7 +154,6 @@ class EditProfile extends Component {
             }
         }
         else{
-            console.log("Invalid")
             this.setState(prevState => ({
                 formErrors: {                  
                     ...prevState.formErrors,   
@@ -196,7 +192,6 @@ class EditProfile extends Component {
     }
 
     onRadioChange = (e) => {
-        // console.log(e.target.value)
         this.setState({gender:e.target.value})
     }
 
@@ -258,7 +253,6 @@ class EditProfile extends Component {
             formData.append('dob',this.state.dob)
             formData.append('phone_no',this.state.mobile)
             formData.append('gender',this.state.gender)
-            console.log("formdata: ",formData)
 
             axios.put(`${api.baseurl}/profile`, formData , {
                 headers: {
@@ -339,7 +333,6 @@ class EditProfile extends Component {
                                 <FormControlLabel value="Male" control={<Radio />} label="Male" />&emsp;&emsp;
                                 <FormControlLabel value="Female" control={<Radio />} label="Female" />
                             </RadioGroup>
-                            {console.log(this.state.dob)}
                             <input className="form-control" type="date" value={this.state.dob} onChange={(e) => this.setState({dob:e.target.value})} onBlur={this.onDateChange} name="date"/>
                             {this.state.formErrors.dob!=='' ? <><span className="errorMessage">{this.state.formErrors.dob}</span><br/></> : <></>}
                             <br/>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Header from './header/Header'
-import './Form.css'
 import axios from 'axios';
 import * as api from '../api'
 
@@ -18,6 +17,7 @@ const emailRegex = RegExp(
   /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
 );
 const textOnly = RegExp(/^[a-zA-Z]*$/);
+const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}$/)
   
   const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
@@ -110,8 +110,8 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
       case "firstName":
         formErrors.firstName =
           (value.length === 0 ? "*required" : "") ||
-          (textOnly.test(value)? "" : "should contain only character") ||
-          (value.length < 3 ? "minimum 3 characaters required" : "")
+          (value.length < 3 ? "minimum 3 characaters required" : "") ||
+          (nameRegex.test(value)? "" : "enter a valid first name")
         break;
       case "lastName":
         formErrors.lastName =
@@ -139,7 +139,15 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
           this.state.password!==this.state.confpass ? "the password does not match" : "";
         break;
       case "mobile":
-        if(value.startsWith("+") === true) {
+        if(value.startsWith("+91") === true) {
+          var res = value.slice(3,13);
+          console.log(res)
+          formErrors.mobile =
+            (isNaN(value) ? "Must Be a number" : "") ||
+            (value.length === 0 ? "*required" : "") ||
+            ((res < 6999999999 || res > 9999999999) ? "Invalid Mobile number" : "" )
+        }
+        else if(value.startsWith("+") === true) {
           formErrors.mobile =
             (isNaN(value) ? "Must Be a number" : "") ||
             (value.length === 0 ? "*required" : "") ||
@@ -211,7 +219,7 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
                             type="text"
                             name="firstName"
                             helperText={this.state.formErrors.firstName.length > 0 && this.state.formErrors.firstName}
-                            value={this.state.firstName}
+                            value={this.state.firstName ? this.state.firstName : ''}
                             onChange={this.handleChange}
                             onBlur={this.handleChange}
                             error={this.state.formErrors.firstName.length > 0}
@@ -230,7 +238,7 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
                             type="text"
                             name="lastName"
                             helperText={this.state.formErrors.lastName.length > 0 && this.state.formErrors.lastName}
-                            value={this.state.lastName}
+                            value={this.state.lastName ? this.state.lastName : ''}
                             onChange={this.handleChange}
                             onBlur={this.handleChange}
                             error={this.state.formErrors.lastName.length > 0}
@@ -249,7 +257,7 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
                             type="text"
                             name="email"
                             helperText={this.state.formErrors.email.length > 0 && this.state.formErrors.email}
-                            value={this.state.email}
+                            value={this.state.email ? this.state.email : ''}
                             onChange={this.handleChange}
                             onBlur={this.handleChange}
                             error={this.state.formErrors.email.length > 0}
@@ -267,8 +275,8 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
                             label="Password"
                             type={this.state.showPassword ? 'text' : 'password'}
                             name="password"
-                            helperText={this.state.formErrors.password.length > 0 ? this.state.formErrors.password : "Password should be of 8-12 characters"}
-                            value={this.state.password}
+                            helperText={this.state.formErrors.password.length > 0 ? this.state.formErrors.password : "Password should be of 8-12 characters with a mix of letters, numbers & symbols"}
+                            value={this.state.password ? this.state.password : ''}
                             onChange={this.handleChange}
                             onBlur={this.handleChange}
                             error={this.state.formErrors.password.length > 0}
@@ -294,11 +302,11 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
                             type={this.state.showConfPassword ? 'text' : 'password'}
                             name="confpass"
                             helperText={this.state.formErrors.confpass.length > 0 && this.state.formErrors.confpass}
-                            value={this.state.confpass}
+                            value={this.state.confpass ? this.state.confpass : ''}
                             onChange={this.handleChange}
                             onKeyUp={this.handleChange}
                             error={this.state.formErrors.confpass.length > 0}
-                            disabled={(this.state.formErrors.password==='') ? false : true }
+                            disabled={this.state.formErrors.password!=='' || this.state.password===null}
                             />
                         </div>
                         <div className="col-sm-2">
@@ -327,14 +335,14 @@ const textOnly = RegExp(/^[a-zA-Z]*$/);
                             onKeyDown={ (evt) => !((evt.keyCode>=96 && evt.keyCode<=105) || (evt.keyCode>=47 && evt.keyCode<=57) ||(evt.keyCode>=37 && evt.keyCode<=40) || evt.key === '+' || evt.keyCode === 8 || evt.keyCode === 46) && evt.preventDefault() }
                                                         
                             helperText={this.state.formErrors.mobile.length > 0 && this.state.formErrors.mobile}
-                            value={this.state.mobile}
+                            value={this.state.mobile ? this.state.mobile : ''}
                             onChange={this.handleChange}
                             onBlur={this.handleChange}
                             error={this.state.formErrors.mobile.length > 0}
                             />
                         </div>
                         <div className="col-sm-2">
-                            <i id="icon-black" className="fas fa-mobile-alt input-icon" onClick={this.handleShowPassword}></i>
+                            <i id="icon-black" className="fas fa-mobile-alt input-icon"></i>
                         </div>
                       </div><br/>
                       

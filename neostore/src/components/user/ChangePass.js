@@ -8,6 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
@@ -61,7 +62,6 @@ class ChangePass extends Component {
         e.preventDefault();
         const { name, value } = e.target;
         let formErrors = { ...this.state.formErrors };
-        console.log(this.state)
         switch (name) {
           case "oldpass":
             formErrors.oldpass =
@@ -156,13 +156,12 @@ class ChangePass extends Component {
                             <p className="center">NOTE : Password must be : 8-12 Alphanumeric characters</p><br/>
                             <div className="container" style={{width:"70%"}}>
                                 <form className="justify-content-center" onSubmit={this.handleSubmit} noValidate autoComplete="off" >
-                                    <FormControl variant="outlined" fullWidth>
+                                    <FormControl variant="outlined" fullWidth error={this.state.formErrors.oldpass.length > 0}>
                                     <InputLabel htmlFor="outlined-adornment-password">Old Password</InputLabel>
                                     <OutlinedInput
-                                        id="outlined-adornment-password"
                                         name="oldpass"
                                         type={this.state.oldpassIcon ? 'text' : 'password'}
-                                        value={this.state.oldpass}
+                                        value={this.state.oldpass ? this.state.oldpass : ''}
                                         onChange={this.handleChange}
                                         onBlur={this.handleChange}
                                         endAdornment={
@@ -178,17 +177,18 @@ class ChangePass extends Component {
                                         }
                                         labelWidth={150}
                                     />
+                                    <FormHelperText>
+                                        {this.state.formErrors.oldpass ? this.state.formErrors.oldpass:''}
+                                    </FormHelperText>
                                     </FormControl>
-                                    {this.state.formErrors.oldpass.length > 0 ? <span className="errorMessage">{this.state.formErrors.oldpass}</span>: <></>}
                                     <br/><br/>
 
-                                    <FormControl variant="outlined" fullWidth>
+                                    <FormControl variant="outlined" fullWidth error={this.state.formErrors.newpass.length > 0}>
                                     <InputLabel htmlFor="outlined-adornment-password">New Password</InputLabel>
                                     <OutlinedInput
-                                        id="outlined-adornment-password"
                                         name="newpass"
                                         type={this.state.newpassIcon ? 'text' : 'password'}
-                                        value={this.state.newpass}
+                                        value={this.state.newpass ? this.state.newpass : ''}
                                         onChange={this.handleChange}
                                         onBlur={this.handleChange}
                                         endAdornment={
@@ -204,17 +204,18 @@ class ChangePass extends Component {
                                         }
                                         labelWidth={150}
                                     />
+                                    <FormHelperText>
+                                        {this.state.formErrors.newpass ? this.state.formErrors.newpass:''}
+                                    </FormHelperText>
                                     </FormControl>
-                                    {this.state.formErrors.newpass.length > 0 ? <span className="errorMessage">{this.state.formErrors.newpass}</span>: <></>}
                                     <br/><br/>
 
-                                    <FormControl variant="outlined" fullWidth disabled={this.state.formErrors.newpass!==''}>
+                                    <FormControl variant="outlined" fullWidth disabled={this.state.formErrors.newpass!=='' || this.state.newpass===null} error={this.state.formErrors.confpass.length > 0}>
                                     <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
                                     <OutlinedInput
-                                        id="outlined-adornment-password"
                                         name="confpass"
                                         type={this.state.confpassIcon ? 'text' : 'password'}
-                                        value={this.state.confpass}
+                                        value={this.state.confpass ? this.state.confpass : ''}
                                         onChange={this.handleChange}
                                         onKeyUp={this.handleChange}
                                         endAdornment={
@@ -230,8 +231,10 @@ class ChangePass extends Component {
                                         }
                                         labelWidth={150}
                                     />
+                                    <FormHelperText>
+                                        {this.state.formErrors.confpass ? this.state.formErrors.confpass:''}
+                                    </FormHelperText>
                                     </FormControl>
-                                    {this.state.formErrors.confpass.length > 0 ? <span className="errorMessage">{this.state.formErrors.confpass}</span>: <></>}
                                     <br/><br/>
                                     {this.state.loader
                                         ? <CircularProgress/>

@@ -3,7 +3,6 @@ import Header from './header/Header'
 import axios from 'axios';
 import * as api from '../api'
 import {TextField} from '@material-ui/core/';
-import './Form.css'
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import sweetalert from 'sweetalert'
@@ -96,9 +95,9 @@ class ForgotPass extends Component {
         return (
             <>
             <Header/>
-            <div className="container p-5">
+            <div className="container p-5" style={{minHeight:'400px'}}>
                 <div className="card" style={{width:"60%",margin:"auto",backgroundColor:"#eeeeee"}}>
-                    <div class="card-body">
+                    <div className="card-body">
                         <h1 className="center">Recovery Password</h1>
                         <form className="container p-5" onSubmit={this.handleSubmit} noValidate autoComplete='off'>
                             <TextField fullWidth
@@ -106,7 +105,7 @@ class ForgotPass extends Component {
                                 type="text"
                                 name="email"
                                 helperText={this.state.formErrors.email.length > 0 && this.state.formErrors.email}
-                                value={this.state.email}
+                                value={this.state.email ? this.state.email :''}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'

@@ -37,7 +37,7 @@ class Search extends Component {
   // let prodList = this.props.products.map(product=> <Link to={`/productDetail/${product.product_id}`} key={product.product_id}><ListItem button>{product.product_name}</ListItem></Link>)
   const prodList = this.props.products
         .filter(product => this.state.text === '' || product.product_name.toLowerCase().includes(this.state.text))
-        .map(product => <Link onClick={this.handleSubmit} to={`/productDetail/${product.product_id}`} key={product.product_id}><List>{product.product_name}</List></Link>);
+        .map(product => <Link key={product._id} onClick={this.handleSubmit} to={`/productDetail/${product.product_id}`}><List>{product.product_name}</List></Link>);
 
     return (
       <form >

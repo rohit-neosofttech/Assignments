@@ -135,13 +135,13 @@ class ProductDetail extends PureComponent {
 
     handleShow = () => {
         if(!localStorage.getItem('userToken')) {
-            sweetalert('',"Login Required",'warning',{button:false})
-            .then((value) => {
-                switch (value) {
-                  default:
-                    this.props.history.push('/login')
-                }
-            });
+            sweetalert('',"Login Required",'warning',{button:false,timer:2000})
+            // .then((value) => {
+            //     switch (value) {
+            //       default:
+            //         this.props.history.push('/login')
+            //     }
+            // });
         } 
         else {
             this.setState({show:true})

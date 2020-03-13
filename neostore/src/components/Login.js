@@ -3,7 +3,6 @@ import Header from './header/Header'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import * as api from '../api'
-import './Form.css'
 import {TextField} from '@material-ui/core/';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import sweetalert from 'sweetalert'
@@ -77,11 +76,11 @@ class Login extends Component {
           .catch((error) => {
             this.setState({loader:false})
               if (error.response) {
-                  sweetalert("Error", error.response.data.message?`${error.response.data.message}` : "Error has occured", "error", {button:false});
+                  sweetalert("Error", error.response.data.message?`${error.response.data.message}` : "Error has occured", "error", {button:false, timer:2000,});
               } else if (error.request) {
-                  sweetalert("Error", `${error.request}`, "error");
+                  sweetalert("Error", `${error.request}`, "error",{button:false, timer:2000,});
               } else {
-                  sweetalert("Error", `${error.message}`, "error");
+                  sweetalert("Error", `${error.message}`, "error",{button:false, timer:2000,});
               }
           });
         } 
@@ -183,7 +182,7 @@ class Login extends Component {
                                       type="text"
                                       name="email"
                                       helperText={this.state.formErrors.email.length > 0 && this.state.formErrors.email}
-                                      value={this.state.email}
+                                      value={this.state.email ? this.state.email : ''}
                                       onChange={this.handleChange}
                                       onBlur={this.handleChange}
                                       error={this.state.formErrors.email.length > 0}
@@ -202,7 +201,7 @@ class Login extends Component {
                                       type={this.state.showPassword ? 'text' : 'password'}
                                       name="password"
                                       helperText={this.state.formErrors.password.length > 0 ? this.state.formErrors.password : "Password should be of 8-12 characters"}
-                                      value={this.state.password}
+                                      value={this.state.password ? this.state.password : ''}
                                       onChange={this.handleChange}
                                       onBlur={this.handleChange}
                                       error={this.state.formErrors.password.length > 0}

@@ -55,8 +55,8 @@ function ProductsCard (props) {
   return (
     <>
       {props.products.map(product => (
-        <div className='col-sm-4' key={product.product_id} >
-          <div className='cards'spinnerFlag='true' >
+        <div className='col-sm-4' key={product._id} >
+          <div className='cards'>
             <img className={'cardimage'} src={`${api.baseurl}/`+product.product_image} alt="Card Images"/>
             <label><Link to={'/productdetail/' + product.product_id} style={{color:"#3368bb"}}>{product.product_name}</Link></label>
             <div className="bottomCenter">

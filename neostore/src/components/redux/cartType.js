@@ -1,3 +1,6 @@
 export const ADD_CART_COUNT = "ADD_CART_COUNT"
 export const REMOVE_CART_COUNT = "REMOVE_CART_COUNT"
 export const REMOVE_CART = "REMOVE_CART"
+export const SHOW_PROFILE = "ADD_PROFILE"
+export const ADD_PROFILE = "ADD_PROFILE"
+export const REMOVE_PROFILE = "REMOVE_PROFILE"

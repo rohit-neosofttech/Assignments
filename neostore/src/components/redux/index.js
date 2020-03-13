@@ -1,3 +1,6 @@
 export { addToCartCount } from './cartAction'
 export { removeToCartCount } from './cartAction'
 export { removeCart } from './cartAction'
+export { showProfile } from './cartAction'
+export { addProfile } from './cartAction'
+export { removeProfile } from './cartAction'

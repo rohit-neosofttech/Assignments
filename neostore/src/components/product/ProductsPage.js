@@ -98,7 +98,7 @@ class ProductsPage extends Component {
             <Header/>
             <div>
                 <br/><hr/>
-                <div className="container">
+                <div className="container" style={{minHeight:"400px"}}>
                     <div className="row">
                         <div className="col-md-3">
                             {/* <ProductsFilter/> */}

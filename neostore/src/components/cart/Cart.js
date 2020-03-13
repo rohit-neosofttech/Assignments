@@ -30,9 +30,15 @@ class Cart extends Component {
     }
     
     componentDidMount() {
-        // if(localStorage.getItem('cart')) {
+        if(localStorage.getItem('cart')) {
+            let minProd=[]
+            this.state.cartProduct.filter(product => product.quantity===1).map(product => minProd.push(product.product_id))
+            this.setState({disabledMinButton:minProd})
 
-        // }
+            let maxProd=[]
+            this.state.cartProduct.filter(product => product.quantity===9).map(product => maxProd.push(product.product_id))
+            this.setState({disabledMaxButton:maxProd})
+        }
         this.addTotal()
     }
 

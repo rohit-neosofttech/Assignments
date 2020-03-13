@@ -184,11 +184,13 @@ class AllProduct extends Component {
                         ? 
                         <div className="center" style={{height:"300px"}}>
                             <br/><br/><br/><br/>
-                            <img src="https://lh3.googleusercontent.com/proxy/H-X7TexFX8i2o0qn9cNys0HAlPVjUO17lzOK00nqoMtugBkVAYqIvHhltDqWA7WckvCHAE_OguhDmC41M2kq_FYjDh6KETZ1e3AVic9LEzxxuPVtgCrssb5DGMkqQ5E" alt="Error Icon" style={{height:'200px'}}/>
+                            <img src="https://lh3.googleusercontent.com/proxy/-cnzg8q4zsHyvGWW5GvoYwkNn7DTHnXZz4GMeAjklacBxnnOYO7EQxSvolfQvq1JMQ52Wb97bzye9EPdu_8HISiGUiyllkq2Z6xKlGiptrLMBR3Jq8IbzNJ9fyQtDeQ" alt="Error Icon" style={{height:'200px'}}/>
                             <h1 className="center" style={{color:'#ff5b5b'}}>No Product Found</h1>
                         </div> 
                         :
-                        <div className="div-default"><Loading loading loaderColor="#3498db" /></div>
+                        <div className="div-default">
+                            <Loading loading loaderColor="#3498db" />
+                        </div>
                         // <div className='center' style={{margin:'auto',height:'400px',width:'100%'}}>
                         //     <br/><br/><br/><br/>
                         //     <CircularProgress />

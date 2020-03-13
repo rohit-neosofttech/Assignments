@@ -143,7 +143,11 @@ class RecoverPass extends Component {
               <div className="container p-5">
                 <div className="card" style={{width:"60%",margin:"auto",backgroundColor:"#eeeeee"}}>
                     <div className="card-body">
-                        <h1 className="center">Recovery Password</h1>
+                        <h1 className="center">Recovery Password</h1><hr/>
+                        <div className="row center">
+                            <i id="icon-red" className="fas fa-info-circle fa-lg" style={{paddingRight:"10px",paddingTop:"5px"}}></i>
+                            <label style={{color:"red"}}>Verification code has been sent to your registered mail ID</label>
+                        </div>
                         <form className="container p-5" onSubmit={this.handleSubmit} noValidate autoComplete='off'>
                             {/* <TextField fullWidth
                                 label="Verification code"
@@ -210,7 +214,7 @@ class RecoverPass extends Component {
                                 labelWidth={150}
                             />
                             <FormHelperText>
-                                {this.state.formErrors.newpass.length > 0 ? <span className="errorMessage">{this.state.formErrors.newpass}</span>: <></>}
+                                {this.state.formErrors.newpass ? this.state.formErrors.newpass: "Password should be of 8-12 characters with a mix of letters, numbers & symbols"}
                             </FormHelperText>
                             </FormControl>
                             <br/><br/>
@@ -241,7 +245,7 @@ class RecoverPass extends Component {
                                 labelWidth={150}
                             />
                             <FormHelperText>
-                                {this.state.formErrors.confpass.length > 0 ? <span className="errorMessage">{this.state.formErrors.confpass}</span>: <></>}
+                                {this.state.formErrors.confpass.length > 0 && this.state.formErrors.confpass}
                             </FormHelperText>
                             </FormControl>
                             <br/><br/>

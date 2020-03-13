@@ -8,9 +8,9 @@ class Home extends Component {
         return (
             <>
             <Header/>
-            <div className="container-fullwidth">
+            <div className="container-fullwidth" style={{minHeight:"600px"}}>
                 <br/><br/>
-                <div>
+                <div style={{minHeight:"200px"}}>
                     <TopCarousel/>  
                 </div>
                 <br/><hr/><br/>

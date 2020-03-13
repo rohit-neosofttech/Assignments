@@ -9,7 +9,6 @@ import { Tabs, Tab } from 'react-bootstrap';
 function MainCart(props) {
     const [key, setKey] = useState('cart');
     const handleLogin = () => {
-        console.log("clicked")
         if(!localStorage.getItem("userToken")) {
             sweetalert('',"Please Login First","warning",{button:false,timer:2000})
             props.history.push(`/login`);

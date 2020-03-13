@@ -3,7 +3,6 @@ import Header from './header/Header'
 import axios from 'axios';
 import * as api from '../api'
 import {TextField} from '@material-ui/core/';
-import './Form.css'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 import sweetalert from 'sweetalert'
@@ -14,7 +13,9 @@ const emailRegex = RegExp(
     /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
 
   );
-const textOnly = RegExp(/^[a-zA-Z]*$/);
+// const textOnly = RegExp(/^[a-zA-Z]*$/);
+const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}$/)
+
   
   const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
@@ -40,11 +41,11 @@ class Contact extends Component {
         super(props);
         this.state = {
             customer_id:'',
-            name:'',
-            email:'',
-            mobile:'',
-            subject:'',
-            message:'',
+            name:null,
+            email:null,
+            mobile:null,
+            subject:null,
+            message:null,
             loader:false,
             open:false,
             formErrors: {
@@ -100,8 +101,8 @@ class Contact extends Component {
           case "name":
             formErrors.name =
                 (value.length === 0 ? "*required" : "") ||
-                (textOnly.test(value)? "" : "should contain only character") ||
-                (value.length < 3 ? "minimum 3 characaters required" : "")
+                (value.length < 3 ? "minimum 3 characaters required" : "") ||
+                (nameRegex.test(value)? "" : "enter a valid name")
             break;
           
           case "email":
@@ -167,12 +168,12 @@ class Contact extends Component {
                     <div className="card-body">
                         <h1 className="center">Contact Form</h1>
                         <form className="container p-5" onSubmit={this.handleSubmit} noValidate autoComplete='off'>
-                            <TextField fullWidth style={{}}
+                            <TextField fullWidth 
                                 label="Name"
                                 type="text"
                                 name="name"
                                 helperText={this.state.formErrors.name.length > 0 && this.state.formErrors.name}
-                                value={this.state.name}
+                                value={this.state.name ? this.state.name : ''}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'
@@ -185,7 +186,7 @@ class Contact extends Component {
                                 type="text"
                                 name="email"
                                 helperText={this.state.formErrors.email.length > 0 && this.state.formErrors.email}
-                                value={this.state.email}
+                                value={this.state.email ? this.state.email : ''}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'
@@ -202,7 +203,7 @@ class Contact extends Component {
                                 onKeyDown={ (evt) => !((evt.keyCode>=96 && evt.keyCode<=105) || (evt.keyCode>=47 && evt.keyCode<=57) || evt.key === '+' || evt.keyCode === 8 || evt.keyCode === 46) && evt.preventDefault() }
                                 // onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-') && evt.preventDefault() }
                                 helperText={this.state.formErrors.mobile.length > 0 && this.state.formErrors.mobile}
-                                value={this.state.mobile}
+                                value={this.state.mobile ? this.state.mobile : ''}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'
@@ -214,7 +215,7 @@ class Contact extends Component {
                                 type="text"
                                 name="subject"
                                 helperText={this.state.formErrors.subject.length > 0 && this.state.formErrors.subject}
-                                value={this.state.subject}
+                                value={this.state.subject ? this.state.subject : ''}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'
@@ -226,7 +227,7 @@ class Contact extends Component {
                                 type="text"
                                 name="message"
                                 helperText={this.state.formErrors.message.length > 0 && this.state.formErrors.message}
-                                value={this.state.message}
+                                value={this.state.message ? this.state.message : ''}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChange}
                                 variant='outlined'
@@ -240,7 +241,7 @@ class Contact extends Component {
                                     </div>
                                 :
                                  <>
-                                  <button className="btn btn-primary" type='submit' disabled={true}>Submit</button>
+                                  <button className="btn btn-primary" type='submit' disabled={!formValid(this.state)}>Submit</button>
                                  </>
                                 }  
                             </div>

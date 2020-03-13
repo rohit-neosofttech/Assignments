@@ -25,7 +25,7 @@ class Header extends Component {
             options:[],
             dropdown:'',
             image:'',
-            img:''
+            img:'',
         }
     }
 
@@ -36,21 +36,13 @@ class Header extends Component {
     }
     
     componentDidMount() {
-        // var img=''
-        // if(localStorage.getItem("CustDetail")) {
-        //     if(custDetail.profile_img) {
-        //         img=custDetail.profile_img
-        //     }
-        // }
         if(localStorage.getItem('userToken'))
         {
             this.setState({
                 dropdown:<>
                             <Link className="dropdown-item" to='/profile'>Profile</Link>
                             <Link className="dropdown-item" to='/logout'>Log out</Link>
-                        </>,
-                img:custDetail.profile_img
-                // image: <img className="user-avatar" src={(img==='')? User:`${api.baseurl}/${custDetail.profile_img}`} alt='' />
+                        </>
          })
         }
         else {
@@ -58,12 +50,9 @@ class Header extends Component {
                 dropdown:<>
                             <Link className="dropdown-item" to='/login'>Login</Link>
                             <Link className="dropdown-item" to='/register'>Register</Link>
-                        </>,
-                img:''
-                // image:<img className="user-avatar" src={User} alt='' />
+                        </>
             })
         }
-        
         axios.get(`${api.baseurl}/getAllProducts`)
         .then((res)=>{
             this.setState({products:res.data.product_details})
@@ -100,6 +89,19 @@ class Header extends Component {
         //         console.log(err)
         //     })
         // }
+
+        if(custDetail) {
+            var img = custDetail.profile_img
+            if(img) {
+                this.setState({img:img})
+            }
+            else {
+                this.setState({img:null})
+            }
+        }
+    }
+
+    componentWillUnmount(){
     }
 
     render() {
@@ -155,7 +157,8 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        cartCount:state.cartCount
+        cartCount:state.cartCount,
+        profile:state.profile
     }
 }
  
