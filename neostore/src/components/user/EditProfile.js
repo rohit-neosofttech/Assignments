@@ -6,7 +6,7 @@ import * as api from '../../api'
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import {TextField} from '@material-ui/core/';
+import { TextField } from '@material-ui/core/';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -16,110 +16,110 @@ import SnackAlert from '../SnackAlert'
 
 const userToken = localStorage.getItem('userToken')
 
-const emailRegex = RegExp(    
+const emailRegex = RegExp(
     /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
 );
 const textOnly = RegExp(/^[a-zA-Z]*$/);
 const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}$/)
-  
-  const formValid = ({ formErrors, ...rest }) => {
+
+const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
-  
+
     // validate form errors being empty
     Object.values(formErrors).forEach(val => {
-      val.length > 0 && (valid = false);
+        val.length > 0 && (valid = false);
     });
-  
+
     // validate the form was filled out
     Object.values(rest).forEach(val => {
-      val === null && (valid = false);
+        val === null && (valid = false);
     });
-  
+
     return valid;
-  };
+};
 
 class EditProfile extends Component {
     constructor(props) {
         super(props);
-        this.state ={
-            firstName:'',
-            lastName:'',
-            email:'',
-            mobile:'',
-            gender:'',
-            dob:'',
-            profile_img:'',
+        this.state = {
+            firstName: '',
+            lastName: '',
+            email: '',
+            mobile: '',
+            gender: '',
+            dob: '',
+            profile_img: '',
             formErrors: {
-                firstName:'',
-                lastName:'',
-                email:'',
-                mobile:'',
-                gender:'',
-                dob:'',
-                profile_img:''
+                firstName: '',
+                lastName: '',
+                email: '',
+                mobile: '',
+                gender: '',
+                dob: '',
+                profile_img: ''
             },
-            open:false,
-            loader:false,
-            type:'',
-            message:''
+            open: false,
+            loader: false,
+            type: '',
+            message: ''
         }
     }
-    
+
     componentDidMount() {
-        this.setState({loader:true})
+        this.setState({ loader: true })
         const profile = this.props.location.state
         this.setState({
-            firstName:profile.firstName,
-            lastName:profile.lastName,
-            email:profile.email,
-            mobile:profile.mobile,
-            gender:profile.gender,
-            dob:profile.dob,
+            firstName: profile.firstName,
+            lastName: profile.lastName,
+            email: profile.email,
+            mobile: profile.mobile,
+            gender: profile.gender,
+            dob: profile.dob,
             // profile_img:''
         })
-        this.setState({loader:false})
+        this.setState({ loader: false })
     }
 
     handleChange = (e) => {
         e.preventDefault();
         const { name, value } = e.target;
-        let formErrors = { ...this.state.formErrors };
+        let formErrors = {...this.state.formErrors };
 
         switch (name) {
-        case "firstName":
-            formErrors.firstName =
-                (value.length === 0 ? "*required" : "") ||
-                (value.length < 3 ? "minimum 3 characaters required" : "") ||
-                (nameRegex.test(value)? "" : "should contain only character")
-            break;
-        case "lastName":
-            formErrors.lastName =
-                (value.length === 0 ? "*required" : "") ||
-                (textOnly.test(value)? "" : "should contain only character")
-                // (value.length < 3 ? "minimum 3 characaters required" : "")
-            break;
-        case "email":
-            formErrors.email = 
-                (value.length === 0 ? "*required" : "") ||
-                (emailRegex.test(value)? "" : "invalid email address")
-            break;
-        case "mobile":
-            // if(value.startsWith("+") === true) {
-            //     formErrors.mobile =
-            //       (isNaN(value) ? "Must Be a number" : "") ||
-            //       (value.length === 0 ? "*required" : "") ||
-            //       ((value.length !==13 ) ? "Invalid Mobile number" : "" )
-            //   }
-            //   else {
+            case "firstName":
+                formErrors.firstName =
+                    (value.length === 0 ? "*required" : "") ||
+                    (value.length < 3 ? "minimum 3 characaters required" : "") ||
+                    (nameRegex.test(value) ? "" : "should contain only character")
+                break;
+            case "lastName":
+                formErrors.lastName =
+                    (value.length === 0 ? "*required" : "") ||
+                    (textOnly.test(value) ? "" : "should contain only character")
+                    // (value.length < 3 ? "minimum 3 characaters required" : "")
+                break;
+            case "email":
+                formErrors.email =
+                    (value.length === 0 ? "*required" : "") ||
+                    (emailRegex.test(value) ? "" : "invalid email address")
+                break;
+            case "mobile":
+                // if(value.startsWith("+") === true) {
+                //     formErrors.mobile =
+                //       (isNaN(value) ? "Must Be a number" : "") ||
+                //       (value.length === 0 ? "*required" : "") ||
+                //       ((value.length !==13 ) ? "Invalid Mobile number" : "" )
+                //   }
+                //   else {
                 formErrors.mobile =
-                  (isNaN(value) ? "Must Be a number" : "") ||
-                  (value.length === 0 ? "*required" : "") ||
-                  ((value < 6999999999 || value > 9999999999) ? "Invalid Mobile number" : "" )
-                  // (value.length !== 10 ? "Invalid Mobile number" : "")
-            //   }
-            break;
-        default:
-            break;
+                    (isNaN(value) ? "Must Be a number" : "") ||
+                    (value.length === 0 ? "*required" : "") ||
+                    ((value < 6999999999 || value > 9999999999) ? "Invalid Mobile number" : "")
+                    // (value.length !== 10 ? "Invalid Mobile number" : "")
+                    //   }
+                break;
+            default:
+                break;
         }
 
         this.setState({ formErrors, [name]: value });
@@ -129,61 +129,61 @@ class EditProfile extends Component {
         var date = e.target.value
         let today = new Date()
         let minDate = new Date()
-        minDate.setFullYear(today.getFullYear()-100)
+        minDate.setFullYear(today.getFullYear() - 100)
         var selected = new Date(e.target.value)
-        if(selected<today && selected>minDate) {
+        if (selected < today && selected > minDate) {
             var age = selected
-            age.setFullYear(age.getFullYear()+18)
-            if(age<today) {
+            age.setFullYear(age.getFullYear() + 18)
+            if (age < today) {
                 this.setState(prevState => ({
                     dob: date,
-                    formErrors: {                  
-                        ...prevState.formErrors,   
+                    formErrors: {
+                        ...prevState.formErrors,
                         dob: ''
                     }
                 }))
-            }
+            } 
             else {
                 this.setState(prevState => ({
                     dob: date,
-                    formErrors: {                  
-                        ...prevState.formErrors,   
+                    formErrors: {
+                        ...prevState.formErrors,
                         dob: 'User Must be +18'
                     }
                 }))
             }
-        }
-        else{
+        } 
+        else {
             this.setState(prevState => ({
-                formErrors: {                  
-                    ...prevState.formErrors,   
+                formErrors: {
+                    ...prevState.formErrors,
                     dob: 'Enter a Valid Date of Birth'
                 }
             }))
         }
-        
+
     }
 
     onImageChange = e => {
-        if(e.target.files.length!==0) {
+        if (e.target.files.length !== 0) {
             const acceptedImageTypes = ['image/jpeg', 'image/png'];
-    
-            if(e.target.files && acceptedImageTypes.includes(e.target.files[0].type) ) {
+
+            if (e.target.files && acceptedImageTypes.includes(e.target.files[0].type)) {
                 this.setState({ profile_img: e.target.files });
                 this.setState(prevState => ({
-                    formErrors: {                  
-                        ...prevState.formErrors,   
+                    formErrors: {
+                        ...prevState.formErrors,
                         profile_img: ''
                     }
                 }))
-            }
+            } 
             else {
                 this.setState(prevState => ({
-                    open:true,
-                    type:"error",
-                    message:'Invalid format for Profile Image ',
-                    formErrors: {                  
-                        ...prevState.formErrors,   
+                    open: true,
+                    type: "error",
+                    message: 'Invalid format for Profile Image ',
+                    formErrors: {
+                        ...prevState.formErrors,
                         profile_img: 'The File should be of image format (i.e. jpeg | png)'
                     }
                 }))
@@ -192,39 +192,39 @@ class EditProfile extends Component {
     }
 
     onRadioChange = (e) => {
-        this.setState({gender:e.target.value})
+        this.setState({ gender: e.target.value })
     }
 
     handleSnackClose = (event, reason) => {
         if (reason === 'clickaway') {
-          return;
+            return;
         }
-        this.setState({open:false})
+        this.setState({ open: false })
     };
 
     handleProfileUpdate = (e) => {
         e.preventDefault();
-        if (this.state.profile_img==='') {
+        if (this.state.profile_img === '') {
             sweetalert("Are you sure you want to Update Profile without a Profile Image?", {
-                buttons: {
-                cancel: 'Cancel',
-                confirm: {
-                    text: "Confirm",
-                    value: "confirm",
-                  },
-                },
-            })
-            .then((value) => {
-                switch (value) {
-            
-                case "confirm":
-                    this.profileUpdate()
-                    break;
-                default:
-                    
-                }
-            });
-        }
+                    buttons: {
+                        cancel: 'Cancel',
+                        confirm: {
+                            text: "Confirm",
+                            value: "confirm",
+                        },
+                    },
+                })
+                .then((value) => {
+                    switch (value) {
+
+                        case "confirm":
+                            this.profileUpdate()
+                            break;
+                        default:
+
+                    }
+                });
+        } 
         else {
             this.profileUpdate()
         }
@@ -240,53 +240,51 @@ class EditProfile extends Component {
 
     profileUpdate = () => {
         if (formValid(this.state)) {
-            this.setState({loader:true})
+            this.setState({ loader: true })
             let formData = new FormData()
-            if(this.state.profile_img==='') {
+            if (this.state.profile_img === '') {
                 // formData.append('profile_img',this.state.profile_img)
             } else {
-                formData.append('profile_img',this.state.profile_img[0],this.state.profile_img[0].name)
+                formData.append('profile_img', this.state.profile_img[0], this.state.profile_img[0].name)
             }
-            formData.append('first_name',this.state.firstName)
-            formData.append('last_name',this.state.lastName)
-            formData.append('email',this.state.email)
-            formData.append('dob',this.state.dob)
-            formData.append('phone_no',this.state.mobile)
-            formData.append('gender',this.state.gender)
+            formData.append('first_name', this.state.firstName)
+            formData.append('last_name', this.state.lastName)
+            formData.append('email', this.state.email)
+            formData.append('dob', this.state.dob)
+            formData.append('phone_no', this.state.mobile)
+            formData.append('gender', this.state.gender)
 
-            axios.put(`${api.baseurl}/profile`, formData , {
-                headers: {
-                Authorization: 'Bearer ' + userToken
-                }}
-            )
-            .then(res => {
-                this.setState({
-                    loader:false
+            axios.put(`${api.baseurl}/profile`, formData, {
+                    headers: {
+                        Authorization: 'Bearer ' + userToken
+                    }
                 })
-                localStorage.removeItem('CustDetail')
-                localStorage.setItem('CustDetail',JSON.stringify(res.data.customer_details))
-                sweetalert("Form Submitted!", `${res.data.message}`, "success", {
-                    buttons: false, timer:2000,
+                .then(res => {
+                    this.setState({
+                        loader: false
+                    })
+                    localStorage.removeItem('CustDetail')
+                    localStorage.setItem('CustDetail', JSON.stringify(res.data.customer_details))
+                    sweetalert("Form Submitted!", `${res.data.message}`, "success", { buttons: false, timer: 2000 })
+                    .then((value) => {
+                        switch (value) {
+                          default: 
+                            this.props.history.push("/profile")
+                            // this.forceUpdate()
+                            // window.location.reload(false)
+                        }
+                    });
                 })
-                .then((value) => {
-                    switch (value) {
-                      default:
-                        this.props.history.push("/profile")
-                        // this.forceUpdate()
-                        window.location.reload(false)
+                .catch(error => {
+                    this.setState({ loader: false })
+                    if (error.response) {
+                        sweetalert("Error", error.response.data.message ? `${error.response.data.message}` : "Error has occured", "error", { button: false });
+                    } else if (error.request) {
+                        sweetalert("Error", `${error.request}`, "error");
+                    } else {
+                        sweetalert("Error", `${error.message}`, "error");
                     }
                 });
-            })
-            .catch(error => {
-                this.setState({loader:false})
-                if (error.response) {
-                    sweetalert("Error", error.response.data.message ? `${error.response.data.message}` : "Error has occured", "error", {button:false});
-                } else if (error.request) {
-                    sweetalert("Error", `${error.request}`, "error");
-                } else {
-                    sweetalert("Error", `${error.message}`, "error");
-                }
-            });
         }
     }
 
@@ -399,7 +397,7 @@ class EditProfile extends Component {
                 {this.state.open && <SnackAlert open={this.state.open} message={this.state.message} type={this.state.type} handleClose={this.handleSnackClose}/>}
 
             </div>
-        </>
+            </>
         )
     }
 }
