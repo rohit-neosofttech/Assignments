@@ -4,6 +4,10 @@ import {connect} from 'react-redux'
 import axios from 'axios'
 import * as api from '../api'
 
+import { userLogout } from './redux'
+import { bindActionCreators } from "redux";
+
+
 const userToken = localStorage.getItem("userToken")
 
 class Logout extends Component {
@@ -55,10 +59,11 @@ class Logout extends Component {
         localStorage.removeItem('tempCart')
         localStorage.removeItem('CustDetail')
         localStorage.removeItem('userToken')
-        
+        this.props.userLogout()
+        this.props.removeCart()
         const { history } = this.props;
         history.push(`/`);
-        this.props.removeCart()
+        // this.props.removeCart()
         // window.location.reload(false)
     }
     render() {
@@ -71,10 +76,19 @@ class Logout extends Component {
 }
 
 // export default Logout
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         removeCart: () => dispatch(removeCart())
+//     }
+//   }
+  
+// export default connect(null, mapDispatchToProps)(Logout)
+
 const mapDispatchToProps = dispatch => {
-    return {
-        removeCart: () => dispatch(removeCart())
-    }
+    return bindActionCreators({
+        userLogout,
+        removeCart
+    },dispatch)
   }
   
-export default connect(null, mapDispatchToProps)(Logout)
+  export default connect(null, mapDispatchToProps)(Logout)

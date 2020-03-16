@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Header from './header/Header'
+// import Header from './header/Header'
 import * as api from '../api'
 import axios from 'axios'
 import sweetalert from 'sweetalert'
@@ -14,6 +14,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
+const passRegex = RegExp(/^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,12})$/)
 
 const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
@@ -75,7 +77,9 @@ class RecoverPass extends Component {
           case "newpass":
             formErrors.newpass = 
                 (value.length === 0 ? "*required" : "") ||
-                (value.length < 8 || value.length > 12 ? "Password should contain 8-12 characaters" : "")
+                (value.length < 8 ? "minimum 8 characaters required" : "") ||
+                (value.length >12 ? "maximum 12 characaters required" : "") ||
+                (passRegex.test(value)? "" : "should contain 1 UpperCase, 1 digit & 1 special symbol")
                 if(this.state.confpass!==null) {
                     formErrors.confpass =
                       this.state.newpass!==this.state.confpass ? "the password does not match" : "";
@@ -139,7 +143,7 @@ class RecoverPass extends Component {
     render() {
         return (
             <>
-              <Header/>  
+              {/* <Header/>   */}
               <div className="container p-5">
                 <div className="card" style={{width:"60%",margin:"auto",backgroundColor:"#eeeeee"}}>
                     <div className="card-body">
@@ -253,7 +257,7 @@ class RecoverPass extends Component {
                             <div className="center">
                             {this.state.loader
                               ? <CircularProgress/>
-                              : <button className="btn btn-primary" type='submit' disabled={!formValid(this.state)}>Submit</button>
+                              : <button className="btn btn-primary" onClick={this.handleSubmit} disabled={!formValid(this.state)}>Submit</button>
                             }  
                             </div>
                         </form>

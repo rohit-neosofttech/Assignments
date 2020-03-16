@@ -1,6 +1,6 @@
 
 import React, { PureComponent } from 'react'
-import Header from '../header/Header'
+// import Header from '../header/Header'
 import UserHome from './UserHome'
 import * as api from '../../api'
 import axios from 'axios'
@@ -74,7 +74,7 @@ export class Profile extends PureComponent {
         }
         return (
             <>
-            <Header/>
+            {/* <Header/> */}
             <div className="container p-3">
                 <h3>My Account</h3>
                 <hr/>

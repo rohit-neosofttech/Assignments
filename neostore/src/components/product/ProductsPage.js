@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Header from '../header/Header'
+// import Header from '../header/Header'
 import axios from 'axios'
 import * as api from '../../api'
 
@@ -95,7 +95,7 @@ class ProductsPage extends Component {
     render() {
         return (
             <>
-            <Header/>
+            {/* <Header/> */}
             <div>
                 <br/><hr/>
                 <div className="container" style={{minHeight:"400px"}}>

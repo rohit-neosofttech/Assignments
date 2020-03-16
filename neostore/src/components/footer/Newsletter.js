@@ -33,14 +33,13 @@ class Newsletter extends PureComponent {
     }
     
     render() {
-        const name=this.state.name
         return (
             <>
                 <h5 style={{padding: '15px'}}>Newsletter & Subscribe</h5>
                 <p>Signup to get exclusive offer from our favorite brands and to be well up in the news</p>
                 <form>
-                    <input type="text" placeholder="Your Email..." value={name} onChange={this.onChangeHandler}/><br/><br/>
-                    <button type="submit" onClick={this.onSubscribe} disabled={!this.state.valid}>Subscribe</button>
+                    <input type="text" placeholder="Your Email..." value={this.state.name} onChange={this.onChangeHandler}/><br/>
+                    <button className="btn-subscribe" onClick={this.onSubscribe} disabled={!this.state.valid}>Subscribe</button>
                 </form>
             </>
         )

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import Header from './header/Header'
+// import Header from './header/Header'
 
 class Default extends Component {
     render() {
         return (
             <>
-            <Header/>
+            {/* <Header/> */}
             <div className="div-default">
                 <div className="container center">
                     <br/><br/><br/>

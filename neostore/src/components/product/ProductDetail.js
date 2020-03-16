@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import Header from '../header/Header'
+// import Header from '../header/Header'
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating'
 import { Button, Modal } from 'react-bootstrap';
@@ -10,6 +10,7 @@ import {connect} from 'react-redux'
 import Loading from 'react-fullscreen-loading';
 import SnackAlert from '../SnackAlert'
 import sweetalert from 'sweetalert'
+import ImageGallery from 'react-image-gallery';
 
 import {
     // Magnifier,
@@ -20,6 +21,18 @@ import {
     // MagnifierPreview,
     // MagnifierContainer
   } from "react-image-magnifiers";
+
+  import {
+    FacebookShareButton,
+    PinterestShareButton,
+    TwitterShareButton,
+    WhatsappShareButton,
+    EmailIcon,
+    FacebookIcon,
+    PinterestIcon,
+    TwitterIcon,
+    WhatsappIcon,
+  } from "react-share";
 
 // import ReactImageMagnify from 'react-image-magnify';
 
@@ -216,22 +229,25 @@ class ProductDetail extends PureComponent {
         const product_material = product.product_material
         const product_producer = product.product_producer
 
+        const shareUrl = `http://localhost:3000${this.props.location.pathname}`
+          
         // const fullImage = this.state.fullImage
         return (
             <>
-            <Header/>
+            {/* <Header/> */}
             {(this.state.loading)
             ?<div className="div-default"><Loading loading loaderColor="#3498db" /></div>
             :
             <div className="container" style={{paddingTop:"30px"}}>
                 <div className="row">
                     <div className="col-md-6">
+                            {/* <ImageGallery items={images} originalClass="fullImage" /> */}
                         <div className="row">
                             <div className="">
-                                <SideBySideMagnifier 
+                                {/* <SideBySideMagnifier 
                                     imageSrc={this.state.fullImage}
                                     zoomPosition="right"
-                                />
+                                /> */}
 
                                 {/* <ReactImageMagnify style={{width:'100% !important',height:"300px !important"}} {...{
                                     smallImage: {
@@ -250,7 +266,7 @@ class ProductDetail extends PureComponent {
                                         height: 1800  
                                     }
                                 }} /> */}
-                                {/* <img className="fullImage img-responsive" src={this.state.fullImage} alt="FullImage"/> */}
+                                <img className="fullImage img-responsive" src={this.state.fullImage} alt="FullImage"/>
                             </div>
                         </div>
                         <div className="row">
@@ -268,12 +284,17 @@ class ProductDetail extends PureComponent {
                         Price : &#8377; <span style={{color:"green"}}>{product_cost}</span><br/>
                         Color : <div className="color-pallet-inline" style={{backgroundColor:`${color_code}`}} /><br/>
                         Share<i id='icon-black' className="fas fa-share-alt "></i><br/>
-                        <div className='row'>
-                            <button className="share-btn" style={{backgroundColor: "#4267B2"}}><i className="fab fa-facebook-f"></i></button>
+                        <div className="row">
+                            <FacebookShareButton url={shareUrl}><FacebookIcon size={50} round={true}/></FacebookShareButton>
+                            <button className="share-btn" style={{backgroundColor: "#DB4437"}}><i className="fab fa-google"></i></button>
+                            <WhatsappShareButton url={shareUrl}><WhatsappIcon size={50} round={true}/></WhatsappShareButton>
+                            <PinterestShareButton url={shareUrl} media={this.state.fullImage}><PinterestIcon size={50} round={true}/></PinterestShareButton>
+                            <TwitterShareButton url={shareUrl}><TwitterIcon size={50} round={true}/></TwitterShareButton>
+                            {/* <button className="share-btn" style={{backgroundColor: "#4267B2"}}><i className="fab fa-facebook-f"></i></button>
                             <button className="share-btn" style={{backgroundColor: "#DB4437"}}><i className="fab fa-google"></i></button>
                             <button className="share-btn" style={{backgroundColor: "#25D366"}}><i className="fab fa-whatsapp"></i></button>
                             <button className="share-btn" style={{backgroundColor: "#BD091D"}}><i className="fab fa-pinterest-p"></i></button>
-                            <button className="share-btn" style={{backgroundColor: "#00acee"}}><i className="fab fa-twitter"></i></button>
+                            <button className="share-btn" style={{backgroundColor: "#00acee"}}><i className="fab fa-twitter"></i></button> */}
                         </div>
                         <div className="row">
                             <button className="btn-add" style={{backgroundColor: "#00acee"}} onClick={()=>this.addToCart(product)}>Add to Cart</button>

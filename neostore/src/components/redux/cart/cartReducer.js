@@ -5,8 +5,7 @@ if(localStorage.getItem('cart')) {
 }
 
 const initialState = {
-    cartCount:count,
-    profile:''
+    cartCount:count
 }
 
 const cartReducer = (state=initialState,action) => {
@@ -26,17 +25,15 @@ const cartReducer = (state=initialState,action) => {
             cartCount:0
             // cartCount:localStorage.getItem('cart')? localStorage.getItem('cart').length : 0
         }
-        case "SHOW_PROFILE" : 
-        return {
-            profile:state.profile
+        case "CART_COUNT" : 
+        var count=0
+        if(localStorage.getItem('cart')) {
+            let cartProduct=JSON.parse(localStorage.getItem('cart')) 
+            cartProduct.map(item => count++)
         }
-        case "ADD_PROFILE" : 
         return {
-            profile:localStorage.getItem('custDetail') ? localStorage.getItem('custDetail').profile_img : ''
-        }
-        case "REMOVE_PROFILE" : 
-        return {
-            profile:''
+            cartCount:count
+            // cartCount:localStorage.getItem('cart')? localStorage.getItem('cart').length : 0
         }
         default: 
             return state

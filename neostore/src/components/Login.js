@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
-import Header from './header/Header'
+// import Header from './header/Header'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import * as api from '../api'
 import { TextField } from '@material-ui/core/';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import sweetalert from 'sweetalert'
+
+import { userLogin } from './redux'
+import { cartCount } from './redux'
+import { connect } from 'react-redux'
+import { bindActionCreators } from "redux";
 
 const emailRegex = RegExp(
     // /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-])+.([A-Za-z]{2,4})$/
@@ -61,6 +66,10 @@ class Login extends Component {
                     localStorage.setItem('userToken', `${res.data.token}`)
                     localStorage.setItem('CustDetail', JSON.stringify(res.data.customer_details))
                     this.setState({ loader: false })
+                    debugger
+                    this.props.userLogin()
+                    this.props.cartCount()
+                    
                     sweetalert(res.data.message, { icon: "success", button: false, timer: 2000, })
                         .then((value) => {
                             switch (value) {
@@ -167,7 +176,7 @@ class Login extends Component {
     render() {
         return (
             <>
-            <Header/>
+            {/* <Header/> */}
               <div className="container p-5">
                   <div className="row">
                       <div className="col-md-6">
@@ -238,8 +247,8 @@ class Login extends Component {
                                   :
                                    <>
                                     {formValid(this.state) 
-                                    ? <button className="btn-login" type='submit'>Login</button>
-                                    :<button className="btn-login" type='submit' style={{backgroundColor:'gray',cursor:'default'}} disabled>Login</button>}
+                                    ? <button className="btn-login" onClick={this.handleSubmit}>Login</button>
+                                    :<button className="btn-login" onClick={this.handleSubmit} style={{backgroundColor:'gray',cursor:'default'}} disabled>Login</button>}
                                    </>
                                   }             
                                   
@@ -260,4 +269,17 @@ class Login extends Component {
     }
 }
 
-export default Login
+// export default Login
+// const mapDispatchToProps = dispatch => {
+//     return bindActionCreators({
+//         userLogin
+//     },dispatch)
+//   }
+
+  const mapDispatchToProps = dispatch => {
+    return {
+        userLogin: () => dispatch(userLogin()),
+        cartCount: () => dispatch(cartCount())
+  }}
+
+  export default connect(null, mapDispatchToProps)(Login)

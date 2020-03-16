@@ -27,6 +27,7 @@ button {
     font-size: 12px;
 }
 
+
 .div-default {
     height:500px;
     width:100%;
@@ -44,6 +45,13 @@ button {
 .btn-group-vertical {
     width: 100%;
     padding:15px;
+}
+
+.btn-subscribe{
+    background-color: white;
+    border-radius: 5px;
+    padding: 2px 10px;
+    margin-top: 5px;
 }
 
 a {
@@ -286,6 +294,12 @@ nav a:hover {
     background-color: orangered;
     color: white;
     font-weight: bold;
+}
+
+.MuiBadge-badge {
+    height :15px !important;
+    width:fit-content;
+    font-size: 0.70rem !important;
 }
 
 .user-avatar {
@@ -646,7 +660,41 @@ button[disabled]{
 }
 
 .MuiBadge-anchorOriginTopRightRectangle {
-    right:10px !important;
+    font-size: 0.70rem;
+    top:-5px !important;
+    right:8px !important;
     opacity: 0.95;
 }
 
+/*---------Share Button----------*/
+.react-share__ShareButton {
+    padding: 10px !important;
+}
+
+/*-----------Pagination-----------*/
+ul.pagination{
+    color:blueviolet !important;
+    justify-content: center;
+}
+li.active{
+    background-color: cornflowerblue;
+    font-weight: bold;
+    color:white !important;
+}
+li.active a{
+    background-color: cornflowerblue;
+    font-weight: bold;
+    color:white !important;
+}
+ul.pagination li {
+    border:1px solid rgb(204, 204, 204,0.5);
+
+}
+ul.pagination li:hover {
+    color:blue !important;
+    background-color: rgb(194, 194, 194);
+}
+
+ul.pagination li a{
+    color:blue;
+}

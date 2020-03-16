@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import ProductsCard from './ProductsCard';
-import Pagination from './Pagination';
+// import Pagination from './Pagination';
 import * as api from '../../api'
 import ReactTooltip from 'react-tooltip'
 import Loading from 'react-fullscreen-loading';
 // import CircularProgress from '@material-ui/core/CircularProgress';
+
+import Pagination from "react-js-pagination";
+// require("bootstrap/less/bootstrap.less")
 
 class AllProduct extends Component {
     constructor(props) {
@@ -24,7 +27,8 @@ class AllProduct extends Component {
             // pageNo:1,
             // perPage:8,
             error:false,
-            prodLen:''
+            prodLen:'',
+            activePage: 1
         }
     }
 
@@ -149,13 +153,18 @@ class AllProduct extends Component {
         })
     }
 
+    handlePageChange(pageNumber) {
+        console.log(`active page is ${pageNumber}`);
+        this.setState({activePage: pageNumber});
+    }
+
     render() {
 
-        const indexOfLastPost = this.state.currentPage * this.state.postsPerPage;
+        const indexOfLastPost = this.state.activePage * this.state.postsPerPage;
         const indexOfFirstPost = indexOfLastPost - this.state.postsPerPage;
         const currentPosts = this.state.products.slice(indexOfFirstPost, indexOfLastPost);
 
-        const paginate = pageNumber => this.setState({currentPage:pageNumber});
+        // const paginate = pageNumber => this.setState({currentPage:pageNumber});
         // const paginate = pageNumber => this.setState({pageNo:pageNumber})
 
         return (
@@ -211,11 +220,20 @@ class AllProduct extends Component {
                                 totalPosts={this.state.prodLen}
                                 paginate={paginate}
                             /> */}
-                            <Pagination
+                            {/* <Pagination
                                 postsPerPage={this.state.postsPerPage}
                                 totalPosts={this.state.products.length}
                                 paginate={paginate}
-                            />
+                            /> */}
+                            <br/><br/>
+                            <Pagination
+                                activePage={this.state.activePage}
+                                itemsCountPerPage={8}
+                                totalItemsCount={this.state.products.length}
+                                pageRangeDisplayed={5}
+                                onChange={this.handlePageChange.bind(this)}
+                                />
+                            <br/><br/>
                         </>
                     </div>
                 }

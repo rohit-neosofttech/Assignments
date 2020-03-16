@@ -12,9 +12,6 @@ class Search extends Component {
     }
   }
 
-  componentDidMount() {
-  }
-
   onChangeHandler = (e) => {
     e.preventDefault()
     if(e.target.value.length!==0) {

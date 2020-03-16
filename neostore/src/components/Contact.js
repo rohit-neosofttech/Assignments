@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Header from './header/Header'
+// import Header from './header/Header'
 import axios from 'axios';
 import * as api from '../api'
 import {TextField} from '@material-ui/core/';
@@ -162,7 +162,7 @@ class Contact extends Component {
     render() {
         return (
             <>
-            <Header/>
+            {/* <Header/> */}
             <div className="container p-5">
                 <div className="card" style={{width:"60%",margin:"auto",backgroundColor:"#eeeeee"}}>
                     <div className="card-body">
@@ -241,7 +241,7 @@ class Contact extends Component {
                                     </div>
                                 :
                                  <>
-                                  <button className="btn btn-primary" type='submit' disabled={!formValid(this.state)}>Submit</button>
+                                  <button className="btn btn-primary" onClick={this.handleSubmit} disabled={!formValid(this.state)}>Submit</button>
                                  </>
                                 }  
                             </div>

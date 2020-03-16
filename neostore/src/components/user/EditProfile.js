@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Header from '../header/Header'
+// import Header from '../header/Header'
 import UserHome from './UserHome'
 import axios from 'axios'
 import * as api from '../../api'
@@ -289,13 +289,36 @@ class EditProfile extends Component {
     }
 
     profileUpdateCancel = () => {
-        this.props.history.push("/profile")
+        // if (this.state.profile_img === '') {
+        //     sweetalert("The Changes made will be lost..", {
+        //             buttons: {
+        //                 cancel: 'Cancel',
+        //                 confirm: {
+        //                     text: "Confirm",
+        //                     value: "confirm",
+        //                 },
+        //             },
+        //         })
+        //         .then((value) => {
+        //             switch (value) {
+
+        //                 case "confirm":
+        //                     this.props.history.push("/profile")
+        //                     break;
+        //                 default:
+
+        //             }
+        //         });
+        // } 
+        // else {
+            this.props.history.push("/profile")
+        // }
     }
 
     render() {
         return (
             <>
-            <Header/>
+            {/* <Header/> */}
             <div className="container">
             <h1>My Account</h1>
             <hr/>
@@ -378,12 +401,12 @@ class EditProfile extends Component {
                                 {formValid(this.state) 
                                     ? 
                                     <>
-                                        <button className="btn-edit" type="submit"><i id='icon-black' className="fa fa-save"></i>Save</button>&emsp;&emsp;
+                                        <button className="btn-edit" onClick={this.handleProfileUpdate}><i id='icon-black' className="fa fa-save"></i>Save</button>&emsp;&emsp;
                                         <button className="btn-edit" onClick={this.profileUpdateCancel}><i id='icon-black' className="fa fa-times"></i>Cancel</button>
                                     </>
                                     :
                                     <>
-                                        <button className="btn-edit" type="submit" style={{color:'black',backgroundColor:'#cecbcb',cursor:'default'}} disabled><i id='icon-black' className="fa fa-save"></i>Save</button>&emsp;&emsp;
+                                        <button className="btn-edit" onClick={this.handleProfileUpdate} style={{color:'black',backgroundColor:'#cecbcb',cursor:'default'}} disabled><i id='icon-black' className="fa fa-save"></i>Save</button>&emsp;&emsp;
                                         <button className="btn-edit" onClick={this.profileUpdateCancel}><i id='icon-black' className="fa fa-times"></i>Cancel</button>
                                     </>
                                 }

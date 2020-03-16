@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import UserHome from './UserHome'
-import Header from '../header/Header'
+// import Header from '../header/Header'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 import * as api from '../../api'
@@ -104,7 +104,7 @@ class Address extends PureComponent {
     render() {
         return (
             <>
-            <Header/>
+            {/* <Header/> */}
             <div className="container p-3">
                 <h3>My Account</h3>
                 <hr/>

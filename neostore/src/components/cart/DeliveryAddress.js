@@ -150,7 +150,6 @@ class DeliveryAddress extends PureComponent {
         }    
     }
     
-
     render() {
         return (
             <>

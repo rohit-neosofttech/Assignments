@@ -10,24 +10,20 @@ import {connect} from 'react-redux'
 import './Header.css'
 import Search from './Search'
 
-// const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
 class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
             products:[],
             text:'',
-            // profile_image:(localStorage.getItem("CustDetail")) ? custDetail.profile_img : null,
-            // profile_image: null,
             count:0,
             selectedOption:'',
             options:[],
             dropdown:'',
-            image:'',
             img:'',
+            loggedIn:''
         }
     }
-    _isMounted = false;
 
     onChangeHandler = (e) => {
         this.setState({
@@ -36,25 +32,24 @@ class Header extends Component {
     }
     
     componentDidMount() {
-        this._isMounted = true;
-        if(localStorage.getItem('userToken'))
-        {
-            this.setState({
-                dropdown:<>
-                            <Link className="dropdown-item" to='/profile'>Profile</Link>
-                            <Link className="dropdown-item" to='/logout'>Log out</Link>
-                        </>
-         })
-        }
-        else {
-            this.setState({
-                dropdown:<>
-                            <Link className="dropdown-item" to='/login'>Login</Link>
-                            <Link className="dropdown-item" to='/register'>Register</Link>
-                        </>
-            })
-        }
-        if(this._isMounted) {
+        this.setState({loggedIn:this.props.loggedIn})
+        // if(this.props.loggedIn)
+        // {
+        //     this.setState({
+        //         dropdown:<>
+        //                     <Link className="dropdown-item" to='/profile'>Profile</Link>
+        //                     <Link className="dropdown-item" to='/logout'>Log out</Link>
+        //                 </>
+        //  })
+        // }
+        // else {
+        //     this.setState({
+        //         dropdown:<>
+        //                     <Link className="dropdown-item" to='/login'>Login</Link>
+        //                     <Link className="dropdown-item" to='/register'>Register</Link>
+        //                 </>
+        //     })
+        // }
         axios.get(`${api.baseurl}/getAllProducts`)
         .then((res)=>{
             this.setState({products:res.data.product_details})
@@ -70,29 +65,10 @@ class Header extends Component {
                   sweetalert("Oops!", `${err.message}`, "error",{button:false})
             }
         })
-        }
-        // if(localStorage.getItem('cart')) {
-        //     let count=0
-        //     let cartProduct=JSON.parse(localStorage.getItem('cart')) 
-        //     cartProduct.map(item => count++)
-        //     this.setState({count:count})
-        // }
+       
 
-        // if(localStorage.getItem('userToken')) {
-        //     axios.get(`${api.baseurl}/getCustProfile`, {
-        //         headers:{
-        //             Authorization: 'Bearer ' + localStorage.getItem('userToken')
-        //         }
-        //     })
-        //     .then((res)=>{
-        //         this.setState({img:res.data.customer_proile.profile_img})
-        //     })
-        //     .catch((err) => {
-        //         console.log(err)
-        //     })
-        // }
-
-        if(localStorage.getItem('userToken')) {
+        if(this.props.loggedIn) {
+            
             var cust = JSON.parse(localStorage.getItem("CustDetail"))
             var img = cust.profile_img
             if(img) {
@@ -104,8 +80,22 @@ class Header extends Component {
         }
     }
 
-    componentWillUnmount(){
-        this._isMounted = false;
+    componentDidUpdate(prevProps,prevState) {
+        if(this.props !== prevProps) {
+            if(this.props.loggedIn) {
+                var cust = JSON.parse(localStorage.getItem("CustDetail"))
+                var img = cust.profile_img
+                if(img) {
+                    this.setState({img:img})
+                }
+                else {
+                    this.setState({img:null})
+                }
+            }
+            else {
+                this.setState({img:null})
+            }
+        }
     }
 
     render() {
@@ -120,7 +110,7 @@ class Header extends Component {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
                         <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                            <li className="nav-item active">
+                            <li className="nav-item">
                                 <NavLink to="/">Home</NavLink>
                             </li>
                             <li className="nav-item">
@@ -148,7 +138,18 @@ class Header extends Component {
                                     <img className="user-avatar" src={(this.state.img)? `${api.baseurl}/${this.state.img}` : User} alt='' />
                                     </button>
                                 <div className="dropdown-menu dropdown-menu-right">
-                                    {this.state.dropdown}
+                                {this.props.loggedIn || localStorage.getItem('userToken')
+                                ?
+                                <>
+                                    <Link className="dropdown-item" to='/profile'>Profile</Link>
+                                    <Link className="dropdown-item" to='/logout'>Log out</Link>
+                                </>
+                                :
+                                <>
+                                    <Link className="dropdown-item" to='/login'>Login</Link>
+                                    <Link className="dropdown-item" to='/register'>Register</Link>
+                                </>
+                                }
                                 </div>
                             </div>
                         </ul>
@@ -161,8 +162,8 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        cartCount:state.cartCount,
-        profile:state.profile
+        cartCount:state.cart.cartCount,
+        loggedIn:state.userLogin.loggedIn
     }
 }
  

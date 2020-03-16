@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Header from '../header/Header'
+// import Header from '../header/Header'
 import AddressSidePanel from './AddressSidePanel'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {TextField} from '@material-ui/core/';
@@ -141,13 +141,36 @@ class AddAddress extends Component {
     };
 
     profileUpdateCancel = () => {
-        this.props.history.push("/address")
+        if(this.state.address || this.state.pincode || this.state.city || this.state.state || this.state.country ) {
+            sweetalert("Your changes will be lost..", {
+                buttons: {
+                    cancel: 'Cancel',
+                    confirm: {
+                        text: "Confirm",
+                        value: "confirm",
+
+                    },
+                },
+                icon: "warning",
+            })
+            .then((value) => {
+                switch (value) {
+                    case "confirm":
+                        this.props.history.push("/address")
+                        break;
+                    default:
+                }
+            });
+        }
+        else {
+            this.props.history.push("/address")
+        }
     }
 
     render() {
         return (
             <>
-            <Header/>
+            {/* <Header/> */}
             <div className="container p-5">
                 <h3>My Account</h3><hr/><br/>
                 <div className="row">
@@ -253,12 +276,12 @@ class AddAddress extends Component {
                                     {formValid(this.state) 
                                     ? 
                                     <>
-                                        <button className="btn-edit" type="submit"><i id='icon-black' className="fa fa-save"></i>Save</button>&emsp;&emsp;
+                                        <button className="btn-edit" onClick={this.handleSubmit}><i id='icon-black' className="fa fa-save"></i>Save</button>&emsp;&emsp;
                                         <button className="btn-edit" onClick={this.profileUpdateCancel}><i id='icon-black' className="fa fa-times"></i>Cancel</button>
                                     </>
                                     : 
                                     <>
-                                        <button className="btn-edit" type="submit" style={{color:'black',backgroundColor:'#cecbcb',cursor:'default'}} disabled><i id='icon-black' className="fa fa-save"></i>Save</button>&emsp;&emsp;
+                                        <button className="btn-edit" onClick={this.handleSubmit} style={{color:'black',backgroundColor:'#cecbcb',cursor:'default'}} disabled><i id='icon-black' className="fa fa-save"></i>Save</button>&emsp;&emsp;
                                         <button className="btn-edit" onClick={this.profileUpdateCancel}><i id='icon-black' className="fa fa-times"></i>Cancel</button>
                                     </>}
                                 </>

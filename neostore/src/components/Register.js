@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Header from './header/Header'
+// import Header from './header/Header'
 import axios from 'axios';
 import * as api from '../api'
 
@@ -18,7 +18,8 @@ const emailRegex = RegExp(
 );
 const textOnly = RegExp(/^[a-zA-Z]*$/);
 const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}$/)
-  
+const passRegex = RegExp(/^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,12})$/)
+
   const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
   
@@ -128,7 +129,8 @@ const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[
         formErrors.password =
           (value.length === 0 ? "*required" : "") ||
           (value.length < 8 ? "minimum 8 characaters required" : "") ||
-          (value.length >12 ? "maximum 12 characaters required" : "")
+          (value.length >12 ? "maximum 12 characaters required" : "") ||
+          (passRegex.test(value)? "" : "should contain 1 UpperCase, 1 digit & 1 special symbol")
           if(this.state.confpass!==null) {
             formErrors.confpass =
               this.state.password!==this.state.confpass ? "the password does not match" : "";
@@ -191,7 +193,7 @@ const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[
     render() {
         return (
           <>
-          <Header/>
+          {/* <Header/> */}
             <div className="container p-5" style={{width:'70%'}}>
                 <div className="row">
                     <div className="col col-md-6">
@@ -362,8 +364,8 @@ const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[
                         :
                          <>
                           {formValid(this.state) 
-                          ? <button className="btn-login" type='submit'>Register</button>
-                          : <button className="btn-login" type='submit' style={{backgroundColor:'gray',cursor:'default'}} disabled>Register</button>}
+                          ? <button className="btn-login" onClick={this.handleSubmit}>Register</button>
+                          : <button className="btn-login" onClick={this.handleSubmit} style={{backgroundColor:'gray',cursor:'default'}} disabled>Register</button>}
                          </>
                       }
                       </div><br/>

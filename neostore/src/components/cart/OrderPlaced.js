@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Header from '../header/Header'
+// import Header from '../header/Header'
 
 function OrderPlaced() {
     return (
         <>
-        <Header/>
+        {/* <Header/> */}
         <div className="div-default center">
             <br/><br/><br/>
             <p className="order-placed">Thank you for your order</p>

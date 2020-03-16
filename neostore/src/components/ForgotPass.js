@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Header from './header/Header'
+// import Header from './header/Header'
 import axios from 'axios';
 import * as api from '../api'
 import {TextField} from '@material-ui/core/';
@@ -94,7 +94,7 @@ class ForgotPass extends Component {
     render() {
         return (
             <>
-            <Header/>
+            {/* <Header/> */}
             <div className="container p-5" style={{minHeight:'400px'}}>
                 <div className="card" style={{width:"60%",margin:"auto",backgroundColor:"#eeeeee"}}>
                     <div className="card-body">
@@ -114,7 +114,7 @@ class ForgotPass extends Component {
                             <div className="center">
                             {this.state.loader
                               ? <CircularProgress/>
-                              : <button className="btn btn-primary" type='submit' disabled={!formValid(this.state)}>Submit</button>
+                              : <button className="btn btn-primary" onClick={this.handleSubmit} disabled={!formValid(this.state)}>Submit</button>
                             }  
                             </div>
                         </form>

@@ -1,7 +1,7 @@
 import React, { useState }  from 'react'
 import Cart from './Cart'
 import DeliveryAddress from './DeliveryAddress'
-import Header from '../header/Header'
+// import Header from '../header/Header'
 import sweetalert from 'sweetalert'
 
 import { Tabs, Tab } from 'react-bootstrap';
@@ -27,7 +27,7 @@ function MainCart(props) {
 
     return (
         <>
-        <Header/>
+        {/* <Header/> */}
         <div style={{minHeight:"600px"}}>
             <hr/>
             <Tabs className="nav nav-tabs justify-content-between" id="controlled-tab-example" activeKey={key} onSelect={k => setKey(k)}>

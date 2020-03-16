@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Header from '../header/Header'
+// import Header from '../header/Header'
 import UserHome from './UserHome'
 import * as api from '../../api'
 import axios from 'axios'
@@ -17,12 +17,8 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const userToken = localStorage.getItem('userToken')
 
-// const emailRegex = RegExp(
-//     // /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-]{2,5})+.([A-Za-z]{2,4})$/  
-//     // /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
-//     /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
-//   );
 const textOnly = RegExp(/^[a-zA-Z]*$/);
+const passRegex = RegExp(/^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,12})$/)
   
 const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
@@ -73,7 +69,9 @@ class ChangePass extends Component {
           case "newpass":
             formErrors.newpass = 
                 (value.length === 0 ? "*required" : "") ||
-                (value.length < 8 || value.length > 12 ? "Password should contain 8-12 characaters" : "") ||
+                (value.length < 8 ? "minimum 8 characaters required" : "") ||
+                (value.length >12 ? "maximum 12 characaters required" : "") ||
+                (passRegex.test(value)? "" : "should contain 1 UpperCase, 1 digit & 1 special symbol") ||
                 this.state.newpass===this.state.oldpass ? "New password should not be same as Old Password" : "";
                 if(this.state.confpass!==null) {
                     formErrors.confpass =
@@ -142,7 +140,7 @@ class ChangePass extends Component {
     render() {
         return (
             <>
-            <Header/>
+            {/* <Header/> */}
             <div className="container p-3">
                 <h3>My Account</h3>
                 <hr/>
@@ -238,7 +236,7 @@ class ChangePass extends Component {
                                     <br/><br/>
                                     {this.state.loader
                                         ? <CircularProgress/>
-                                        : <button className="btn btn-primary" type='submit' disabled={!formValid(this.state)}>Submit</button>
+                                        : <button className="btn btn-primary" onClick={this.handleSubmit} disabled={!formValid(this.state)}>Submit</button>
                                     }
                                 </form>
                             </div>

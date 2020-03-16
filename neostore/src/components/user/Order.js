@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Header from '../header/Header'
+// import Header from '../header/Header'
 import UserHome from './UserHome'
 import axios from 'axios'
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -82,7 +82,7 @@ class Order extends Component {
     render() {
         return (
             <>
-            <Header/>
+            {/* <Header/> */}
             <div className="container p-3">
             <h3>My Account</h3>
             <hr/>
