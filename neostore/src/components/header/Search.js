@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 import List from '@material-ui/core/List';
+import axios from 'axios'
+import sweetalert from 'sweetalert'
+import * as api from '../../api'
 
 class Search extends Component {
   constructor(props) {
@@ -8,8 +11,27 @@ class Search extends Component {
     this.state={
       text:'',
       productName:[],
+      products:[],
       opened: false,
     }
+  }
+
+  onFocusHandler = () => {
+    axios.get(`${api.baseurl}/getAllProducts`)
+        .then((res)=>{
+            this.setState({products:res.data.product_details})
+        })
+        .catch((err) => {
+            if (err.response) {
+                err.response.data.message 
+                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+                : sweetalert("Oops!", 'Something Went Wrong getting Products Data', "error",{button:false})
+            } else if (err.request) {
+                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
+            } else {
+                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+            }
+        })
   }
 
   onChangeHandler = (e) => {
@@ -32,7 +54,7 @@ class Search extends Component {
 
   render() {
   // let prodList = this.props.products.map(product=> <Link to={`/productDetail/${product.product_id}`} key={product.product_id}><ListItem button>{product.product_name}</ListItem></Link>)
-  const prodList = this.props.products
+  const prodList = this.state.products
         .filter(product => this.state.text === '' || product.product_name.toLowerCase().includes(this.state.text))
         .map(product => <Link key={product._id} onClick={this.handleSubmit} to={`/productDetail/${product.product_id}`}><List>{product.product_name}</List></Link>);
 
@@ -43,7 +65,7 @@ class Search extends Component {
             <span className="input-group-text"><i id="icon-black" className="fas fa-search"></i></span>
           </div>
           <input type="text" className="form-control" style={{border:'none'}} placeholder="Search..."
-            value={this.state.text} onChange={this.onChangeHandler} /><br/>
+            value={this.state.text} onFocus={this.onFocusHandler} onChange={this.onChangeHandler} /><br/>
             {this.state.opened && 
           <div className="input-group-append" onClick={this.crossClicked}>
             <span className="input-group-text"><i id="icon-black" className="fas fa-times-circle"></i></span>

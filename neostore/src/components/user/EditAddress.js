@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import Header from '../header/Header'
+import Header from '../header/Header'
 import AddressSidePanel from './AddressSidePanel'
 import * as api from '../../api'
 import {TextField} from '@material-ui/core/';
@@ -44,7 +44,7 @@ class EditAddress extends Component {
                 pincode:'',
                 city:'',
                 _state:'',
-                country:''
+                country:'',
             },
             open:false,
             loader:false,
@@ -133,7 +133,8 @@ class EditAddress extends Component {
             )
             .then(res => {
                 sweetalert("Address Updated",`${res.data.message}`,"success",{button:false,timer:2500})
-                this.props.history.push("/address")
+                this.props.history.goBack()
+                // this.props.history.push("/address")
                 
             })
             .catch(err => {
@@ -153,13 +154,13 @@ class EditAddress extends Component {
     }
 
     addressUpdateCancel = () => {
-            this.props.history.push("/address")
+            this.props.history.goBack()
     }
 
     render() {
         return (
             <>
-            {/* <Header/> */}
+            <Header/>
             <div className="container p-5">
                 <h3>My Account</h3><hr/><br/>
                 <div className="row">

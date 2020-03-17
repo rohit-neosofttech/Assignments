@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import {connect} from 'react-redux'
 import {removeCart} from '../redux'
 
-import SnackAlert from '../SnackAlert'
+import SnackAlert from '../modules/SnackAlert'
 import sweetalert from 'sweetalert'
 
 import Radio from '@material-ui/core/Radio';
@@ -30,36 +30,41 @@ class DeliveryAddress extends PureComponent {
             open:false,
             message:'',
             type:'',
-            tab:false
+            tab:false,
+            orderStatus:false
         }
     }
     
     componentDidMount() {
-        if(localStorage.getItem('userToken')){
-            this.setState({loader:true})
-            axios.get(`${api.baseurl}/getCustAddress`, {
-                headers: {
+        this.setState({loader:true})
+        if(localStorage.getItem("userToken")) {
+            let userToken = localStorage.getItem("userToken")
+            axios.get(`${api.baseurl}/getCustAddress`,{
+                headers:{
                     Authorization: 'Bearer ' + userToken
                 }
             })
             .then((res)=>{
                 const addr = res.data.customer_address
                 this.setState({
-                    address:addr, 
+                    address:addr,
                     loader:false
                 })
             })
             .catch((err) => {
+                this.setState({loader:false})
                 // if (err.response) {
-                //     sweetalert("Error", err.response.data.message?`${err.response.data.message}` : "Error has occured", "error", {button:false});
+                //     sweetalert(err.response.data.message?`${err.response.data.message}` : "Error has occured", {button:false});
                 // } else if (err.request) {
-                //     sweetalert("Error", `${err.request}`, "error");
+                //     sweetalert('', `${err.request}`, "error");
                 // } else {
-                //     sweetalert("Error", `${err.message}`, "error");
+                //     sweetalert('', `${err.message}`, "error");
                 // }
             })
         }
-
+        else {
+          localStorage.removeItem('custDetail')
+        }
         if(localStorage.getItem("cart")) { 
             this.setState({empty:false}) 
         }else { this.setState({empty:true})}
@@ -120,7 +125,7 @@ class DeliveryAddress extends PureComponent {
             let cart = JSON.parse(localStorage.getItem("cart"))
             cart=[...cart,{'flag': "checkout"}]
             
-            this.setState({tab:true}) 
+            this.setState({tab:true,orderStatus:true}) 
             axios.post(`${api.baseurl}/addProductToCartCheckout`,
                 cart
             , {
@@ -129,11 +134,11 @@ class DeliveryAddress extends PureComponent {
                 }
             })
             .then((res)=>{
-                this.setState({tab:false}) 
                 localStorage.removeItem('cart')
                 localStorage.removeItem('tempCart')
                 this.props.removeCart()
-                history.push('/orderPlaced')
+                history.push('/orderPlaced',this.state.orderStatus)
+                this.setState({tab:false,orderStatus:false}) 
             })
             .catch((err) => {
                 this.setState({tab:false}) 

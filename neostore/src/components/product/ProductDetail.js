@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-// import Header from '../header/Header'
+import Header from '../header/Header'
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating'
 import { Button, Modal } from 'react-bootstrap';
@@ -8,7 +8,7 @@ import {addToCartCount} from '../redux'
 import {connect} from 'react-redux'
 
 import Loading from 'react-fullscreen-loading';
-import SnackAlert from '../SnackAlert'
+import SnackAlert from '../modules/SnackAlert'
 import sweetalert from 'sweetalert'
 import ImageGallery from 'react-image-gallery';
 
@@ -149,6 +149,8 @@ class ProductDetail extends PureComponent {
     handleShow = () => {
         if(!localStorage.getItem('userToken')) {
             sweetalert('',"Login Required",'warning',{button:false,timer:2000})
+            localStorage.removeItem('custDetail')
+
             // .then((value) => {
             //     switch (value) {
             //       default:
@@ -230,15 +232,30 @@ class ProductDetail extends PureComponent {
         const product_producer = product.product_producer
 
         const shareUrl = `http://localhost:3000${this.props.location.pathname}`
-          
+        
+        // const images = [
+        //     {
+        //       original: 'https://picsum.photos/id/1018/1000/600/',
+        //       thumbnail: 'https://picsum.photos/id/1018/250/150/',
+        //     },
+        //     {
+        //       original: 'https://picsum.photos/id/1015/1000/600/',
+        //       thumbnail: 'https://picsum.photos/id/1015/250/150/',
+        //     },
+        //     {
+        //       original: 'https://picsum.photos/id/1019/1000/600/',
+        //       thumbnail: 'https://picsum.photos/id/1019/250/150/',
+        //     },
+        //   ];
         // const fullImage = this.state.fullImage
         return (
             <>
-            {/* <Header/> */}
+            <Header/>
             {(this.state.loading)
             ?<div className="div-default"><Loading loading loaderColor="#3498db" /></div>
             :
             <div className="container" style={{paddingTop:"30px"}}>
+                            {/* <ImageGallery items={images}/> */}
                 <div className="row">
                     <div className="col-md-6">
                             {/* <ImageGallery items={images} originalClass="fullImage" /> */}

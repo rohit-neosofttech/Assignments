@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
-// import Header from './header/Header'
+import Header from '../header/Header'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import * as api from '../api'
+import * as api from '../../api'
 import { TextField } from '@material-ui/core/';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import sweetalert from 'sweetalert'
 
-import { userLogin } from './redux'
-import { cartCount } from './redux'
+import { userLogin } from '../redux'
+import { cartCount } from '../redux'
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
+
+import FacebookLogin from 'react-facebook-login';
+const CryptoJS = require("crypto-js");
 
 const emailRegex = RegExp(
     // /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-])+.([A-Za-z]{2,4})$/
@@ -63,17 +66,24 @@ class Login extends Component {
                 })
                 .then((res) => {
                     this.getPreviousCart(res.data.token)
+
+                    // var CryptoJS = require("crypto-js");
+                    // Encrypt
+                    var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(res.data.customer_details), 'secret key 123').toString();
+                    localStorage.setItem('EncrytDetail', ciphertext)
+
                     localStorage.setItem('userToken', `${res.data.token}`)
-                    localStorage.setItem('CustDetail', JSON.stringify(res.data.customer_details))
+                    // localStorage.setItem('CustDetail', JSON.stringify(res.data.customer_details))
                     this.setState({ loader: false })
-                    debugger
+                    // debugger
                     this.props.userLogin()
                     this.props.cartCount()
                     
                     sweetalert(res.data.message, { icon: "success", button: false, timer: 2000, })
                         .then((value) => {
                             switch (value) {
-                                default: this.props.history.push(`/`);
+                                default: 
+                                this.props.history.goBack();
                                 // window.location.reload(false)
                             }
                         });
@@ -173,13 +183,30 @@ class Login extends Component {
         this.setState({ open: false })
     };
 
+    // responseFacebook = (response) => {
+    //     console.log(response);
+    // }
+
+    // componentClicked = () => {
+    //     console.log("componentClicked");
+    // }
+
     render() {
         return (
             <>
-            {/* <Header/> */}
+            <Header/>
               <div className="container p-5">
                   <div className="row">
                       <div className="col-md-6">
+                        {/* <FacebookLogin
+                            appId="1088597931155576"
+                            autoLoad={true}
+                            fields="name,email,picture"
+                            onClick={this.componentClicked}
+                            callback={this.responseFacebook} 
+                            cssClass="social-btn-facebook"
+                            icon="fab fa-facebook-f fa-3x"
+                            /> */}
                           <button className="social-btn" style={{backgroundColor: '#3b5998'}}>
                             <i className="fab fa-facebook-f fa-3x"></i>Login with Facebook
                           </button>
@@ -276,10 +303,16 @@ class Login extends Component {
 //     },dispatch)
 //   }
 
-  const mapDispatchToProps = dispatch => {
-    return {
-        userLogin: () => dispatch(userLogin()),
-        cartCount: () => dispatch(cartCount())
-  }}
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators({
+        userLogin,
+        cartCount
+    },dispatch)
+  }
+//   const mapDispatchToProps = dispatch => {
+//     return {
+//         userLogin: () => dispatch(userLogin()),
+//         cartCount: () => dispatch(cartCount())
+//   }}
 
   export default connect(null, mapDispatchToProps)(Login)

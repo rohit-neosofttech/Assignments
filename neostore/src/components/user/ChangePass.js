@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import Header from '../header/Header'
+import Header from '../header/Header'
 import UserHome from './UserHome'
 import * as api from '../../api'
 import axios from 'axios'
@@ -71,8 +71,8 @@ class ChangePass extends Component {
                 (value.length === 0 ? "*required" : "") ||
                 (value.length < 8 ? "minimum 8 characaters required" : "") ||
                 (value.length >12 ? "maximum 12 characaters required" : "") ||
-                (passRegex.test(value)? "" : "should contain 1 UpperCase, 1 digit & 1 special symbol") ||
-                this.state.newpass===this.state.oldpass ? "New password should not be same as Old Password" : "";
+                (passRegex.test(value)? "" : "should contain 1 UpperCase, 1 digit & 1 special symbol")
+                
                 if(this.state.confpass!==null) {
                     formErrors.confpass =
                       this.state.newpass!==this.state.confpass ? "the password does not match" : "";
@@ -136,11 +136,20 @@ class ChangePass extends Component {
     handleShowConfPass = () => {
         this.setState({confpassIcon:!this.state.confpassIcon})
     }
+
+    handleOldpass = () => {
+        if(this.state.newpass===this.state.oldpass) {
+            this.setState({formErrors:{newpass:"New password should not be same as Old Password"}})
+        }
+        else {
+            this.setState({formErrors:{newpass:""}})
+        }
+    }
     
     render() {
         return (
             <>
-            {/* <Header/> */}
+            <Header/>
             <div className="container p-3">
                 <h3>My Account</h3>
                 <hr/>
@@ -181,7 +190,8 @@ class ChangePass extends Component {
                                     </FormControl>
                                     <br/><br/>
 
-                                    <FormControl variant="outlined" fullWidth error={this.state.formErrors.newpass.length > 0}>
+                                    <FormControl variant="outlined" fullWidth 
+                                    error={this.state.formErrors.newpass.length > 0 }>
                                     <InputLabel htmlFor="outlined-adornment-password">New Password</InputLabel>
                                     <OutlinedInput
                                         name="newpass"
@@ -189,6 +199,7 @@ class ChangePass extends Component {
                                         value={this.state.newpass ? this.state.newpass : ''}
                                         onChange={this.handleChange}
                                         onBlur={this.handleChange}
+                                        // onKeyDown={this.handleOldpass}
                                         endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton

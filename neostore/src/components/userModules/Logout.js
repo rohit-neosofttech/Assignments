@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import {removeCart} from '../components/redux'
+import {removeCart} from '../redux'
 import {connect} from 'react-redux'
 import axios from 'axios'
-import * as api from '../api'
+import * as api from '../../api'
 
-import { userLogout } from './redux'
+import { userLogout } from '../redux'
 import { bindActionCreators } from "redux";
 
 
-const userToken = localStorage.getItem("userToken")
+// const userToken = localStorage.getItem("userToken")
 
 class Logout extends Component {
     componentDidMount() {
@@ -18,6 +18,7 @@ class Logout extends Component {
             cart = JSON.parse(localStorage.getItem("cart"))
             cart=[...cart,{'flag': "logout"}]
      
+            let userToken = localStorage.getItem("userToken")
             axios.post(`${api.baseurl}/addProductToCartCheckout`,
                 cart
             , {
@@ -38,7 +39,7 @@ class Logout extends Component {
             // console.log("Else")
             let cart=[]
             cart=[{'flag': "logout"}]
-     
+            let userToken = localStorage.getItem("userToken")
             axios.post(`${api.baseurl}/addProductToCartCheckout`,
                 cart
             , {
@@ -58,6 +59,7 @@ class Logout extends Component {
         localStorage.removeItem('cart')
         localStorage.removeItem('tempCart')
         localStorage.removeItem('CustDetail')
+        localStorage.removeItem('EncrytDetail')
         localStorage.removeItem('userToken')
         this.props.userLogout()
         this.props.removeCart()

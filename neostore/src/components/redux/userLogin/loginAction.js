@@ -2,7 +2,7 @@ import { USER_LOGIN } from './loginType'
 import { USER_LOGOUT } from './loginType'
 
 export const userLogin = () => {
-    debugger
+    // debugger
     return {
         type:USER_LOGIN
     }

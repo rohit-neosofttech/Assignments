@@ -1,11 +1,13 @@
 
 import React, { PureComponent } from 'react'
-// import Header from '../header/Header'
+import Header from '../header/Header'
 import UserHome from './UserHome'
 import * as api from '../../api'
 import axios from 'axios'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import sweetalert from 'sweetalert'
+
+const CryptoJS = require("crypto-js");
 
 const userToken = localStorage.getItem('userToken')
 
@@ -26,37 +28,61 @@ export class Profile extends PureComponent {
     
     componentDidMount() {
         this.setState({loader:true})
-        axios.get(`${api.baseurl}/getCustProfile`, {
-            headers: {
-              Authorization: 'Bearer ' + userToken
-            }}
-        )
-        .then(res => {
-            const profile = res.data.customer_proile
-            
+        if(localStorage.getItem('userToken')) {
+            // let userToken = JSON.parse(localStorage.getItem('userToken'))
+            const cust = JSON.parse(localStorage.getItem('CustDetail'))
+            const decDeta = localStorage.getItem('EncrytDetail')
+
+            var bytes  = CryptoJS.AES.decrypt(decDeta, 'secret key 123');
+            var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
             this.setState({
-                profile_img : profile.profile_img,
-                firstName : profile.first_name,
-                lastName : profile.last_name,
-                email : profile.email,
-                dob : profile.dob,
-                mobile : profile.phone_no,
-                gender : profile.gender,
-                loader:false
+                // profile_img : cust.profile_img,
+                    // firstName : cust.first_name,
+                    // lastName : cust.last_name,
+                    // email : cust.email,
+                    // dob : cust.dob,
+                    // mobile : cust.phone_no,
+                    // gender : cust.gender,
+                    firstName : decryptedData.first_name,
+                    lastName : decryptedData.last_name,
+                    email : decryptedData.email,
+                    dob : decryptedData.dob,
+                    mobile : decryptedData.phone_no,
+                    gender : decryptedData.gender,
+                    loader:false
             })
-        })
-        .catch(err => {
-            this.setState({loader:false})
-            if (err.response) {
-                err.response.data.message 
-                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
-                : sweetalert("Oops!", 'Something Went Wrong getting Profile', "error",{button:false})
-            } else if (err.request) {
-                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
-            } else {
-                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
-            }
-        });
+            // axios.get(`${api.baseurl}/getCustProfile`, {
+            //     headers: {
+            //     Authorization: 'Bearer ' + userToken
+            //     }}
+            // )
+            // .then(res => {
+            //     const profile = res.data.customer_proile
+                
+            //     this.setState({
+                    // profile_img : profile.profile_img,
+            //         firstName : profile.first_name,
+            //         lastName : profile.last_name,
+            //         email : profile.email,
+            //         dob : profile.dob,
+            //         mobile : profile.phone_no,
+            //         gender : profile.gender,
+            //         loader:false
+            //     })
+            // })
+            // .catch(err => {
+            //     this.setState({loader:false})
+            //     if (err.response) {
+            //         err.response.data.message 
+            //         ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+            //         : sweetalert("Oops!", 'Something Went Wrong getting Profile', "error",{button:false})
+            //     } else if (err.request) {
+            //         sweetalert("Oops!", `${err.request}`, "error",{button:false})
+            //     } else {
+            //         sweetalert("Oops!", `${err.message}`, "error",{button:false})
+            //     }
+            // });
+        }
     }
 
     handleClick = (e) => {
@@ -74,7 +100,7 @@ export class Profile extends PureComponent {
         }
         return (
             <>
-            {/* <Header/> */}
+            <Header/>
             <div className="container p-3">
                 <h3>My Account</h3>
                 <hr/>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-// import Header from './header/Header'
-import * as api from '../api'
+import Header from '../header/Header'
+import * as api from '../../api'
 import axios from 'axios'
 import sweetalert from 'sweetalert'
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -109,7 +109,6 @@ class RecoverPass extends Component {
     handleSubmit = e => {
         e.preventDefault();
         if (formValid(this.state)) {
-            // console.log(this.state.token)
             this.setState({loader:true})
             axios.post(`${api.baseurl}/recoverPassword`, {
                 otpCode : this.state.code,
@@ -143,7 +142,7 @@ class RecoverPass extends Component {
     render() {
         return (
             <>
-              {/* <Header/>   */}
+              <Header/>  
               <div className="container p-5">
                 <div className="card" style={{width:"60%",margin:"auto",backgroundColor:"#eeeeee"}}>
                     <div className="card-body">

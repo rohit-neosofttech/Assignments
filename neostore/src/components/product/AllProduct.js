@@ -17,7 +17,7 @@ class AllProduct extends Component {
             products:[],
             // loading:true,
             loader:false,
-            currentPage:1,
+            // currentPage:1,
             postsPerPage:8,
             categoryName:'',
             // categoryId:'',
@@ -59,7 +59,7 @@ class AllProduct extends Component {
                     products:res.data.product_details,
                     categoryName:res.data.product_details[0].category_id.category_name,
                     prodLen:res.data.total_count,
-                    currentPage:1,
+                    activePage:1,
                     loader:false
                 })
             })
@@ -79,7 +79,7 @@ class AllProduct extends Component {
                    products:res.data.product_details,
                    categoryName:res.data.product_details[0].category_id.category_name,
                    prodLen:res.data.total_count,
-                   currentPage:1,
+                   activePage:1,
                    loader:false
                })
            })
@@ -101,7 +101,7 @@ class AllProduct extends Component {
                 products:res.data.product_details,
                 categoryName:"Highest Rated Product",
                 prodLen:res.data.total_count,
-                currentPage:1,
+                activePage:1,
                 loader:false
             })
         })
@@ -115,13 +115,13 @@ class AllProduct extends Component {
 
     sortByAscending = () => {
         this.setState({loader:true,error:false})
-        axios.get(`${api.baseurl}/getAllProductsInDescending`)
+        axios.get(`${api.baseurl}/getAllProductsInAscending`)
         .then((res)=>{
             this.setState({
                 products:res.data.product_details,
-                categoryName:"Products In Descending by Cost",
+                categoryName:"Products In Ascending by Cost",
                 prodLen:res.data.total_count,
-                currentPage:1,
+                activePage:1,
                 loader:false
             })
         })
@@ -135,13 +135,13 @@ class AllProduct extends Component {
 
     sortByDescending = () => {
         this.setState({loader:true,error:false})
-        axios.get(`${api.baseurl}/getAllProductsInAscending`)
+        axios.get(`${api.baseurl}/getAllProductsInDescending`)
         .then((res)=>{
             this.setState({
                 products:res.data.product_details,
-                categoryName:"Products In Ascending by Cost",
+                categoryName:"Products In Descending by Cost",
                 prodLen:res.data.total_count,
-                currentPage:1,
+                activePage:1,
                 loader:false
             })
         })

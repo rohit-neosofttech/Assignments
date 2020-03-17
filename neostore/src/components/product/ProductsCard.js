@@ -5,7 +5,7 @@ import * as api from '../../api'
 import {addToCartCount} from '../redux'
 import {connect} from 'react-redux'
 
-import SnackAlert from '../SnackAlert'
+import SnackAlert from '../modules/SnackAlert'
 // import Loading from 'react-fullscreen-loading';
 
 function ProductsCard (props) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-// import Header from './header/Header'
+import Header from '../header/Header'
 import axios from 'axios';
-import * as api from '../api'
+import * as api from '../../api'
 import {TextField} from '@material-ui/core/';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -94,7 +94,7 @@ class ForgotPass extends Component {
     render() {
         return (
             <>
-            {/* <Header/> */}
+            <Header/>
             <div className="container p-5" style={{minHeight:'400px'}}>
                 <div className="card" style={{width:"60%",margin:"auto",backgroundColor:"#eeeeee"}}>
                     <div className="card-body">

@@ -5,9 +5,9 @@ import store from './components/redux/store'
 // import { createStore } from 'redux';
 import {Switch,Route} from 'react-router-dom'
 
-import { ProtectedRoute } from './components/protected.route'
+import { ProtectedRoute } from './components/helper/protected.route'
 
-import Header from './components/header/Header'
+// import Header from './components/header/Header'
 import Footer from './components/footer/Footer'
 import Home from './components/home/Home'
 import ProductsPage from './components/product/ProductsPage'
@@ -22,23 +22,23 @@ import Profile from './components/user/Profile'
 import EditProfile from './components/user/EditProfile'
 import MainCart from './components/cart/MainCart';
 import OrderPlaced from './components/cart/OrderPlaced';
-import Subscribe from './components/Subscribe';
-import Login from './components/Login'
-import Logout from './components/Logout'
-import Register from './components/Register'
-import ForgotPass from './components/ForgotPass'
-import RecoverPass from './components/RecoverPass'
-import Contact from './components/Contact'
-import Location from './components/Location'
+import Subscribe from './components/modules/Subscribe';
+import Login from './components/userModules/Login'
+import Logout from './components/userModules/Logout'
+import Register from './components/userModules/Register'
+import ForgotPass from './components/userModules/ForgotPass'
+import RecoverPass from './components/userModules/RecoverPass'
+import Contact from './components/userModules/Contact'
+import Location from './components/modules/Location'
 
-import Default from './components/Default'
+import Default from './components/modules/Default'
 
 function App() {
   return (
     <Provider store={store}>
       { console.log(store.getState()) }
     <div className="App">
-      <Header/>
+      {/* <Header/> */}
       <Switch>
         <Route path='/' component={Home} exact/>
         <Route path='/productsPage' component={ProductsPage}/>

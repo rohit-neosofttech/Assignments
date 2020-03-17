@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import Header from '../header/Header'
+import Header from '../header/Header'
 import UserHome from './UserHome'
 import axios from 'axios'
 import * as api from '../../api'
@@ -12,9 +12,11 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import sweetalert from 'sweetalert';
-import SnackAlert from '../SnackAlert'
+import swal from 'sweetalert';
+import SnackAlert from '../modules/SnackAlert'
 
-const userToken = localStorage.getItem('userToken')
+// const userToken = localStorage.getItem('userToken')
+const CryptoJS = require("crypto-js");
 
 const emailRegex = RegExp(
     /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
@@ -254,6 +256,8 @@ class EditProfile extends Component {
             formData.append('phone_no', this.state.mobile)
             formData.append('gender', this.state.gender)
 
+            const userToken = localStorage.getItem('userToken')
+
             axios.put(`${api.baseurl}/profile`, formData, {
                     headers: {
                         Authorization: 'Bearer ' + userToken
@@ -263,8 +267,13 @@ class EditProfile extends Component {
                     this.setState({
                         loader: false
                     })
-                    localStorage.removeItem('CustDetail')
-                    localStorage.setItem('CustDetail', JSON.stringify(res.data.customer_details))
+                    localStorage.removeItem('EncrytDetail')
+                    //Encryption
+                    var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(res.data.customer_details), 'secret key 123').toString();
+                    localStorage.setItem('EncrytDetail', ciphertext)
+
+                    // localStorage.removeItem('CustDetail')
+                    // localStorage.setItem('CustDetail', JSON.stringify(res.data.customer_details))
                     sweetalert("Form Submitted!", `${res.data.message}`, "success", { buttons: false, timer: 2000 })
                     .then((value) => {
                         switch (value) {
@@ -289,36 +298,36 @@ class EditProfile extends Component {
     }
 
     profileUpdateCancel = () => {
-        // if (this.state.profile_img === '') {
-        //     sweetalert("The Changes made will be lost..", {
-        //             buttons: {
-        //                 cancel: 'Cancel',
-        //                 confirm: {
-        //                     text: "Confirm",
-        //                     value: "confirm",
-        //                 },
-        //             },
-        //         })
-        //         .then((value) => {
-        //             switch (value) {
+        if (this.state.firstName !== this.props.firstName) {
+            sweetalert("The Changes made will be lost..", {
+                    buttons: {
+                        cancel: 'Cancel',
+                        confirm: {
+                            text: "Confirm",
+                            value: "confirm",
+                        },
+                    },
+                })
+                .then((value) => {
+                    switch (value) {
 
-        //                 case "confirm":
-        //                     this.props.history.push("/profile")
-        //                     break;
-        //                 default:
+                        case "confirm":
+                            this.props.history.push("/profile")
+                            break;
+                        default:
 
-        //             }
-        //         });
-        // } 
-        // else {
+                    }
+                });
+        } 
+        else {
             this.props.history.push("/profile")
-        // }
+        }
     }
 
     render() {
         return (
             <>
-            {/* <Header/> */}
+            <Header/>
             <div className="container">
             <h1>My Account</h1>
             <hr/>

@@ -10,6 +10,8 @@ import {connect} from 'react-redux'
 import './Header.css'
 import Search from './Search'
 
+const CryptoJS = require("crypto-js");
+
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -33,44 +35,50 @@ class Header extends Component {
     
     componentDidMount() {
         this.setState({loggedIn:this.props.loggedIn})
-        // if(this.props.loggedIn)
-        // {
-        //     this.setState({
-        //         dropdown:<>
-        //                     <Link className="dropdown-item" to='/profile'>Profile</Link>
-        //                     <Link className="dropdown-item" to='/logout'>Log out</Link>
-        //                 </>
-        //  })
-        // }
-        // else {
-        //     this.setState({
-        //         dropdown:<>
-        //                     <Link className="dropdown-item" to='/login'>Login</Link>
-        //                     <Link className="dropdown-item" to='/register'>Register</Link>
-        //                 </>
-        //     })
-        // }
-        axios.get(`${api.baseurl}/getAllProducts`)
-        .then((res)=>{
-            this.setState({products:res.data.product_details})
-        })
-        .catch((err) => {
-            if (err.response) {
-                err.response.data.message 
-                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
-                : sweetalert("Oops!", 'Something Went Wrong getting Products Data', "error",{button:false})
-            } else if (err.request) {
-                  sweetalert("Oops!", `${err.request}`, "error",{button:false})
-            } else {
-                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
-            }
-        })
+        if(localStorage.getItem('userToken'))
+        {
+            this.setState({
+                dropdown:<>
+                            <Link className="dropdown-item" to='/profile'>Profile</Link>
+                            <Link className="dropdown-item" to='/logout'>Log out</Link>
+                        </>
+         })
+        }
+        else {
+            this.setState({
+                dropdown:<>
+                            <Link className="dropdown-item" to='/login'>Login</Link>
+                            <Link className="dropdown-item" to='/register'>Register</Link>
+                        </>
+            })
+        }
+        // axios.get(`${api.baseurl}/getAllProducts`)
+        // .then((res)=>{
+        //     this.setState({products:res.data.product_details})
+        // })
+        // .catch((err) => {
+        //     if (err.response) {
+        //         err.response.data.message 
+        //         ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
+        //         : sweetalert("Oops!", 'Something Went Wrong getting Products Data', "error",{button:false})
+        //     } else if (err.request) {
+        //           sweetalert("Oops!", `${err.request}`, "error",{button:false})
+        //     } else {
+        //           sweetalert("Oops!", `${err.message}`, "error",{button:false})
+        //     }
+        // })
        
 
-        if(this.props.loggedIn) {
+        if(localStorage.getItem('userToken')) {
             
             var cust = JSON.parse(localStorage.getItem("CustDetail"))
-            var img = cust.profile_img
+
+            const decDeta = localStorage.getItem('EncrytDetail')
+            var bytes  = CryptoJS.AES.decrypt(decDeta, 'secret key 123');
+            var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+            // var img = cust.profile_img
+            var img = decryptedData.profile_img
             if(img) {
                 this.setState({img:img})
             }
@@ -78,22 +86,25 @@ class Header extends Component {
                 this.setState({img:null})
             }
         }
+        else {
+            localStorage.removeItem('CustDetail')
+        }
     }
 
     componentDidUpdate(prevProps,prevState) {
         if(this.props !== prevProps) {
             if(this.props.loggedIn) {
-                var cust = JSON.parse(localStorage.getItem("CustDetail"))
-                var img = cust.profile_img
+                const decDeta = localStorage.getItem('EncrytDetail')
+                var bytes  = CryptoJS.AES.decrypt(decDeta, 'secret key 123');
+                var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+                var img = decryptedData.profile_img
                 if(img) {
                     this.setState({img:img})
                 }
                 else {
                     this.setState({img:null})
                 }
-            }
-            else {
-                this.setState({img:null})
             }
         }
     }
@@ -122,7 +133,7 @@ class Header extends Component {
                         </ul>
                         
                         <ul className="nav navbar-nav ml-auto">
-                            <Search products={this.state.products}></Search>
+                            <Search/>
                             <Link to="/maincart">
                                 <button className="btn-cart">
                                     <Badge className="badge" anchorOrigin={{vertical: 'top',horizontal: 'right',}} 
@@ -138,7 +149,9 @@ class Header extends Component {
                                     <img className="user-avatar" src={(this.state.img)? `${api.baseurl}/${this.state.img}` : User} alt='' />
                                     </button>
                                 <div className="dropdown-menu dropdown-menu-right">
-                                {this.props.loggedIn || localStorage.getItem('userToken')
+                                    {this.state.dropdown}
+                                {/* {this.props.loggedIn || localStorage.getItem('userToken') */}
+                                {/* {this.props.loggedIn
                                 ?
                                 <>
                                     <Link className="dropdown-item" to='/profile'>Profile</Link>
@@ -149,7 +162,7 @@ class Header extends Component {
                                     <Link className="dropdown-item" to='/login'>Login</Link>
                                     <Link className="dropdown-item" to='/register'>Register</Link>
                                 </>
-                                }
+                                } */}
                                 </div>
                             </div>
                         </ul>

@@ -10,7 +10,7 @@ import {connect} from 'react-redux'
 import { List , ListItem } from '@material-ui/core';
 import sweetalert from 'sweetalert'
 
-const userToken = localStorage.getItem("userToken")
+// const userToken = localStorage.getItem("userToken")
 // const cart = JSON.parse(localStorage.getItem("cart"))
 
 
@@ -97,6 +97,7 @@ class Cart extends Component {
                     this.setState({cartProduct:item})
                     localStorage.setItem("cart",JSON.stringify(item))
                     if(localStorage.getItem('userToken')) {
+                        let userToken = localStorage.getItem("userToken")
                         axios.delete(`${api.baseurl}/deleteCustomerCart/${product.product_id}`,{
                             headers: {
                             Authorization: 'Bearer ' + userToken
@@ -106,6 +107,7 @@ class Cart extends Component {
                     this.addTotal()
                 } else {
                     if(localStorage.getItem('userToken')) {
+                        let userToken = localStorage.getItem("userToken")
                         axios.delete(`${api.baseurl}/deleteCustomerCart/${product.product_id}`,{
                             headers: {
                             Authorization: 'Bearer ' + userToken

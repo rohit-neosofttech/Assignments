@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-// import Header from './header/Header'
+import Header from '../header/Header'
 import axios from 'axios';
-import * as api from '../api'
+import * as api from '../../api'
 
 import {TextField} from '@material-ui/core/';
 import Radio from '@material-ui/core/Radio';
@@ -193,7 +193,7 @@ const passRegex = RegExp(/^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,12})$/)
     render() {
         return (
           <>
-          {/* <Header/> */}
+          <Header/>
             <div className="container p-5" style={{width:'70%'}}>
                 <div className="row">
                     <div className="col col-md-6">

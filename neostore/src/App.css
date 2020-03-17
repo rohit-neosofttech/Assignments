@@ -195,6 +195,18 @@ i {
     border: none;
     border-radius:5px;
 }
+.social-btn-facebook {
+    width: 80%;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    color : white;
+    height: 70px;
+    border: none;
+    border-radius:5px;
+    background-color: #3b5998;
+}
 
 .left-border {
     border-left: 2px solid gray;

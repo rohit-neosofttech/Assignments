@@ -1,15 +1,14 @@
 import React, { PureComponent } from 'react'
 import UserHome from './UserHome'
-// import Header from '../header/Header'
+import Header from '../header/Header'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 import * as api from '../../api'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import SnackAlert from '../SnackAlert'
+import SnackAlert from '../modules/SnackAlert'
 import sweetalert from 'sweetalert'
 
 // const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
-const userToken = localStorage.getItem("userToken")
 
 class Address extends PureComponent {
     constructor(props) {
@@ -25,28 +24,31 @@ class Address extends PureComponent {
     
     componentDidMount() {
         this.setState({loader:true})
-        axios.get(`${api.baseurl}/getCustAddress`,{
-            headers:{
-                Authorization: 'Bearer ' + userToken
-            }
-        })
-        .then((res)=>{
-            const addr = res.data.customer_address
-            this.setState({
-                address:addr,
-                loader:false
+        if(localStorage.getItem("userToken")) {
+            let userToken = localStorage.getItem("userToken")
+            axios.get(`${api.baseurl}/getCustAddress`,{
+                headers:{
+                    Authorization: 'Bearer ' + userToken
+                }
             })
-        })
-        .catch((err) => {
-            this.setState({loader:false})
-            if (err.response) {
-                sweetalert(err.response.data.message?`${err.response.data.message}` : "Error has occured", {button:false});
-            } else if (err.request) {
-                sweetalert('', `${err.request}`, "error");
-            } else {
-                sweetalert('', `${err.message}`, "error");
-            }
-        })
+            .then((res)=>{
+                const addr = res.data.customer_address
+                this.setState({
+                    address:addr,
+                    loader:false
+                })
+            })
+            .catch((err) => {
+                this.setState({loader:false})
+                if (err.response) {
+                    sweetalert(err.response.data.message?`${err.response.data.message}` : "Error has occured", {button:false});
+                } else if (err.request) {
+                    sweetalert('', `${err.request}`, "error");
+                } else {
+                    sweetalert('', `${err.message}`, "error");
+                }
+            })
+        }
     }
 
     deleteAddress = (id) => {
@@ -63,6 +65,7 @@ class Address extends PureComponent {
             switch (value) {
         
             case "confirm":
+                let userToken = localStorage.getItem("userToken")
                 axios.delete(`${api.baseurl}/deladdress/${id}`, {
                     headers: {
                         Authorization: 'Bearer ' + userToken
@@ -104,7 +107,7 @@ class Address extends PureComponent {
     render() {
         return (
             <>
-            {/* <Header/> */}
+            <Header/>
             <div className="container p-3">
                 <h3>My Account</h3>
                 <hr/>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import Header from '../header/Header'
+import Header from '../header/Header'
 import AddressSidePanel from './AddressSidePanel'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {TextField} from '@material-ui/core/';
@@ -116,7 +116,7 @@ class AddAddress extends Component {
             .then((res) => {
                 this.setState({loader:false})
                 sweetalert('Address Updated',`${res.data.message}`,"success",{button:false,timer:2500})
-                this.props.history.push('/address')
+                this.props.history.goBack()
             })
             .catch((err) => {
                 this.setState({loader:false})
@@ -141,36 +141,36 @@ class AddAddress extends Component {
     };
 
     profileUpdateCancel = () => {
-        if(this.state.address || this.state.pincode || this.state.city || this.state.state || this.state.country ) {
-            sweetalert("Your changes will be lost..", {
-                buttons: {
-                    cancel: 'Cancel',
-                    confirm: {
-                        text: "Confirm",
-                        value: "confirm",
+        // if(this.state.address || this.state.pincode || this.state.city || this.state.state || this.state.country ) {
+        //     sweetalert("Your changes will be lost..", {
+        //         buttons: {
+        //             cancel: 'Cancel',
+        //             confirm: {
+        //                 text: "Confirm",
+        //                 value: "confirm",
 
-                    },
-                },
-                icon: "warning",
-            })
-            .then((value) => {
-                switch (value) {
-                    case "confirm":
-                        this.props.history.push("/address")
-                        break;
-                    default:
-                }
-            });
-        }
-        else {
-            this.props.history.push("/address")
-        }
+        //             },
+        //         },
+        //         icon: "warning",
+        //     })
+        //     .then((value) => {
+        //         switch (value) {
+        //             case "confirm":
+        //                 this.props.history.push("/address")
+        //                 break;
+        //             default:
+        //         }
+        //     });
+        // }
+        // else {
+            this.props.history.goBack()
+        // }
     }
 
     render() {
         return (
             <>
-            {/* <Header/> */}
+            <Header/>
             <div className="container p-5">
                 <h3>My Account</h3><hr/><br/>
                 <div className="row">

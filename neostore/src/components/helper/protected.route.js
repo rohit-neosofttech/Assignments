@@ -16,7 +16,7 @@ export const ProtectedRoute = ({
         else {
           sweetalert("Please Login First",{icon:"error",button:false,timer:3000})
           // props.history.push('/login')
-
+          localStorage.removeItem('custDetail')
           return (
                   <Redirect
                   to={{
@@ -28,23 +28,6 @@ export const ProtectedRoute = ({
                   />
             );
         }
-          // return (
-          //   <>
-          //       {/* {sweetalert("Please Login First",{icon:"error",button:{cancel: "Close"}})} */}
-          //       {/* <Redirect
-          //       to={{
-          //           pathname: "/login",
-          //           state: {
-          //           from: props.location
-          //           }
-          //       }}
-          //       /> */}
-          //       {alert("Please Login First")}
-          //       {props.history.push('/login')}
-          //       {/* {sweetalert("Please Login First",{icon:"error",button:{cancel: "Close"}})} */}
-
-          //   </>
-          // );
       }}
     />
   );

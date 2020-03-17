@@ -30,7 +30,7 @@ import { NavLink } from 'react-router-dom';
 import axios from 'axios'
 import * as api from '../../api'
 
-const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
+const CryptoJS = require("crypto-js");
 
 class UserHome extends Component {
     constructor(props) {
@@ -42,21 +42,48 @@ class UserHome extends Component {
     }
     
     componentDidMount() {
-        if(localStorage.getItem("CustDetail")) {
-            var cust = JSON.parse(localStorage.getItem("CustDetail"))
-            var img = cust.profile_img
-            if(img) {
-                this.setState({img:img})
+        // if(localStorage.getItem("CustDetail")) {
+        //     var cust = JSON.parse(localStorage.getItem("CustDetail"))
+        //     var img = cust.profile_img
+        //     if(img) {
+        //         this.setState({img:img})
+        //     }
+        //     else {
+        //         this.setState({img:null})
+        //     }
+
+        //     var name = `${custDetail.first_name} ${custDetail.last_name}`
+        //     this.setState({name:name})
+        // }
+        // else {
+        //     this.setState({img:null})
+        // }
+    }
+
+    componentDidUpdate(prevPros) {
+        if(prevPros!==this.props) {
+            if(localStorage.getItem("EncrytDetail")) {
+                // var cust = JSON.parse(localStorage.getItem("CustDetail"))
+
+                const decDeta = localStorage.getItem('EncrytDetail')
+                var bytes  = CryptoJS.AES.decrypt(decDeta, 'secret key 123');
+                var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+                var img = decryptedData.profile_img
+                // var img = cust.profile_img
+                if(img) {
+                    this.setState({img:img})
+                }
+                else {
+                    this.setState({img:null})
+                }
+    
+                var name = `${decryptedData.first_name} ${decryptedData.last_name}`
+                this.setState({name:name})
             }
             else {
                 this.setState({img:null})
             }
-
-            var name = `${custDetail.first_name} ${custDetail.last_name}`
-            this.setState({name:name})
-        }
-        else {
-            this.setState({img:null})
         }
     }
     
