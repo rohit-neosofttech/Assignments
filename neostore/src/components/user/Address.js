@@ -51,6 +51,11 @@ class Address extends PureComponent {
         }
     }
 
+    /**
+     * Delete the address of the customer after confirmation from the user and delete address API call is triggered
+     * 
+     * @param  id   contain the address id of the address which triggered the event.
+     */
     deleteAddress = (id) => {
         sweetalert("Are you sure you want to delete address?", {
             buttons: {
@@ -92,11 +97,17 @@ class Address extends PureComponent {
                 })
                 break;
             default:
-                
+                break
             }
         });
     }
 
+    /**
+     * Triggers the SnackBar Close event.
+     * 
+     * @param   event   contains the component that is been trigger from the event.
+     * @param   reason  contains the string that is triggered when user clickes outside the sweetAlert model.
+     */
     handleClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;

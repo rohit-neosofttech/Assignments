@@ -8,6 +8,11 @@ import { Tabs, Tab } from 'react-bootstrap';
 
 function MainCart(props) {
     const [key, setKey] = useState('cart');
+
+    /**
+     * check if that is user is logged-in.
+     * if not the page will be redirected to the login page
+     */
     const handleLogin = () => {
         if(!localStorage.getItem("userToken")) {
             sweetalert('',"Please Login First","warning",{button:false,timer:2000})
@@ -16,6 +21,12 @@ function MainCart(props) {
         }
     }
 
+    /**
+     * check if that is user is logged-in.
+     * if not the page will be redirected to the login page
+     * 
+     * @param   key   the key value of the tabs
+     */
     const handleSelect = (key) => {
         if(!localStorage.getItem("userToken")) {
             sweetalert('',"Please Login First","warning",{button:false,timer:2000})

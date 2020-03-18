@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import { withRouter } from 'react-router-dom';
 
 const emailRegex = RegExp(
-    // /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-])+.([A-Za-z]{2,4})$/
     // /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
     /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
   );
@@ -26,6 +25,11 @@ class Newsletter extends PureComponent {
         }
     }
 
+    /**
+     * Redirects to the subscribe page when the subscribe button is clicked.
+     * 
+     * @param   e   contains the target component that triggers the event
+     */
     onSubscribe = (e) => {
         e.preventDefault();
         const { history } = this.props;

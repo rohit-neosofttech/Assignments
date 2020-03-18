@@ -35,6 +35,10 @@ class DeliveryAddress extends PureComponent {
         }
     }
     
+    /**
+     * Loads the address of the user if the user is logged-in and set the states of the components.
+     * It also checks that if the componet is empty or not.
+     */
     componentDidMount() {
         this.setState({loader:true})
         if(localStorage.getItem("userToken")) {
@@ -66,10 +70,16 @@ class DeliveryAddress extends PureComponent {
           localStorage.removeItem('custDetail')
         }
         if(localStorage.getItem("cart")) { 
-            this.setState({empty:false}) 
-        }else { this.setState({empty:true})}
+            this.setState({ empty:false }) 
+        }
+        else { this.setState({ empty:true })}
     }
 
+    /**
+     * API call to updateAddress the set the address to default delivery address for the present order.
+     * 
+     * @param   addr   contains the address of that has been selected using the radio button
+     */
     handleChange = (addr) => {
         this.setState({
             checkAddr:addr.address_id, 
@@ -106,6 +116,12 @@ class DeliveryAddress extends PureComponent {
         })
     };
 
+    /**
+     * Triggers the SnackBar Close event.
+     * 
+     * @param   event   contains the component that is been trigger from the event.
+     * @param   reason  contains the string that is triggered when user clickes outside the sweetAlert model.
+     */
     handleClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
@@ -115,6 +131,10 @@ class DeliveryAddress extends PureComponent {
         })
     };
 
+    /**
+     * checks if the default delevery address is been selected or not.
+     * It also places the order if the address is been selected.
+     */
     placeOrder = () => {
         const  {history} = this.props.props
         if(this.state.checkAddr==='') {

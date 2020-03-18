@@ -36,8 +36,6 @@ import {
 
 // import ReactImageMagnify from 'react-image-magnify';
 
-const userToken = localStorage.getItem("userToken")
-
 class ProductDetail extends PureComponent {
     constructor(props) {
         super(props);
@@ -54,6 +52,9 @@ class ProductDetail extends PureComponent {
         this.imageChangeHandler = this.imageChangeHandler.bind(this);
     }
     
+    /**
+     * Matches the component based on the params received in the productDetail url calls the commonPoducts API
+     */
     componentDidMount() {
         const id =this.props.match.params.product_id
         axios.get(`${api.baseurl}/commonProducts?_id=${id}`)
@@ -98,10 +99,21 @@ class ProductDetail extends PureComponent {
         }
     }
  
+    /**
+     * Select the thumbnail image as the Fullimage when clicked.
+     * 
+     * @param e  target event when the thumbnail image is clicked 
+     */
     imageChangeHandler(e) {
         this.setState({fullImage:e.target.src})
-      }
+    }
 
+    /**
+     * Add the product's detail to the cart with additional properties like quantity and total.
+     * Also checks if the product if already present in the cart or not
+     * 
+     * @param product  contains the name of the product that is need to be added to the cart
+     */
     addToCart = (product) => {
         let oldCart = JSON.parse(localStorage.getItem('cart')) 
         if (oldCart===null) {
@@ -133,10 +145,19 @@ class ProductDetail extends PureComponent {
         }
     }
 
+    /**
+     * closes the Rating module
+     */
     handleClose = () => {
         this.setState({show:false})
     }
 
+    /**
+     * Triggers the SnackBar Close event.
+     * 
+     * @param   event   contains the component that is been trigger from the event.
+     * @param   reason  contains the string that is triggered when user clickes outside the sweetAlert model.
+     */
     handleSnackClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
@@ -146,29 +167,36 @@ class ProductDetail extends PureComponent {
         })
     };
 
+    /**
+     * Shows the Rating model when the user is logged-in 
+     */
     handleShow = () => {
         if(!localStorage.getItem('userToken')) {
             sweetalert('',"Login Required",'warning',{button:false,timer:2000})
             localStorage.removeItem('custDetail')
-
-            // .then((value) => {
-            //     switch (value) {
-            //       default:
-            //         this.props.history.push('/login')
-            //     }
-            // });
         } 
         else {
-            this.setState({show:true})
+            this.setState({ show:true })
         }
     }
 
+    /**
+     * Set the rating of the product in the state
+     * 
+     * @param   value   the rating that is been  provided by the user
+     */
     handleRating = (value) => {
-        this.setState({newRating:value})
+        this.setState({ newRating:value })
     }
 
+    /**
+     * Set the rating of the product when the user is logged-in and update the product rating using the updateProductRatingByCustomer API call.
+     * 
+     * @param   product_id   contains the product Id of the product whose rating is to be provided
+     */
     handleSubmitRating = (product_id) => {
         if(this.state.newRating!==0) {
+            let userToken = localStorage.getItem("userToken")
             axios.put(`${api.baseurl}/updateProductRatingByCustomer`,{
                 product_id: product_id,
                 product_rating: this.state.newRating
@@ -233,20 +261,6 @@ class ProductDetail extends PureComponent {
 
         const shareUrl = `http://localhost:3000${this.props.location.pathname}`
         
-        // const images = [
-        //     {
-        //       original: 'https://picsum.photos/id/1018/1000/600/',
-        //       thumbnail: 'https://picsum.photos/id/1018/250/150/',
-        //     },
-        //     {
-        //       original: 'https://picsum.photos/id/1015/1000/600/',
-        //       thumbnail: 'https://picsum.photos/id/1015/250/150/',
-        //     },
-        //     {
-        //       original: 'https://picsum.photos/id/1019/1000/600/',
-        //       thumbnail: 'https://picsum.photos/id/1019/250/150/',
-        //     },
-        //   ];
         // const fullImage = this.state.fullImage
         return (
             <>
@@ -255,42 +269,20 @@ class ProductDetail extends PureComponent {
             ?<div className="div-default"><Loading loading loaderColor="#3498db" /></div>
             :
             <div className="container" style={{paddingTop:"30px"}}>
-                            {/* <ImageGallery items={images}/> */}
                 <div className="row">
                     <div className="col-md-6">
-                            {/* <ImageGallery items={images} originalClass="fullImage" /> */}
                         <div className="row">
                             <div className="">
-                                {/* <SideBySideMagnifier 
+                                <SideBySideMagnifier 
                                     imageSrc={this.state.fullImage}
                                     zoomPosition="right"
-                                /> */}
-
-                                {/* <ReactImageMagnify style={{width:'100% !important',height:"300px !important"}} {...{
-                                    smallImage: {
-                                        alt: 'Wristwatch by Ted Baker London',
-                                        isFluidWidth: true,
-                                        isFluidHeight: true,
-                                        src: fullImage,
-                                        // srcSet: 'fullImage 355w',
-                                        width: '400px',
-                                        height: '300px'
-                                        
-                                    },
-                                    largeImage: {
-                                        src: fullImage,
-                                        width: 1200,
-                                        height: 1800  
-                                    }
-                                }} /> */}
-                                <img className="fullImage img-responsive" src={this.state.fullImage} alt="FullImage"/>
+                                />
+                                {/* <img className="fullImage img-responsive" src={this.state.fullImage} alt="FullImage"/> */}
                             </div>
                         </div>
-                        <div className="row">
+                        <div className="scrollmenu">
                             {product_subImage.map(subimage => (
-                                <div key={subimage} className='col'>
-                                    <img className="subImage" src={`${api.baseurl}/`+subimage} alt="SubImages" onClick={(subimage) =>this.imageChangeHandler(subimage)} />
-                                </div>
+                                    <img key={subimage} className="subImage" src={`${api.baseurl}/`+subimage} alt="SubImages" onClick={(subimage) =>this.imageChangeHandler(subimage)} />
                             ))}
                         </div>
                     </div>
@@ -307,11 +299,6 @@ class ProductDetail extends PureComponent {
                             <WhatsappShareButton url={shareUrl}><WhatsappIcon size={50} round={true}/></WhatsappShareButton>
                             <PinterestShareButton url={shareUrl} media={this.state.fullImage}><PinterestIcon size={50} round={true}/></PinterestShareButton>
                             <TwitterShareButton url={shareUrl}><TwitterIcon size={50} round={true}/></TwitterShareButton>
-                            {/* <button className="share-btn" style={{backgroundColor: "#4267B2"}}><i className="fab fa-facebook-f"></i></button>
-                            <button className="share-btn" style={{backgroundColor: "#DB4437"}}><i className="fab fa-google"></i></button>
-                            <button className="share-btn" style={{backgroundColor: "#25D366"}}><i className="fab fa-whatsapp"></i></button>
-                            <button className="share-btn" style={{backgroundColor: "#BD091D"}}><i className="fab fa-pinterest-p"></i></button>
-                            <button className="share-btn" style={{backgroundColor: "#00acee"}}><i className="fab fa-twitter"></i></button> */}
                         </div>
                         <div className="row">
                             <button className="btn-add" style={{backgroundColor: "#00acee"}} onClick={()=>this.addToCart(product)}>Add to Cart</button>

@@ -17,6 +17,9 @@ class PopularProduct extends PureComponent {
     }
     _isMounted = false;
 
+    /**
+     * API call for Top Rated Product and setting the state
+   */
     componentDidMount(){
         this._isMounted = true;
         this.setState({loader:true})

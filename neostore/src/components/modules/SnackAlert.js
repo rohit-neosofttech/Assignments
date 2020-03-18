@@ -13,15 +13,6 @@ export class SnackAlert extends Component {
         }
     }
 
-    // handleClose = (event, reason) => {
-    //     if (reason === 'clickaway') {
-    //       return;
-    //     }
-    //     this.setState({
-    //         open:false
-    //     })
-    // };
-
     render() {
         return (
             <Snackbar anchorOrigin={{ vertical:'top', horizontal:'center' }} open={this.state.open} 

@@ -166,6 +166,9 @@ class EditProfile extends Component {
 
     }
 
+    /**
+     * check if the file selected is of type image, it will return an error if the file type is not an image
+     */
     onImageChange = e => {
         if (e.target.files.length !== 0) {
             const acceptedImageTypes = ['image/jpeg', 'image/png'];
@@ -197,6 +200,12 @@ class EditProfile extends Component {
         this.setState({ gender: e.target.value })
     }
 
+    /**
+     * Triggers the SnackBar Close event.
+     * 
+     * @param   event   contains the component that is been trigger from the event.
+     * @param   reason  contains the string that is triggered when user clickes outside the sweetAlert model.
+     */
     handleSnackClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -204,6 +213,10 @@ class EditProfile extends Component {
         this.setState({ open: false })
     };
 
+    /**
+     * Confirmation when the user click on the Save button on the Edit profile page.
+     * It checks that if the user is submitting the form with or without an image.
+     */
     handleProfileUpdate = (e) => {
         e.preventDefault();
         if (this.state.profile_img === '') {
@@ -230,16 +243,11 @@ class EditProfile extends Component {
         else {
             this.profileUpdate()
         }
-        // if (this.state.profile_img==='') {
-        //     if(window.confirm("Are you sure you want to Update Profile without a Profile Image?")) {
-        //         this.profileUpdate()
-        //     }
-        // }
-        // else {
-        //     this.profileUpdate()
-        // }
     };
 
+    /**
+     * Check if the form is valid it API call is triggered.
+     */
     profileUpdate = () => {
         if (formValid(this.state)) {
             this.setState({ loader: true })
@@ -279,8 +287,6 @@ class EditProfile extends Component {
                         switch (value) {
                           default: 
                             this.props.history.push("/profile")
-                            // this.forceUpdate()
-                            // window.location.reload(false)
                         }
                     });
                 })
@@ -298,30 +304,7 @@ class EditProfile extends Component {
     }
 
     profileUpdateCancel = () => {
-        if (this.state.firstName !== this.props.firstName) {
-            sweetalert("The Changes made will be lost..", {
-                    buttons: {
-                        cancel: 'Cancel',
-                        confirm: {
-                            text: "Confirm",
-                            value: "confirm",
-                        },
-                    },
-                })
-                .then((value) => {
-                    switch (value) {
-
-                        case "confirm":
-                            this.props.history.push("/profile")
-                            break;
-                        default:
-
-                    }
-                });
-        } 
-        else {
-            this.props.history.push("/profile")
-        }
+        this.props.history.push("/profile")
     }
 
     render() {

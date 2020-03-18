@@ -11,8 +11,10 @@ class AboutCompany extends PureComponent {
         }
     }
     
+    /**
+     * API call to get the company detail
+     */
     componentDidMount(){
-        // console.log(api.baseurl)
         axios.get(`${api.baseurl}/getData`)
         .then((res)=>{
             this.setState({company_details:res.data.company_details[0]})   

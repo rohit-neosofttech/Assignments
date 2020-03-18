@@ -6,19 +6,18 @@ import {addToCartCount} from '../redux'
 import {connect} from 'react-redux'
 
 import SnackAlert from '../modules/SnackAlert'
-// import Loading from 'react-fullscreen-loading';
 
 function ProductsCard (props) {
-  // function ProductsCard ({ products, loading, error }) {
-
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [type, setType] = useState('');
 
-  // if (loading) {
-  //   return <Loading loading loaderColor="#3498db" />;
-  // }
-
+  /**
+   * Add the product's detail to the cart with additional properties like quantity and total.
+   * Also checks if the product if already present in the cart or not
+   * 
+   * @param product  contains the name of the product that is need to be added to the cart
+   */
   const addToCart = (product) => {
     let oldCart = JSON.parse(localStorage.getItem('cart')) 
     if (oldCart===null) {
@@ -45,6 +44,12 @@ function ProductsCard (props) {
     }
 }
 
+  /**
+   * Triggers the SnackBar Close event.
+   * 
+   * @param   event   contains the component that is been trigger from the event.
+   * @param   reason  contains the string that is triggered when user clickes outside the sweetAlert model.
+   */
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;

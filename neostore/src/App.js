@@ -22,14 +22,14 @@ import Profile from './components/user/Profile'
 import EditProfile from './components/user/EditProfile'
 import MainCart from './components/cart/MainCart';
 import OrderPlaced from './components/cart/OrderPlaced';
-import Subscribe from './components/modules/Subscribe';
+import Subscribe from './components/footer/Subscribe';
 import Login from './components/userModules/Login'
 import Logout from './components/userModules/Logout'
 import Register from './components/userModules/Register'
 import ForgotPass from './components/userModules/ForgotPass'
 import RecoverPass from './components/userModules/RecoverPass'
 import Contact from './components/userModules/Contact'
-import Location from './components/modules/Location'
+import Location from './components/footer/Location'
 
 import Default from './components/modules/Default'
 

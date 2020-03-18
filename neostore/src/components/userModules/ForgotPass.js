@@ -41,6 +41,9 @@ class ForgotPass extends Component {
         }
     }
     
+    /**
+     * Handle the Form submit, if the form is valid it API call is triggered.
+     */
     handleSubmit = e => {
         e.preventDefault();
         if (formValid(this.state)) {
@@ -85,12 +88,6 @@ class ForgotPass extends Component {
         this.setState({ formErrors, [name]: value });
       };
 
-    handleSnackClose = (event, reason) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-        this.setState({open:false})
-    };
     render() {
         return (
             <>

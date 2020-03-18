@@ -16,6 +16,12 @@ class ProductCard extends Component {
         }
     }
     
+    /**
+     * Add product to the cart with product detail additional properties such as quantity & total. 
+     * Increase the count in the redux store.
+     * 
+     * @param   product   contains the product detail when the add to cart is clicked
+     */
     addToCart = (product) => {
         let oldCart = JSON.parse(localStorage.getItem('cart')) 
         if (oldCart===null) {
@@ -46,6 +52,12 @@ class ProductCard extends Component {
         }
     }
 
+    /**
+     * Triggers the SnackBar Close event.
+     * 
+     * @param   event   contains the component that is been trigger from the event.
+     * @param   reason  contains the string that is triggered when user clickes outside the sweetAlert model.
+     */
     handleClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;

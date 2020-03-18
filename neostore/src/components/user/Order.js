@@ -49,6 +49,9 @@ class Order extends Component {
         }
     }
 
+    /**
+     * Handle Date Format
+     */
     handleDate = (createdAt) => {
         var d = new Date(createdAt);
         var date = d.getDate();

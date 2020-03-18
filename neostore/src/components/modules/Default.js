@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import Header from '../header/Header'
 
+/**
+ * Default page that is to be rendered if the url does not match the routes.
+ */
 class Default extends Component {
     render() {
         return (

@@ -91,6 +91,9 @@ class ChangePass extends Component {
         this.setState({ formErrors, [name]: value });
     };
 
+    /**
+     * Handle the Form submit, if the form is valid it API call is triggered.
+     */
     handleSubmit = e => {
         e.preventDefault();
         if (formValid(this.state)) {
@@ -137,14 +140,14 @@ class ChangePass extends Component {
         this.setState({confpassIcon:!this.state.confpassIcon})
     }
 
-    handleOldpass = () => {
-        if(this.state.newpass===this.state.oldpass) {
-            this.setState({formErrors:{newpass:"New password should not be same as Old Password"}})
-        }
-        else {
-            this.setState({formErrors:{newpass:""}})
-        }
-    }
+    // handleOldpass = () => {
+    //     if(this.state.newpass===this.state.oldpass) {
+    //         this.setState({formErrors:{newpass:"New password should not be same as Old Password"}})
+    //     }
+    //     else {
+    //         this.setState({formErrors:{newpass:""}})
+    //     }
+    // }
     
     render() {
         return (

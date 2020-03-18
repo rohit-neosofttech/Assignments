@@ -64,6 +64,9 @@ class ProductsPage extends Component {
         })
     }
 
+    /**
+     * Handle the Category Expansion panel on the Product Page
+     */
     handleClickCatergory = () => {
         if(this.state.Catopen) {
             this.setState({categoryId:'',Catopen:false});
@@ -74,6 +77,9 @@ class ProductsPage extends Component {
 
     };
     
+    /**
+     * Handle the Color Expansion panel on the Product Page
+     */
     handleClickColor = () => {
         if(this.state.Colopen) {
             this.setState({colorId:'',Colopen:false});
@@ -83,6 +89,9 @@ class ProductsPage extends Component {
         }
     };
 
+    /**
+     * Handle the All Product button click on the Product Page
+     */
     handleAllProduct = () => {
         this.setState({
             categoryId:'',
@@ -92,6 +101,7 @@ class ProductsPage extends Component {
             categoryName:''
         });
     }
+
     render() {
         return (
             <>

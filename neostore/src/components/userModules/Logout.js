@@ -7,10 +7,8 @@ import * as api from '../../api'
 import { userLogout } from '../redux'
 import { bindActionCreators } from "redux";
 
-
-// const userToken = localStorage.getItem("userToken")
-
 class Logout extends Component {
+    
     componentDidMount() {
         if(localStorage.getItem('cart')) {
             // console.log("IF")
@@ -26,17 +24,8 @@ class Logout extends Component {
                     Authorization: 'Bearer ' + userToken
                 }
             })
-            // .then((res)=>{
-            //     // console.log(res)
-            //     // console.log()
-            //     // this.props.history.push('/')
-            // })
-            // .catch((err) => {
-            //     // alert('Invalid Address API call')
-            // })
         }
         else {
-            // console.log("Else")
             let cart=[]
             cart=[{'flag': "logout"}]
             let userToken = localStorage.getItem("userToken")
@@ -47,13 +36,6 @@ class Logout extends Component {
                     Authorization: 'Bearer ' + userToken
                 }
             })
-            // .then((res)=>{
-            //     // console.log(res)
-            //     // this.props.history.push('/')
-            // })
-            // .catch((err) => {
-            //     // alert('Invalid Address API call')
-            // })
         }
 
         localStorage.removeItem('cart')
@@ -76,15 +58,6 @@ class Logout extends Component {
         )
     }
 }
-
-// export default Logout
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         removeCart: () => dispatch(removeCart())
-//     }
-//   }
-  
-// export default connect(null, mapDispatchToProps)(Logout)
 
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({

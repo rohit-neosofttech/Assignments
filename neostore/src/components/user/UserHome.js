@@ -41,25 +41,6 @@ class UserHome extends Component {
         }
     }
     
-    componentDidMount() {
-        // if(localStorage.getItem("CustDetail")) {
-        //     var cust = JSON.parse(localStorage.getItem("CustDetail"))
-        //     var img = cust.profile_img
-        //     if(img) {
-        //         this.setState({img:img})
-        //     }
-        //     else {
-        //         this.setState({img:null})
-        //     }
-
-        //     var name = `${custDetail.first_name} ${custDetail.last_name}`
-        //     this.setState({name:name})
-        // }
-        // else {
-        //     this.setState({img:null})
-        // }
-    }
-
     componentDidUpdate(prevPros) {
         if(prevPros!==this.props) {
             if(localStorage.getItem("EncrytDetail")) {

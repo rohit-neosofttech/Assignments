@@ -3,11 +3,9 @@ import Header from '../header/Header'
 import AddressSidePanel from './AddressSidePanel'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {TextField} from '@material-ui/core/';
-// import {TextField, TextareaAutosize} from '@material-ui/core/';
 
 import axios from 'axios'
 import * as api from '../../api'
-
 import sweetalert from 'sweetalert'
 
 const userToken = localStorage.getItem("userToken")
@@ -59,7 +57,6 @@ class AddAddress extends Component {
             case "address":
               formErrors.address =
                   (value.length === 0 ? "*required" : "") ||
-                //   (textOnly.test(value)? "" : "should contain only character") ||
                   (value.length < 3 ? "minimum 3 characaters required" : "")
               break;
             
@@ -97,6 +94,9 @@ class AddAddress extends Component {
           this.setState({ formErrors, [name]: value });
     };
     
+    /**
+     * Handle the Form submit, if the form is valid it API call is triggered.
+     */
     onSubmitAddress = (e) => {
         e.preventDefault();
         if (formValid(this.state)) {
@@ -133,6 +133,12 @@ class AddAddress extends Component {
         }
     }   
 
+    /**
+     * Triggers the SnackBar Close event.
+     * 
+     * @param   event   contains the component that is been trigger from the event.
+     * @param   reason  contains the string that is triggered when user clickes outside the sweetAlert model.
+     */
     handleSnackClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
@@ -141,30 +147,7 @@ class AddAddress extends Component {
     };
 
     profileUpdateCancel = () => {
-        // if(this.state.address || this.state.pincode || this.state.city || this.state.state || this.state.country ) {
-        //     sweetalert("Your changes will be lost..", {
-        //         buttons: {
-        //             cancel: 'Cancel',
-        //             confirm: {
-        //                 text: "Confirm",
-        //                 value: "confirm",
-
-        //             },
-        //         },
-        //         icon: "warning",
-        //     })
-        //     .then((value) => {
-        //         switch (value) {
-        //             case "confirm":
-        //                 this.props.history.push("/address")
-        //                 break;
-        //             default:
-        //         }
-        //     });
-        // }
-        // else {
             this.props.history.goBack()
-        // }
     }
 
     render() {

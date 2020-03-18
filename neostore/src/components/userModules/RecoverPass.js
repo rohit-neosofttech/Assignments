@@ -52,7 +52,6 @@ class RecoverPass extends Component {
     }
 
     componentDidMount() {
-        
         if(this.props.location.state) {
             this.setState({token:this.props.location.state})
         }
@@ -106,7 +105,12 @@ class RecoverPass extends Component {
         this.setState({confpassIcon:!this.state.confpassIcon})
     }
 
-    handleSubmit = e => {
+    /**
+     * Handle the Form submit, if the form is valid it API call is triggered.
+     * 
+     * @param   e     component that trigger the event
+     */
+    handleSubmit = (e) => {
         e.preventDefault();
         if (formValid(this.state)) {
             this.setState({loader:true})
@@ -152,22 +156,6 @@ class RecoverPass extends Component {
                             <label style={{color:"red"}}>Verification code has been sent to your registered mail ID</label>
                         </div>
                         <form className="container p-5" onSubmit={this.handleSubmit} noValidate autoComplete='off'>
-                            {/* <TextField fullWidth
-                                label="Verification code"
-                                type="number"
-                                name="code"
-                                onInput = {(e) =>{
-                                    e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,4)
-                                  }}
-                                  onKeyDown={ (evt) => (evt.key === 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-' || evt.key === '+') && evt.preventDefault() }  
-                                helperText={this.state.formErrors.code ? this.state.formErrors.code:''}
-                                value={this.state.code}
-                                onChange={this.handleChange}
-                                onBlur={this.handleChange}
-                                variant='outlined'
-                                error={this.state.formErrors.code.length > 0}
-                            /><br/><br/> */}
-
                             <FormControl variant="outlined" 
                                 fullWidth
                                 error={this.state.formErrors.code.length > 0}

@@ -52,22 +52,6 @@ class Header extends Component {
                         </>
             })
         }
-        // axios.get(`${api.baseurl}/getAllProducts`)
-        // .then((res)=>{
-        //     this.setState({products:res.data.product_details})
-        // })
-        // .catch((err) => {
-        //     if (err.response) {
-        //         err.response.data.message 
-        //         ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
-        //         : sweetalert("Oops!", 'Something Went Wrong getting Products Data', "error",{button:false})
-        //     } else if (err.request) {
-        //           sweetalert("Oops!", `${err.request}`, "error",{button:false})
-        //     } else {
-        //           sweetalert("Oops!", `${err.message}`, "error",{button:false})
-        //     }
-        // })
-       
 
         if(localStorage.getItem('userToken')) {
             

@@ -2,17 +2,11 @@ import React, { Component } from 'react'
 import NoProduct from './NoProduct'
 
 import axios from 'axios'
-
 import * as api from '../../api'
 import {removeToCartCount} from '../redux'
 import {connect} from 'react-redux'
-// import { Link } from 'react-router-dom';
 import { List , ListItem } from '@material-ui/core';
 import sweetalert from 'sweetalert'
-
-// const userToken = localStorage.getItem("userToken")
-// const cart = JSON.parse(localStorage.getItem("cart"))
-
 
 class Cart extends Component {
     constructor(props) {
@@ -43,6 +37,14 @@ class Cart extends Component {
         
     }
 
+    /**
+     * Increase the quantity of the product in the cart by 1.
+     * If the quantity reaches to 9 it append the product_id to disabledMaxButton array which will help 
+     * to disable the button.
+     * It also recalculate the total as the quantity increases.
+     * 
+     * @param product
+     */
     addQuantity = (product) => {
         let item = this.state.cartProduct.filter(item => item.product_id===product.product_id)
         if(item[0].quantity===9) {
@@ -61,6 +63,14 @@ class Cart extends Component {
         this.addTotal()
     }
 
+    /**
+     * decrease the quantity of the product in the cart by 1.
+     * If the quantity reaches to 1 it append the product_id to disabledMinButton array which will help 
+     * to disable the button.
+     * It also recalculate the total as the quantity decreases.
+     * 
+     * @param product
+     */
     removeQuantity = (product) => {
         let item = this.state.cartProduct.filter(item => item.product_id===product.product_id)
         if(item[0].quantity===1) {
@@ -79,6 +89,12 @@ class Cart extends Component {
         this.addTotal()
     }
 
+    /**
+     * remove the product from the cart list with a confirmation alert.
+     * It also recalculate the total as the product is removed.
+     * 
+     * @param product
+     */
     removeItem = (product) => {
         sweetalert("Are you sure you want to delete this item from cart", {
             buttons: {
@@ -125,25 +141,11 @@ class Cart extends Component {
                 break;
             }
         });
-
-        // if (window.confirm("Are you sure you want to delete this item from cart")) {
-        //     let item = this.state.cartProduct.filter(item => item.product_id!==product.product_id)
-        //     if(item.length!==0) {
-        //         this.setState(
-        //             {cartProduct:item}
-        //         )
-        //         localStorage.setItem("cart",JSON.stringify(item))
-        //         this.addTotal()
-        //     } else {
-        //         this.setState(
-        //             {cartProduct:item}
-        //         )
-        //         localStorage.removeItem('cart')
-        //     }
-        //     this.addTotal()
-        // }
     }
 
+    /**
+     * calculate the total of the product in the cart, its GST and order total cost.
+     */
     addTotal = () => {
         if(this.state.cartProduct!==null && localStorage.getItem("cart")) {
             let cartProduct = JSON.parse(localStorage.getItem("cart"))
@@ -160,8 +162,15 @@ class Cart extends Component {
         }
     }
 
+    /**
+     * Renders the component if the state of subTotal changes
+     * 
+     * @param   prevState   contains the previous state of the component (i.e before it is been updated)
+     * @return              returns a boolen value if the state is need to be updated 
+     */
     componentDidUpdate(prevState) {
         if(prevState.subTotal!==this.state.subTotal) {
+            return true
         }
     }
 
@@ -189,8 +198,6 @@ class Cart extends Component {
                                 {this.state.cartProduct.map(product =>
                                 <tr key={product.product_id}>
                                     <td style={{padding: '5px'}}>
-                                        {/* {cartItem=this.state.allProduct.filter(item => item.product_id===products.product_id)} */}
-                                        {/* {console.log(cartItem)} */}
                                         <div className="row">
                                             <img className="cart-img" src={`${api.baseurl}/${product.product_image}`} alt="" />
                                             <small>
@@ -242,7 +249,6 @@ class Cart extends Component {
     }
 }
 
-// export default Cart
 const mapDispatchToProps = dispatch => {
     return {
         removeToCartCount: () => dispatch(removeToCartCount())

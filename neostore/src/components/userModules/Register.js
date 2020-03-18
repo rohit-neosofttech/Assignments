@@ -63,7 +63,10 @@ const passRegex = RegExp(/^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,12})$/)
           };
       }
     
-    
+  
+  /**
+   * Handle the Form submit, if the form is valid it API call is triggered.
+   */ 
   handleSubmit = e => {
     e.preventDefault();
     if (formValid(this.state)) {
@@ -91,8 +94,6 @@ const passRegex = RegExp(/^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,12})$/)
           error.response.data.message 
           ? sweetalert("Oops!", `${error.response.data.message}`, "error",{button:false})
           : sweetalert("Oops!", 'Something Went Wrong', "error",{button:false})
-    
-          // alert(error.response.data.message)
         } else if (error.request) {
             sweetalert("Oops!", `${error.request}`, "error",{button:false})
         } else {
@@ -179,16 +180,8 @@ const passRegex = RegExp(/^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,12})$/)
   }
 
   onRadioChange = (e) => {
-    // console.log(e.target.value)
     this.setState({gender:e.target.value})
   }
-
-  handleSnackClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    this.setState({open:false})
-  };
 
     render() {
         return (
@@ -330,12 +323,7 @@ const passRegex = RegExp(/^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,12})$/)
                             label="Mobile Number"
                             type="text"
                             name="mobile"
-                            // onInput = {(e) =>{
-                            //   e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
-                            // }}
-                            // onKeyDown={ (evt) => (evt.key=== 'e' || evt.key === 'E' || evt.key === '.' || evt.key === '-') && evt.preventDefault() }
                             onKeyDown={ (evt) => !((evt.keyCode>=96 && evt.keyCode<=105) || (evt.keyCode>=47 && evt.keyCode<=57) ||(evt.keyCode>=37 && evt.keyCode<=40) || evt.key === '+' || evt.keyCode === 8 || evt.keyCode === 46) && evt.preventDefault() }
-                                                        
                             helperText={this.state.formErrors.mobile.length > 0 && this.state.formErrors.mobile}
                             value={this.state.mobile ? this.state.mobile : ''}
                             onChange={this.handleChange}

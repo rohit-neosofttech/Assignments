@@ -13,8 +13,10 @@ class Information extends PureComponent {
         }
     }
 
+    /**
+     * API call to get the Terms & Conditions and Gurantee & Return Policy on the footer
+     */
     componentDidMount() {
-        //Axios for terms & condition on the footer
         axios.get(`${api.baseurl}/getTermsAndConditions`)
         .then((res)=>{     
             this.setState({terms:res.data.termsAndConditions_details[0]})     
@@ -24,8 +26,6 @@ class Information extends PureComponent {
                 err.response.data.message 
                 ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
                 : sweetalert("Oops!", 'Something Went Wrong Getting Terms And Conditions', "error",{button:false})
-          
-                // alert(error.response.data.message)
             } else if (err.request) {
                   sweetalert("Oops!", `${err.request}`, "error",{button:false})
             } else {
@@ -43,8 +43,6 @@ class Information extends PureComponent {
                 err.response.data.message 
                 ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
                 : sweetalert("Oops!", 'Something Went Wrong getting Guarantee', "error",{button:false})
-          
-                // alert(error.response.data.message)
             } else if (err.request) {
                   sweetalert("Oops!", `${err.request}`, "error",{button:false})
             } else {

@@ -58,6 +58,9 @@ class Contact extends Component {
         }
     }
 
+    /**
+     * Handle the Form submit, if the form is valid it API call is triggered.
+     */
     handleSubmit = e => {
         e.preventDefault();
         if (formValid(this.state)) {
@@ -151,13 +154,6 @@ class Contact extends Component {
         const id = custDetail ? custDetail.customer_id : ''
         this.setState({customer_id:id,})
     }
-
-    handleSnackClose = (event, reason) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-        this.setState({open:false})
-    };
 
     render() {
         return (

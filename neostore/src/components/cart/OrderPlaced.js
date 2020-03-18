@@ -2,8 +2,6 @@ import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../header/Header'
 
-// const [status, setStatus] = useState('cart');
-
 function OrderPlaced(props) {
     return (
         <>

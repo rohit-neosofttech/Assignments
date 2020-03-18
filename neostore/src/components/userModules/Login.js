@@ -55,6 +55,9 @@ class Login extends Component {
         }
     }
 
+    /**
+     * Handle the Form submit, if the form is valid it API call is triggered.
+     */
     handleSubmit = e => {
         e.preventDefault();
         if (formValid(this.state)) {
@@ -67,7 +70,6 @@ class Login extends Component {
                 .then((res) => {
                     this.getPreviousCart(res.data.token)
 
-                    // var CryptoJS = require("crypto-js");
                     // Encrypt
                     var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(res.data.customer_details), 'secret key 123').toString();
                     localStorage.setItem('EncrytDetail', ciphertext)
@@ -83,7 +85,7 @@ class Login extends Component {
                         .then((value) => {
                             switch (value) {
                                 default: 
-                                this.props.history.goBack();
+                                this.props.history.push('/')
                                 // window.location.reload(false)
                             }
                         });
@@ -108,7 +110,6 @@ class Login extends Component {
                 }
             })
             .then((res) => {
-                // console.log('getCart',res)
                 let oldCart = JSON.parse(localStorage.getItem('cart'))
                 let newItem
                 let tempCart = []
@@ -175,13 +176,6 @@ class Login extends Component {
     handleShowPassword = () => {
         this.setState({ showPassword: !this.state.showPassword })
     }
-
-    handleSnackClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        this.setState({ open: false })
-    };
 
     // responseFacebook = (response) => {
     //     console.log(response);

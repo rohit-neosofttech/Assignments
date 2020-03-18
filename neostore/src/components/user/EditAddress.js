@@ -9,9 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios'
 
 const userToken = localStorage.getItem('userToken')
-
 const textOnly = RegExp(/^[a-zA-Z.,/ ]*$/);
-
   
 const formValid = ({ formErrors, ...rest }) => {
     let valid = true;
@@ -114,6 +112,9 @@ class EditAddress extends Component {
         this.setState({ formErrors, [name]: value });
     };
 
+    /**
+     * Handle the Form submit, if the form is valid it API call is triggered.
+     */
     onFormSubmit = (e) => {
         e.preventDefault()
         if (formValid(this.state)) {
@@ -134,7 +135,6 @@ class EditAddress extends Component {
             .then(res => {
                 sweetalert("Address Updated",`${res.data.message}`,"success",{button:false,timer:2500})
                 this.props.history.goBack()
-                // this.props.history.push("/address")
                 
             })
             .catch(err => {

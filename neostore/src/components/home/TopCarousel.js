@@ -16,6 +16,9 @@ class TopCarousel extends Component {
         }
     }
     
+    /**
+     * API call to get all Categories and set the images of the categories to the for the carousel slider
+     */
     componentDidMount(){
         this.setState({loader:true})
         axios.get(`${api.baseurl}/getAllCategories`)

@@ -1,57 +1,34 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import ProductsCard from './ProductsCard';
-// import Pagination from './Pagination';
 import * as api from '../../api'
 import ReactTooltip from 'react-tooltip'
 import Loading from 'react-fullscreen-loading';
-// import CircularProgress from '@material-ui/core/CircularProgress';
-
 import Pagination from "react-js-pagination";
-// require("bootstrap/less/bootstrap.less")
 
 class AllProduct extends Component {
     constructor(props) {
         super(props);
         this.state={
             products:[],
-            // loading:true,
             loader:false,
-            // currentPage:1,
             postsPerPage:8,
             categoryName:'',
-            // categoryId:'',
-            // colorId:'',
-            // sortBy:'',
-            // sortIn:'',
-            // pageNo:1,
-            // perPage:8,
             error:false,
             prodLen:'',
             activePage: 1
         }
     }
 
-    componentDidMount() {
-        // axios.get(`${api.baseurl}/commonProducts`)
-        // .then((res)=>{
-        //     this.setState({
-        //         products:res.data.product_details,
-        //         categoryName:"All Categories",
-        //         loading:false,
-        //         prodLen:res.data.product_details.length
-        //     })
-        // })
-        // .catch((err)=> {
-        //     alert("Invalid componentDidMount API call")
-        //     this.setState({error:!this.state.error})
-
-        // })
-    }
-
+    /**
+     * The component will re-render if the user select any combination of the categories & color.
+     * API call will be based on the props received from the ProductPage component  and set the state of the products array.
+     * 
+     * @param prevProps     defines the previous props of the component
+     * @param prevState     defines the previous state of the component
+     */
     componentDidUpdate(prevProps,prevState){
-        // console.log(`${api.baseurl}/commonProducts?category_id=${this.props.categoryId}&color_id=${this.props.colorId}&sortBy=${this.props.sortBy}&sortIn=${this.props.sortIn}&pageNo=${this.state.pageNo}&perPage=${this.state.perPage}`)
-        if (this.props !== prevProps || this.state.pageNo!== prevState.pageNo) {
+        if (this.props !== prevProps) {
             this.setState({loader:true,error:false})
              axios.get(`${api.baseurl}/commonProducts?category_id=${this.props.categoryId}&color_id=${this.props.colorId}&sortBy=${this.props.sortBy}&sortIn=${this.props.sortIn}`)
             .then((res)=>{
@@ -71,28 +48,11 @@ class AllProduct extends Component {
                   });
             })
         }
-        if (this.state.pageNo!== prevState.pageNo) {
-            this.setState({loader:true,error:false})
-            axios.get(`${api.baseurl}/commonProducts?category_id=${this.props.categoryId}&color_id=${this.props.colorId}&sortBy=${this.props.sortBy}&sortIn=${this.props.sortIn}`)
-           .then((res)=>{
-               this.setState({
-                   products:res.data.product_details,
-                   categoryName:res.data.product_details[0].category_id.category_name,
-                   prodLen:res.data.total_count,
-                   activePage:1,
-                   loader:false
-               })
-           })
-           .catch((err)=> {
-               this.setState({
-                    categoryName:'',
-                    error: true,
-                    products:[]
-                 });
-           })
-         }
     }
 
+    /**
+     * Axios API call to sort the product by rating and set the state of the products array.
+     */
     sortByRating = () => {
         this.setState({loader:true,error:false})
         axios.get(`${api.baseurl}/getAllProductsInHighestRating`)
@@ -113,6 +73,9 @@ class AllProduct extends Component {
         })
     }
 
+    /**
+     * Axios API call to sort the product in accending order by cost and set the state of the products array.
+     */
     sortByAscending = () => {
         this.setState({loader:true,error:false})
         axios.get(`${api.baseurl}/getAllProductsInAscending`)
@@ -133,6 +96,9 @@ class AllProduct extends Component {
         })
     }
 
+    /**
+     * Axios API call to sort the product in accending order by cost and set the state of the products array.
+     */
     sortByDescending = () => {
         this.setState({loader:true,error:false})
         axios.get(`${api.baseurl}/getAllProductsInDescending`)
@@ -153,8 +119,14 @@ class AllProduct extends Component {
         })
     }
 
+    /**
+     * handle the page change of the pagination and set the state of activePage to the pageNumber 
+     * which is been seleted.
+     * 
+     * @param pageNumber  contain the page number which the user select on the pagination  
+     */
     handlePageChange(pageNumber) {
-        console.log(`active page is ${pageNumber}`);
+        // console.log(`active page is ${pageNumber}`);
         this.setState({activePage: pageNumber});
     }
 
@@ -164,9 +136,6 @@ class AllProduct extends Component {
         const indexOfFirstPost = indexOfLastPost - this.state.postsPerPage;
         const currentPosts = this.state.products.slice(indexOfFirstPost, indexOfLastPost);
 
-        // const paginate = pageNumber => this.setState({currentPage:pageNumber});
-        // const paginate = pageNumber => this.setState({pageNo:pageNumber})
-
         return (
             <div className="col-md-9">
                 <div className="row">
@@ -174,7 +143,6 @@ class AllProduct extends Component {
                     {
                         (this.props.categoryId!=='') ? <h3>{this.state.categoryName}</h3>:<h3>All Categories</h3>
                     }
-                    {/* <h3>All Categories</h3> */}
                     </div>
                     <div className="col-md-4" style={{marginLeft:"auto"}}>
                         Sort By:
@@ -200,31 +168,14 @@ class AllProduct extends Component {
                         <div className="div-default">
                             <Loading loading loaderColor="#3498db" />
                         </div>
-                        // <div className='center' style={{margin:'auto',height:'400px',width:'100%'}}>
-                        //     <br/><br/><br/><br/>
-                        //     <CircularProgress />
-                        // </div>
                     }
                     </>
                 :
                     <div className='container'>
                         <>
                             <div className="row">
-                                {/* <ProductsCard products={this.state.products} loading={this.state.loading} error={this.state.error}/> */}
-                                {/* <ProductsCard products={this.state.products} /> */}
                                 <ProductsCard products={currentPosts} />
                             </div>
-
-                            {/* <Pagination
-                                postsPerPage={this.state.perPage}
-                                totalPosts={this.state.prodLen}
-                                paginate={paginate}
-                            /> */}
-                            {/* <Pagination
-                                postsPerPage={this.state.postsPerPage}
-                                totalPosts={this.state.products.length}
-                                paginate={paginate}
-                            /> */}
                             <br/><br/>
                             <Pagination
                                 activePage={this.state.activePage}

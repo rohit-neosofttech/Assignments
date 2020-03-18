@@ -51,37 +51,6 @@ export class Profile extends PureComponent {
                     gender : decryptedData.gender,
                     loader:false
             })
-            // axios.get(`${api.baseurl}/getCustProfile`, {
-            //     headers: {
-            //     Authorization: 'Bearer ' + userToken
-            //     }}
-            // )
-            // .then(res => {
-            //     const profile = res.data.customer_proile
-                
-            //     this.setState({
-                    // profile_img : profile.profile_img,
-            //         firstName : profile.first_name,
-            //         lastName : profile.last_name,
-            //         email : profile.email,
-            //         dob : profile.dob,
-            //         mobile : profile.phone_no,
-            //         gender : profile.gender,
-            //         loader:false
-            //     })
-            // })
-            // .catch(err => {
-            //     this.setState({loader:false})
-            //     if (err.response) {
-            //         err.response.data.message 
-            //         ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
-            //         : sweetalert("Oops!", 'Something Went Wrong getting Profile', "error",{button:false})
-            //     } else if (err.request) {
-            //         sweetalert("Oops!", `${err.request}`, "error",{button:false})
-            //     } else {
-            //         sweetalert("Oops!", `${err.message}`, "error",{button:false})
-            //     }
-            // });
         }
     }
 

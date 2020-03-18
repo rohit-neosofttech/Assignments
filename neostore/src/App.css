@@ -27,7 +27,6 @@ button {
     font-size: 12px;
 }
 
-
 .div-default {
     height:500px;
     width:100%;
@@ -387,11 +386,26 @@ nav a:hover {
 }
 
 .subImage {
-    text-align: left;
-    height:100px;
-    width:100%;
+    /* text-align: left; */
+    height:120px;
+    width:180px;
     object-fit: contain;
+    display: inline-block;
 }
+
+div.scrollmenu {
+    overflow: auto;
+    white-space: nowrap;
+  }
+  
+div.scrollmenu img {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+  }
+  
 
 .fullImage {
     width: 100%;
