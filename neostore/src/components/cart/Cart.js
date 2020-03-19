@@ -83,7 +83,7 @@ class Cart extends Component {
                 ()=>{return {cartProduct:this.state.cartProduct}}
             )
             var btn = this.state.disabledMaxButton.filter(bttn => bttn!==item[0].product_id)
-            btn ? this.setState({disabledMaxButton:btn}) : console.log(btn) 
+            btn && this.setState({disabledMaxButton:btn}) 
             localStorage.setItem("cart",JSON.stringify(this.state.cartProduct))
         }
         this.addTotal()

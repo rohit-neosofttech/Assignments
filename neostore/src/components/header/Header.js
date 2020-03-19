@@ -59,7 +59,6 @@ class Header extends Component {
             var bytes  = CryptoJS.AES.decrypt(decDeta, 'secret key 123');
             var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-            console.log(decryptedData)
             var img = decryptedData.customer_details.profile_img
             if(img) {
                 this.setState({img:img})
