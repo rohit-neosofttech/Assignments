@@ -8,7 +8,6 @@ import axios from 'axios'
 import * as api from '../../api'
 import sweetalert from 'sweetalert'
 
-const userToken = localStorage.getItem("userToken")
 const textOnly = RegExp(/^[a-zA-Z,.-/ ]*$/);
 
 const formValid = ({ formErrors, ...rest }) => {
@@ -21,7 +20,7 @@ const formValid = ({ formErrors, ...rest }) => {
   
     // validate the form was filled out
     Object.values(rest).forEach(val => {
-      val === null && (valid = false);
+      val === '' && (valid = false);
     });
   
     return valid;
@@ -31,11 +30,11 @@ class AddAddress extends Component {
     constructor() {
         super();
         this.state={
-            address:null,
-            pincode:null,
-            city:null, 
-            state:null,
-            country:null,
+            address:'',
+            pincode:'',
+            city:'', 
+            state:'',
+            country:'',
             formErrors: {
                 address:'',
                 pincode:'',
@@ -101,7 +100,7 @@ class AddAddress extends Component {
         e.preventDefault();
         if (formValid(this.state)) {
             this.setState({loader:true})
-
+            let userToken = localStorage.getItem("userToken")
             axios.post(`${api.baseurl}/address`,{
                 address:this.state.address,
                 pincode:this.state.pincode,
@@ -173,26 +172,6 @@ class AddAddress extends Component {
                                 variant='outlined'
                                 error={this.state.formErrors.address.length > 0}
                             /><br/><br/>
-                            {/* <div class="MuiFormControl-root MuiTextField-root" style={{width: "50%"}}>
-                                <div class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl">
-                                    <TextareaAutosize  className="MuiInputBase-input MuiOutlinedInput-input"
-                                        type="text"
-                                        name="address"
-                                        label='Address'
-                                        placeholder="Address"
-                                        helperText={this.state.formErrors.address.length > 0 && this.state.formErrors.address}
-                                        value={this.state.address}
-                                        onChange={this.handleChange}
-                                        onBlur={this.handleChange}
-                                        error={this.state.formErrors.address.length > 0}
-                                        aria-invalid="false"
-                                    />
-                                    <fieldset aria-hidden="true" class="PrivateNotchedOutline-root-186 MuiOutlinedInput-notchedOutline">
-                                        <legend class="PrivateNotchedOutline-legendLabelled-188"><span>Address</span>
-                                        </legend>
-                                    </fieldset>
-                                </div>
-                            </div><br/><br/> */}
                             <div className="d-flex justify-content-between" >
                             <TextField style={{width:'45%'}}
                                 label="Pincode"

@@ -27,7 +27,7 @@ const formValid = ({ formErrors, ...rest }) => {
   
     // validate the form was filled out
     Object.values(rest).forEach(val => {
-      val === null && (valid = false);
+      val === '' && (valid = false);
     });
   
     return valid;
@@ -37,9 +37,9 @@ class RecoverPass extends Component {
     constructor(props) {
         super(props);
         this.state={
-            code:null,
-            newpass:null,
-            confpass:null,
+            code:'',
+            newpass:'',
+            confpass:'',
             formErrors: {
                 code:'',
                 newpass:'',
@@ -79,7 +79,7 @@ class RecoverPass extends Component {
                 (value.length < 8 ? "minimum 8 characaters required" : "") ||
                 (value.length >12 ? "maximum 12 characaters required" : "") ||
                 (passRegex.test(value)? "" : "should contain 1 UpperCase, 1 digit & 1 special symbol")
-                if(this.state.confpass!==null) {
+                if(this.state.confpass!=='') {
                     formErrors.confpass =
                       this.state.newpass!==this.state.confpass ? "the password does not match" : "";
                 }
@@ -131,8 +131,8 @@ class RecoverPass extends Component {
             .catch((err) => {
                 this.setState({loader:false})
                 if (err.response) {
-                err.response.data.error_message 
-                ? sweetalert("Oops!", `${err.response.data.error_message}`, "error",{button:false})
+                err.response.data.message 
+                ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
                 : sweetalert("Oops!", 'Something Went Wrong while recovering the Password', "error",{button:false})
                 } else if (err.request) {
                     sweetalert("Oops!", `${err.request}`, "error",{button:false})

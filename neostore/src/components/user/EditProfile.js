@@ -15,7 +15,6 @@ import sweetalert from 'sweetalert';
 import swal from 'sweetalert';
 import SnackAlert from '../modules/SnackAlert'
 
-// const userToken = localStorage.getItem('userToken')
 const CryptoJS = require("crypto-js");
 
 const emailRegex = RegExp(
@@ -264,7 +263,7 @@ class EditProfile extends Component {
             formData.append('phone_no', this.state.mobile)
             formData.append('gender', this.state.gender)
 
-            const userToken = localStorage.getItem('userToken')
+            let userToken = localStorage.getItem('userToken')
 
             axios.put(`${api.baseurl}/profile`, formData, {
                     headers: {

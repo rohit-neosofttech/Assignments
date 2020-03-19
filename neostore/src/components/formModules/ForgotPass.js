@@ -22,7 +22,7 @@ const formValid = ({ formErrors, ...rest }) => {
   
     // validate the form was filled out
     Object.values(rest).forEach(val => {
-      val === null && (valid = false);
+      val === '' && (valid = false);
     });
   
     return valid;
@@ -32,7 +32,7 @@ class ForgotPass extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email:null,
+            email:'',
             loader:false,
             open:false,
             formErrors: {

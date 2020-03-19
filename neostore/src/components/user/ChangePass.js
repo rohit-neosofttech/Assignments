@@ -15,8 +15,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-const userToken = localStorage.getItem('userToken')
-
 const textOnly = RegExp(/^[a-zA-Z]*$/);
 const passRegex = RegExp(/^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,12})$/)
   
@@ -30,7 +28,7 @@ const formValid = ({ formErrors, ...rest }) => {
   
     // validate the form was filled out
     Object.values(rest).forEach(val => {
-      val === null && (valid = false);
+      val === '' && (valid = false);
     });
   
     return valid;
@@ -40,9 +38,9 @@ class ChangePass extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            oldpass:null,
-            newpass:null,
-            confpass:null,
+            oldpass:'',
+            newpass:'',
+            confpass:'',
             formErrors: {
                 oldpass:'',
                 newpass:'',
@@ -73,7 +71,7 @@ class ChangePass extends Component {
                 (value.length >12 ? "maximum 12 characaters required" : "") ||
                 (passRegex.test(value)? "" : "should contain 1 UpperCase, 1 digit & 1 special symbol")
                 
-                if(this.state.confpass!==null) {
+                if(this.state.confpass!=='') {
                     formErrors.confpass =
                       this.state.newpass!==this.state.confpass ? "the password does not match" : "";
                 }
@@ -98,6 +96,7 @@ class ChangePass extends Component {
         e.preventDefault();
         if (formValid(this.state)) {
             this.setState({loader:true})
+            let userToken = localStorage.getItem('userToken')
             axios.post(`${api.baseurl}/changePassword`, {
                 oldPass : this.state.oldpass,
                 newPass : this.state.newpass,

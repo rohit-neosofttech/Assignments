@@ -8,7 +8,6 @@ import sweetalert from 'sweetalert'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios'
 
-const userToken = localStorage.getItem('userToken')
 const textOnly = RegExp(/^[a-zA-Z.,/ ]*$/);
   
 const formValid = ({ formErrors, ...rest }) => {
@@ -23,7 +22,8 @@ const formValid = ({ formErrors, ...rest }) => {
     Object.values(rest).forEach(val => {
       val === null && (valid = false);
     });
-  
+
+    console.log(rest)
     return valid;
   };
 class EditAddress extends Component {
@@ -119,7 +119,7 @@ class EditAddress extends Component {
         e.preventDefault()
         if (formValid(this.state)) {
             this.setState({loader:true})
-            
+            let userToken = (localStorage.getItem('userToken'))
             axios.put(`${api.baseurl}/updateAddress`, {
                 address_id:this.state.address_id,
                 address:this.state.address,
@@ -154,7 +154,7 @@ class EditAddress extends Component {
     }
 
     addressUpdateCancel = () => {
-            this.props.history.goBack()
+            this.props.history.push('/address')
     }
 
     render() {

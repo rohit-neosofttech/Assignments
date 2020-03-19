@@ -9,8 +9,6 @@ import sweetalert from 'sweetalert'
 
 const CryptoJS = require("crypto-js");
 
-const userToken = localStorage.getItem('userToken')
-
 export class Profile extends PureComponent {
     constructor(props) {
         super(props);

@@ -16,7 +16,6 @@ import FacebookLogin from 'react-facebook-login';
 const CryptoJS = require("crypto-js");
 
 const emailRegex = RegExp(
-    // /^[a-zA-Z]+([A-Za-z0-9._-])+@([A-Za-z0-9._-])+.([A-Za-z]{2,4})$/
     // /^[a-zA-Z]+([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
     /^[A-Za-z]{2,}[A-Za-z0-9]{0,}[.]{0,1}[A-Za-z0-9]{1,}[.]{0,1}[A-Za-z0-9]{1,}@[A-Za-z]{2,}[.]{1}[A-za-z]{2,3}[.]{0,1}[a-z]{0,2}$/
 );
@@ -31,7 +30,7 @@ const formValid = ({ formErrors, ...rest }) => {
 
     // validate the form was filled out
     Object.values(rest).forEach(val => {
-        val === null && (valid = false);
+        val === '' && (valid = false);
     });
 
     return valid;
@@ -41,17 +40,14 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: null,
-            password: null,
-            loader: false,
-            open: false,
-            type: '',
-            message: '',
-            title: '',
+            email: '',
+            password: '',
             formErrors: {
                 email: "",
                 password: ""
-            }
+            },
+            loader: false,
+            open: false
         }
     }
 
@@ -73,9 +69,7 @@ class Login extends Component {
                     // Encrypt
                     var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(res.data.customer_details), 'secret key 123').toString();
                     localStorage.setItem('EncrytDetail', ciphertext)
-
                     localStorage.setItem('userToken', `${res.data.token}`)
-                    // localStorage.setItem('CustDetail', JSON.stringify(res.data.customer_details))
                     this.setState({ loader: false })
                     // debugger
                     this.props.userLogin()
@@ -103,6 +97,11 @@ class Login extends Component {
         }
     };
 
+    /**
+     * function that will help to get the cart that was previously added by the user before he/she logout
+     * 
+     * @param   token   the userToken that will be used in the heder for API call
+     */
     getPreviousCart = (token) => {
         axios.get(`${api.baseurl}/getCartData`, {
                 headers: {
@@ -237,7 +236,6 @@ class Login extends Component {
                                   <div className="row">
                                     <div className="col-sm-10">
                                       <TextField fullWidth
-                                        // id="outlined-error-helper-text"
                                         label="Password"
                                         type={this.state.showPassword ? 'text' : 'password'}
                                         name="password"
@@ -265,12 +263,7 @@ class Login extends Component {
                                       <div >
                                           <CircularProgress/>
                                       </div>
-                                  :
-                                   <>
-                                    {formValid(this.state) 
-                                    ? <button className="btn-login" onClick={this.handleSubmit}>Login</button>
-                                    :<button className="btn-login" onClick={this.handleSubmit} style={{backgroundColor:'gray',cursor:'default'}} disabled>Login</button>}
-                                   </>
+                                  :<button className="btn-login" onClick={this.handleSubmit} disabled={!formValid(this.state)}>Login</button>
                                   }             
                                   
                               </form>

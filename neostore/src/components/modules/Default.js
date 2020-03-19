@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import Header from '../header/Header'
 
 /**
@@ -11,9 +12,11 @@ class Default extends Component {
             <Header/>
             <div className="div-default">
                 <div className="container center">
-                    <br/><br/><br/>
-                    <img src='https://i.dlpng.com/static/png/6815287_thumb.webp'  alt="" style={{width:'auto',height:'300px'}} /><br/>
+                    <br/><br/>
+                    <img src='https://www.interserver.net/tips/wp-content/uploads/2016/10/404error.jpeg'  alt="" style={{width:'auto',height:'300px'}} /><br/>
                     <h1>Error 404 : Page Not Found</h1>
+                    <br/>
+                    <Link to="/"><button className="btn btn-primary">Return To Home Page</button></Link>
                 </div>
             </div>
             </>

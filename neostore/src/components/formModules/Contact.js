@@ -27,7 +27,7 @@ const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}$
   
     // validate the form was filled out
     Object.values(rest).forEach(val => {
-      val === null && (valid = false);
+      val === '' && (valid = false);
     });
   
     return valid;
@@ -41,11 +41,11 @@ class Contact extends Component {
         super(props);
         this.state = {
             customer_id:'',
-            name:null,
-            email:null,
-            mobile:null,
-            subject:null,
-            message:null,
+            name:'',
+            email:'',
+            mobile:'',
+            subject:'',
+            message:'',
             loader:false,
             open:false,
             formErrors: {

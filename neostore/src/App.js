@@ -23,12 +23,12 @@ import EditProfile from './components/user/EditProfile'
 import MainCart from './components/cart/MainCart';
 import OrderPlaced from './components/cart/OrderPlaced';
 import Subscribe from './components/footer/Subscribe';
-import Login from './components/userModules/Login'
-import Logout from './components/userModules/Logout'
-import Register from './components/userModules/Register'
-import ForgotPass from './components/userModules/ForgotPass'
-import RecoverPass from './components/userModules/RecoverPass'
-import Contact from './components/userModules/Contact'
+import Login from './components/formModules/Login'
+import Logout from './components/formModules/Logout'
+import Register from './components/formModules/Register'
+import ForgotPass from './components/formModules/ForgotPass'
+import RecoverPass from './components/formModules/RecoverPass'
+import Contact from './components/formModules/Contact'
 import Location from './components/footer/Location'
 
 import Default from './components/modules/Default'

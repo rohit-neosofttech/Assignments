@@ -15,9 +15,6 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Loading from 'react-fullscreen-loading';
 
-
-const userToken = localStorage.getItem("userToken")
-
 class DeliveryAddress extends PureComponent {
     constructor(props) {
         super(props);
@@ -85,6 +82,7 @@ class DeliveryAddress extends PureComponent {
             checkAddr:addr.address_id, 
             loader:true
         })
+        let userToken = localStorage.getItem("userToken")
         axios.put(`${api.baseurl}/updateAddress`,{
             address_id:addr.address_id,
             isDeliveryAddress:true
@@ -146,6 +144,7 @@ class DeliveryAddress extends PureComponent {
             cart=[...cart,{'flag': "checkout"}]
             
             this.setState({tab:true,orderStatus:true}) 
+            let userToken = localStorage.getItem("userToken")
             axios.post(`${api.baseurl}/addProductToCartCheckout`,
                 cart
             , {

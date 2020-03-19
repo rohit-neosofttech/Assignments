@@ -6,8 +6,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import * as api from '../../api'
 import sweetalert from 'sweetalert'
 
-const userToken = localStorage.getItem("userToken")
-
 class Order extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +18,7 @@ class Order extends Component {
     componentDidMount() {
         if(localStorage.getItem('userToken')) {
             this.setState({loader:true})
+            let userToken = localStorage.getItem("userToken")
             axios.get(`${api.baseurl}/getOrderDetails`,{
                 headers:{
                     Authorization: 'Bearer ' + userToken
@@ -44,13 +43,13 @@ class Order extends Component {
                 }
             })
         }
-        else {
-          localStorage.removeItem('custDetail')
-        }
     }
 
     /**
      * Handle Date Format
+     * 
+     * @param   createdAt   date format retrived from the json
+     * @returns             returns a string of desired date format
      */
     handleDate = (createdAt) => {
         var d = new Date(createdAt);
@@ -61,7 +60,14 @@ class Order extends Component {
 
     }
 
+    /**
+     * API call that will download the order invoice pdf when the button is clicked
+     * 
+     * @param   order   contain the order_id of the order which trigger the event
+     * @returns         
+     */
     downloadInvoice = (order) => {
+        let userToken = localStorage.getItem("userToken")
         axios.post(`${api.baseurl}/getInvoiceOfOrder`,order,{
             headers:{
                 Authorization: 'Bearer ' + userToken

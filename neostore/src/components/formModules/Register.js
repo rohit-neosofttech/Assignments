@@ -30,7 +30,7 @@ const passRegex = RegExp(/^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,12})$/)
   
     // validate the form was filled out
     Object.values(rest).forEach(val => {
-      val === null && (valid = false);
+      val === '' && (valid = false);
     });
   
     return valid;
@@ -40,12 +40,12 @@ const passRegex = RegExp(/^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,12})$/)
       constructor(props) {
           super(props);
           this.state = {
-            firstName: null,
-            lastName: null,
-            email: null,
-            password: null,
-            confpass:null,
-            mobile:null,
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            confpass:'',
+            mobile:'',
             gender:'Male',
             formErrors: {
               firstName: "",
@@ -132,7 +132,7 @@ const passRegex = RegExp(/^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,12})$/)
           (value.length < 8 ? "minimum 8 characaters required" : "") ||
           (value.length >12 ? "maximum 12 characaters required" : "") ||
           (passRegex.test(value)? "" : "should contain 1 UpperCase, 1 digit & 1 special symbol")
-          if(this.state.confpass!==null) {
+          if(this.state.confpass!=='') {
             formErrors.confpass =
               this.state.password!==this.state.confpass ? "the password does not match" : "";
           }
