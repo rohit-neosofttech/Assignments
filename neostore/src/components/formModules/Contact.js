@@ -34,7 +34,7 @@ const nameRegex = RegExp(/^[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}[ ]{0,1}[A-Za-z]{1,}$
   };
 
 
-const custDetail = localStorage.getItem('custDetail')
+// const custDetail = localStorage.getItem('custDetail')
 
 class Contact extends Component {
     constructor(props) {
@@ -151,8 +151,8 @@ class Contact extends Component {
       };
     
     componentDidMount() {
-        const id = custDetail ? custDetail.customer_id : ''
-        this.setState({customer_id:id,})
+        // const id = custDetail ? custDetail.customer_id : ''
+        // this.setState({customer_id:id,})
     }
 
     render() {

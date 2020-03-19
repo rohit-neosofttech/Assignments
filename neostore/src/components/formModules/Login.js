@@ -65,24 +65,28 @@ class Login extends Component {
                 })
                 .then((res) => {
                     this.getPreviousCart(res.data.token)
-
+                    var cus=res.data.customer_details
+                    var add=[]
+                    if((res.data.customer_address).toString()!=="You did not add your address.") {
+                        add=res.data.customer_address
+                    }
+                    var detail={customer_details:{...cus},address:[...add]}
+                    
                     // Encrypt
-                    var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(res.data.customer_details), 'secret key 123').toString();
+                    var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(detail), 'secret key 123').toString();
                     localStorage.setItem('EncrytDetail', ciphertext)
                     localStorage.setItem('userToken', `${res.data.token}`)
                     this.setState({ loader: false })
-                    // debugger
                     this.props.userLogin()
                     this.props.cartCount()
                     
                     sweetalert(res.data.message, { icon: "success", button: false, timer: 2000, })
-                        .then((value) => {
-                            switch (value) {
-                                default: 
-                                this.props.history.push('/')
-                                // window.location.reload(false)
-                            }
-                        });
+                    .then((value) => {
+                      switch (value) {
+                        default: 
+                          this.props.history.push('/')
+                      }
+                    });
                 })
                 .catch((error) => {
                     this.setState({ loader: false })

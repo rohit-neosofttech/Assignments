@@ -126,7 +126,6 @@ class AllProduct extends Component {
      * @param pageNumber  contain the page number which the user select on the pagination  
      */
     handlePageChange(pageNumber) {
-        // console.log(`active page is ${pageNumber}`);
         this.setState({activePage: pageNumber});
     }
 

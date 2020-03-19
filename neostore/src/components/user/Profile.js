@@ -7,9 +7,13 @@ import axios from 'axios'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import sweetalert from 'sweetalert'
 
+
+// const UserHome = React.lazy(() => import('./UserHome'))
+
+
 const CryptoJS = require("crypto-js");
 
-export class Profile extends PureComponent {
+class Profile extends PureComponent {
     constructor(props) {
         super(props);
         this.state ={
@@ -27,26 +31,17 @@ export class Profile extends PureComponent {
     componentDidMount() {
         this.setState({loader:true})
         if(localStorage.getItem('userToken')) {
-            // let userToken = JSON.parse(localStorage.getItem('userToken'))
-            const cust = JSON.parse(localStorage.getItem('CustDetail'))
             const decDeta = localStorage.getItem('EncrytDetail')
 
             var bytes  = CryptoJS.AES.decrypt(decDeta, 'secret key 123');
             var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
             this.setState({
-                // profile_img : cust.profile_img,
-                    // firstName : cust.first_name,
-                    // lastName : cust.last_name,
-                    // email : cust.email,
-                    // dob : cust.dob,
-                    // mobile : cust.phone_no,
-                    // gender : cust.gender,
-                    firstName : decryptedData.first_name,
-                    lastName : decryptedData.last_name,
-                    email : decryptedData.email,
-                    dob : decryptedData.dob,
-                    mobile : decryptedData.phone_no,
-                    gender : decryptedData.gender,
+                    firstName : decryptedData.customer_details.first_name,
+                    lastName : decryptedData.customer_details.last_name,
+                    email : decryptedData.customer_details.email,
+                    dob : decryptedData.customer_details.dob,
+                    mobile : decryptedData.customer_details.phone_no,
+                    gender : decryptedData.customer_details.gender,
                     loader:false
             })
         }

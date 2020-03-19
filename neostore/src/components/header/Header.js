@@ -55,14 +55,12 @@ class Header extends Component {
 
         if(localStorage.getItem('userToken')) {
             
-            var cust = JSON.parse(localStorage.getItem("CustDetail"))
-
             const decDeta = localStorage.getItem('EncrytDetail')
             var bytes  = CryptoJS.AES.decrypt(decDeta, 'secret key 123');
             var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-            // var img = cust.profile_img
-            var img = decryptedData.profile_img
+            console.log(decryptedData)
+            var img = decryptedData.customer_details.profile_img
             if(img) {
                 this.setState({img:img})
             }
@@ -82,7 +80,7 @@ class Header extends Component {
                 var bytes  = CryptoJS.AES.decrypt(decDeta, 'secret key 123');
                 var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-                var img = decryptedData.profile_img
+                var img = decryptedData.customer_details.profile_img
                 if(img) {
                     this.setState({img:img})
                 }

@@ -20,22 +20,21 @@ const formValid = ({ formErrors, ...rest }) => {
   
     // validate the form was filled out
     Object.values(rest).forEach(val => {
-      val === null && (valid = false);
+      val === '' && (valid = false);
     });
 
-    console.log(rest)
     return valid;
   };
 class EditAddress extends Component {
     constructor(props) {
         super(props);
         this.state={
-            address_id:null,
-            address:null,
-            pincode:null,
-            city:null,
-            _state:null,
-            country:null,
+            address_id:'',
+            address:'',
+            pincode:'',
+            city:'',
+            _state:'',
+            country:'',
             formErrors : {
                 address_id:'',
                 address:'',
@@ -51,7 +50,7 @@ class EditAddress extends Component {
 
     componentDidMount() {
         this.setState({loader:true})
-        if(this.props.location.state.addr) {
+        if(this.props.location.state) {
             this.setState({
                 address_id:this.props.location.state.addr.address_id,
                 address:this.props.location.state.addr.address,
@@ -60,6 +59,10 @@ class EditAddress extends Component {
                 _state:this.props.location.state.addr.state,
                 country:this.props.location.state.addr.country
             })
+        }
+        else{
+            sweetalert('Oops','Please select the address to edit again','warning',{button:false,timer:2000})
+            this.props.history.push('/address')
         }
         this.setState({loader:false})
     }

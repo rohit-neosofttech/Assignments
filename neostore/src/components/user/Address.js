@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react'
 import UserHome from './UserHome'
 import Header from '../header/Header'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import * as api from '../../api'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import SnackAlert from '../modules/SnackAlert'
 import sweetalert from 'sweetalert'
 
-// const custDetail = JSON.parse(localStorage.getItem("CustDetail"))
+const CryptoJS = require("crypto-js");
 
 class Address extends PureComponent {
     constructor(props) {
@@ -145,7 +145,7 @@ class Address extends PureComponent {
                                     <span>{`${addr.city} - ${addr.pincode}`}</span>
                                     <span>{`${addr.state}, ${addr.country}`}</span><br/>
                                     <Link to={{pathname:`/editAddress/${addr.address_id}`,state:{addr}}}>
-                                        <button className="btn btn-primary" style={{width:'100px'}} >Edit</button>
+                                        <button className="btn btn-primary" style={{width:'100px'}}>Edit</button>
                                     </Link>
                                     <button className="btn-close" style={{width:'fit-content'}} onClick={()=>this.deleteAddress(addr.address_id)}>
                                         <i className="fas fa-times" style={{padding:'0px'}}></i>

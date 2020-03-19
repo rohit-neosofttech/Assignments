@@ -412,6 +412,12 @@ div.scrollmenu img {
     height:300px;
     padding:20px;
 }
+/* 
+.fullImage div div img {
+    height:300px;
+    padding:20px;
+    width: 100%;;
+} */
 
 .input-container {
     border:1px solid gray;

@@ -273,11 +273,12 @@ class ProductDetail extends PureComponent {
                     <div className="col-md-6">
                         <div className="row">
                             <div className="">
-                                <SideBySideMagnifier 
+                                {/* <SideBySideMagnifier 
                                     imageSrc={this.state.fullImage}
+                                    overlayBoxImageSize="height:300px"
                                     zoomPosition="right"
-                                />
-                                {/* <img className="fullImage img-responsive" src={this.state.fullImage} alt="FullImage"/> */}
+                                /> */}
+                                <img className="fullImage img-responsive" src={this.state.fullImage} alt="FullImage"/>
                             </div>
                         </div>
                         <div className="scrollmenu">

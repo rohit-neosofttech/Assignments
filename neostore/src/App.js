@@ -36,7 +36,6 @@ import Default from './components/modules/Default'
 function App() {
   return (
     <Provider store={store}>
-      { console.log(store.getState()) }
     <div className="App">
       {/* <Header/> */}
       <Switch>
