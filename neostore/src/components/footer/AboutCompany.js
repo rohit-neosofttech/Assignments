@@ -27,7 +27,7 @@ class AboutCompany extends PureComponent {
             } else if (err.request) {
                   sweetalert("Oops!", `${err.request}`, "error",{button:false})
             } else {
-                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+                  sweetalert("Oops!", `${err}`, "error",{button:false})
             }
         })
     }

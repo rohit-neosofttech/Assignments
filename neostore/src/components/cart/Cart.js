@@ -181,8 +181,7 @@ class Cart extends Component {
                 ?<NoProduct/>
                 :<div className="row" style={{margin:"0px"}}>
                     <div className="col-md-8 p-4">
-                        <div className="card"  style={{boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
-                        {}
+                        <div className="card"  style={{overflowX:"auto",boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
                         <table className="table">
                             <thead>
                                 <tr>
@@ -191,7 +190,6 @@ class Cart extends Component {
                                 <th scope="col">Price</th>
                                 <th scope="col">Total</th>
                                 <th scope="col"></th>
-
                                 </tr>
                             </thead>
                             <tbody>

@@ -106,7 +106,7 @@ class ProductsPage extends Component {
         return (
             <>
             <Header/>
-            <div>
+            <div style={{minHeight:'500px'}}>
                 <br/><hr/>
                 <div className="container" style={{minHeight:"400px"}}>
                     <div className="row">

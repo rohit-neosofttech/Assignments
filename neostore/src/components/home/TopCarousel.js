@@ -26,16 +26,15 @@ class TopCarousel extends Component {
             this.setState({carousel_img:res.data.category_details , loader:false})
         })
         .catch((err)=> {
+            this.setState({loader:false})
             if (err.response) {
                 err.response.data.message 
                 ? sweetalert("Oops!", `${err.response.data.message}`, "error",{button:false})
                 : sweetalert("Oops!", 'Something Went Wrong with Carousel Categories', "error",{button:false})
-          
-                // alert(error.response.data.message)
             } else if (err.request) {
                   sweetalert("Oops!", `${err.request}`, "error",{button:false})
             } else {
-                  sweetalert("Oops!", `${err.message}`, "error",{button:false})
+                  sweetalert("Oops!", `${err}`, "error",{button:false})
             }
         })
     }
@@ -49,22 +48,29 @@ class TopCarousel extends Component {
                         <CircularProgress/>
                     </div>
                 :
-                    <RBCarousel
-                    animation={true}
-                    autoplay={this.state.autoplay}
-                    slideshowSpeed={2000}
-                    defaultActiveIndex={0}
-                    leftIcon={this.state.leftIcon}
-                    rightIcon={this.state.rightIcon}
-                    onSelect={this._onSelect}
-                    ref={r => (this.slider = r)}
-                    version={4}
-                    >
-                    { (this.state.carousel_img.length !==0 ) ?
-                        this.state.carousel_img.map( carousel => <Carousel key={carousel.category_id} carousel={carousel} />)
-                        : <></>
+                <>
+                    {(this.state.carousel_img.length !==0 ) ?
+                        <RBCarousel
+                        animation={true}
+                        autoplay={this.state.autoplay}
+                        slideshowSpeed={2000}
+                        defaultActiveIndex={0}
+                        leftIcon={this.state.leftIcon}
+                        rightIcon={this.state.rightIcon}
+                        onSelect={this._onSelect}
+                        ref={r => (this.slider = r)}
+                        version={4}
+                        >
+                        { this.state.carousel_img.length !==0 &&
+                            this.state.carousel_img.map( carousel => <Carousel key={carousel.category_id} carousel={carousel} />)
+                        }
+                        </RBCarousel>
+                    :
+                    <div>
+
+                    </div>
                     }
-                    </RBCarousel>
+                </>
                 }
             </div>
         )
